@@ -32,6 +32,7 @@ export default function CategoryEditor(props: editorProps) {
 
   return (
     <div className={styles.categoryEditorContainer}>
+      <h1>{props.index}</h1>
         <div>
             <label>Category name:</label>
             <input type="text"></input>
