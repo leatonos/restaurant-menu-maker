@@ -8,7 +8,7 @@ export type User ={
 
 export type RestaurantMenu ={
 
-    _id:ObjectId,
+    _id?:ObjectId,
     ownerId:string,
     restaurantName:string,
     restaurantAddress:string,

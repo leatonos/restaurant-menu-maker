@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { redirect } from  'next/navigation';
 import React, { useState } from 'react'
-import MenuEditor from "@/app/components/menu-editor-components/menuEditor";
+import MenuEditor from "@/app/components/menu-editor-components/menu-editor";
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 

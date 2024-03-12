@@ -1,0 +1,75 @@
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 30px;
+}
+
+.editorContainer{
+    display: flexbox;
+    flex-direction: column;
+    color: black;
+    width: 70%;
+    height: calc(100vh - 130px);
+    padding: 10px;
+    background-color: yellow;
+    
+}
+
+.categoriesContainer{
+    overflow-y: auto;
+    height: calc(100% - 100px);
+}
+
+.categoryEditorContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: black;
+    width: calc(80% - 10px);
+    padding: 5px;
+    margin: 5px;
+    background-color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+.subcategoryEditorContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: black;
+    width: calc(80% - 10px);
+    padding: 5px;
+    margin: 5px;
+    background-color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+.itemEditorContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: black;
+    width: calc(80% - 10px);
+    padding: 5px;
+    margin: 5px;
+    background-color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+.previewContainer{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: calc(100vh - 130px);
+    padding: 10px;
+    word-wrap: break-word;
+    background-color: yellowgreen;
+}
