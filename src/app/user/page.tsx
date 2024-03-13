@@ -19,7 +19,8 @@ async function RestaurantsList({ownerId}: { ownerId : string }) {
     <div className={styles.restaurantsPannel}>
       {
         restaurants.map((restaurant)=>{
-          const restaurantId:string = restaurant._id.toString()
+          const resId = restaurant._id as ObjectId
+          const restaurantId:string = resId.toString()
           return <RestaurantBox key={restaurantId} restaurantId={restaurantId} restaurantName={restaurant.restaurantName}/>
         })
       }
