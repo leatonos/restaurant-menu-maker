@@ -7,7 +7,7 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import {ItemReference, deleteItem} from '@/app/redux/menuCreatorSlice'
+import {ItemReference, deleteItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto, ItemChange,setItemPrice} from '@/app/redux/menuCreatorSlice'
 import { Item } from "@/app/types/types";
 
 interface itemProps {
@@ -20,14 +20,48 @@ interface itemProps {
 export default function ItemEditor(props:itemProps) {
 
   const dispatch = useDispatch()
-
-  function removeItem() {
-    const itemReference:ItemReference ={
+  const itemRef:ItemReference ={
+    itemIndex: props.index,
+    subcategoryIndex: props.subcategoryIndex,
+    categoryIndex: props.categoryIndex
+  }
+  const removeItem=()=>{
+  const itemReference:ItemReference ={
       itemIndex: props.index,
       subcategoryIndex: props.subcategoryIndex,
       categoryIndex: props.categoryIndex
-    }
+  }
     dispatch(deleteItem(itemReference))
+  }
+
+  const changeName = (newName:string)=>{
+    const itemChange:ItemChange ={
+      itemReference: itemRef,
+      change: newName
+    }
+    dispatch(setItemName(itemChange))
+    
+  }
+  const changeDescription = (newDescription:string)=>{
+    const itemChange:ItemChange ={
+      itemReference: itemRef,
+      change: newDescription
+    }
+    dispatch(setItemDescription(itemChange))
+  }
+  const changePrice = (newPrice:number)=>{
+    const itemChange:ItemChange ={
+      itemReference: itemRef,
+      change: newPrice
+    }
+    dispatch(setItemPrice(itemChange))
+  }
+  const changeAvailability = (isChecked:boolean)=>{
+    const itemChange:ItemChange ={
+      itemReference: itemRef,
+      change: isChecked
+    }
+    dispatch(setItemAvailalibity(itemChange))
   }
 
   return (
@@ -35,18 +69,24 @@ export default function ItemEditor(props:itemProps) {
         <button onClick={()=> removeItem()}>Delete item</button>
         <div>
             <label>Item name:</label>
-            <input type="text" value={props.item.name}/>
+            <input type="text" onChange={(event)=>changeName(event.target.value)} value={props.item.name}/>
         </div>
         <div>
             <label>Item Description:</label>
-            <input type="text" value={props.item.description}/>
+            <input type="text" onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
         </div>
         <div>
             <label>Item price:</label>
-            <input type="number" value={props.item.price}/>
+            <input type="number" min={0} onChange={(event)=>changePrice(parseFloat(event.target.value))} value={props.item.price}/>
         </div>
         <div>
-            <label>Item availability:</label>
+            <label htmlFor="available">Item availability:</label>
+            <input
+              id="available"
+              type="checkbox"
+              checked={props.item.available}
+              onChange={(event)=>changeAvailability(event.target.checked)}
+            />
         </div>
     </div>
   );

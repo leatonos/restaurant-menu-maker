@@ -1,14 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { Item, MenuCategory, RestaurantMenu, Subcategory } from '../types/types'
-import { ObjectId } from 'mongodb'
 
 export interface MenuState {
   restaurantMenu:RestaurantMenu
 }
 
 export interface CategoryChange{
-  text:string
+  change:string | boolean
   index:number
 }
 
@@ -21,6 +20,16 @@ export interface ItemReference{
   itemIndex:number
   subcategoryIndex:number
   categoryIndex:number
+}
+
+export interface SubcategoryChange{
+  subcategoryReference:SubcategoryReference
+  change: string | boolean 
+}
+
+export interface ItemChange{
+  itemReference:ItemReference,
+  change:string | boolean | number
 }
 
 const initialState: MenuState = {
@@ -40,6 +49,14 @@ export const menuCreatorSlice = createSlice({
     setInitialData:(state, action: PayloadAction<RestaurantMenu>)=>{
       state.restaurantMenu = action.payload
     },
+    //Restaurant Info
+    setRestaurantName:(state, action:PayloadAction<string>)=>{
+      state.restaurantMenu.restaurantName = action.payload
+    },
+    setRestaurantAddress:(state, action:PayloadAction<string>)=>{
+      state.restaurantMenu.restaurantAddress = action.payload
+    },
+    //Categories
     createNewCategory: (state) => {
       const newEmptyCategory:MenuCategory = {
         name: '',
@@ -52,12 +69,16 @@ export const menuCreatorSlice = createSlice({
     deleteCategory:(state, action: PayloadAction<number>)=>{
       state.restaurantMenu.menuCategories.splice(action.payload, 1)
     },
-    changeCategoryName:(state,action: PayloadAction<CategoryChange>)=>{
-      state.restaurantMenu.menuCategories[action.payload.index].name = action.payload.text
+    setCategoryName:(state,action: PayloadAction<CategoryChange>)=>{
+      state.restaurantMenu.menuCategories[action.payload.index].name = action.payload.change as string
     },
-    changeCategoryDescription:(state,action: PayloadAction<CategoryChange>)=>{
-      state.restaurantMenu.menuCategories[action.payload.index].description = action.payload.text
+    setCategoryDescription:(state,action: PayloadAction<CategoryChange>)=>{
+      state.restaurantMenu.menuCategories[action.payload.index].description = action.payload.change as string
     },
+    setCategoryAvailability:(state,action: PayloadAction<CategoryChange>)=>{
+      state.restaurantMenu.menuCategories[action.payload.index].available = action.payload.change as boolean
+    },
+    //Subcategories
     createNewSubcategory:(state,action: PayloadAction<number>)=>{
       const newSubcategory:Subcategory = {
         name: '',
@@ -72,6 +93,29 @@ export const menuCreatorSlice = createSlice({
       const subcategories = category.subcategories
       subcategories.splice(action.payload.subcategoryIndex,1)
     },
+    setSubcategoryName:(state,action: PayloadAction<SubcategoryChange>)=>{
+      const category = state.restaurantMenu.menuCategories[action.payload.subcategoryReference.categoryIndex]
+      const subcategory = category.subcategories[action.payload.subcategoryReference.subcategoryIndex]
+
+      subcategory.name = action.payload.change as string
+    },
+    setSubcategoryDescription:(state,action: PayloadAction<SubcategoryChange>)=>{
+      const category = state.restaurantMenu.menuCategories[action.payload.subcategoryReference.categoryIndex]
+      const subcategory = category.subcategories[action.payload.subcategoryReference.subcategoryIndex]
+
+      subcategory.description = action.payload.change as string
+    },
+    setSubcategoryAvailalibity:(state, action: PayloadAction<SubcategoryChange>)=>{
+
+      const subcatRef = action.payload.subcategoryReference
+
+      const category = state.restaurantMenu.menuCategories[subcatRef.categoryIndex]
+      const subcategory = category.subcategories[subcatRef.subcategoryIndex]
+
+      subcategory.available = action.payload.change as boolean
+
+    },
+    //Items
     createNewItem:(state,action: PayloadAction<SubcategoryReference>)=>{
 
       const newItem:Item = {
@@ -97,23 +141,69 @@ export const menuCreatorSlice = createSlice({
       itemList.splice(action.payload.itemIndex,1)
 
     },
-    setRestaurantName:(state, action:PayloadAction<string>)=>{
-      state.restaurantMenu.restaurantName = action.payload
+    setItemName:(state, action: PayloadAction<ItemChange>)=>{
+
+      const itemRef = action.payload.itemReference
+
+      const category = state.restaurantMenu.menuCategories[itemRef.categoryIndex]
+      const subcategory = category.subcategories[itemRef.subcategoryIndex]
+      const item = subcategory.items[itemRef.itemIndex]
+
+      item.name = action.payload.change as string
+
     },
-    setRestaurantAddress:(state, action:PayloadAction<string>)=>{
-      state.restaurantMenu.restaurantAddress = action.payload
+    setItemDescription:(state, action: PayloadAction<ItemChange>)=>{
+
+      const itemRef = action.payload.itemReference
+
+      const category = state.restaurantMenu.menuCategories[itemRef.categoryIndex]
+      const subcategory = category.subcategories[itemRef.subcategoryIndex]
+      const item = subcategory.items[itemRef.itemIndex]
+
+      item.description = action.payload.change as string
+
     },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      //state.value += action.payload
+    setItemPrice:(state, action: PayloadAction<ItemChange>)=>{
+
+      const itemRef = action.payload.itemReference
+
+      const category = state.restaurantMenu.menuCategories[itemRef.categoryIndex]
+      const subcategory = category.subcategories[itemRef.subcategoryIndex]
+      const item = subcategory.items[itemRef.itemIndex]
+
+      item.price = action.payload.change as number
+
     },
-  },
+    setItemAvailalibity:(state, action: PayloadAction<ItemChange>)=>{
+
+      const itemRef = action.payload.itemReference
+
+      const category = state.restaurantMenu.menuCategories[itemRef.categoryIndex]
+      const subcategory = category.subcategories[itemRef.subcategoryIndex]
+      const item = subcategory.items[itemRef.itemIndex]
+
+      item.available = action.payload.change as boolean
+
+    },
+    setItemPhoto:(state, action: PayloadAction<ItemChange>)=>{
+
+      const itemRef = action.payload.itemReference
+
+      const category = state.restaurantMenu.menuCategories[itemRef.categoryIndex]
+      const subcategory = category.subcategories[itemRef.subcategoryIndex]
+      const item = subcategory.items[itemRef.itemIndex]
+
+      item.photoURL = action.payload.change as string
+
+    }
+  }
 })
 
 // Action creators are generated for each case reducer function
 export const { setInitialData, 
-   createNewCategory,deleteCategory,changeCategoryName,changeCategoryDescription,
-   createNewSubcategory,deleteSubcategory,
-   deleteItem,createNewItem,
+   createNewCategory,deleteCategory,setCategoryName,setCategoryDescription,setCategoryAvailability,
+   createNewSubcategory,deleteSubcategory,setSubcategoryName,setSubcategoryDescription,setSubcategoryAvailalibity,
+   deleteItem,createNewItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto,setItemPrice,
    setRestaurantName,setRestaurantAddress } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer

@@ -7,7 +7,8 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteCategory,changeCategoryName,changeCategoryDescription, CategoryChange,createNewSubcategory } from '@/app/redux/menuCreatorSlice'
+import { deleteCategory,setCategoryName,setCategoryDescription,setCategoryAvailability,
+  CategoryChange,createNewSubcategory } from '@/app/redux/menuCreatorSlice'
 import SubcategoryEditor from "./sub-category-editor";
 import { MenuCategory } from "@/app/types/types";
 
@@ -23,20 +24,29 @@ export default function CategoryEditor(props: editorProps) {
     const changeName =(text:string)=>{
 
       const change:CategoryChange = {
-        text: text,
+        change: text,
         index: props.index
       }
 
-      dispatch(changeCategoryName(change))
+      dispatch(setCategoryName(change))
     }
     const changeDescription = (text:string)=>{
 
       const change:CategoryChange = {
-        text: text,
+        change: text,
         index: props.index
       }
 
-      dispatch(changeCategoryDescription(change))
+      dispatch(setCategoryDescription(change))
+    }
+    const changeAvailability = (newStatus: boolean)=>{
+      const subCatChange:CategoryChange = {
+        change: newStatus,
+        index: props.index
+      }
+  
+      dispatch(setCategoryAvailability(subCatChange))
+  
     }
 
 
@@ -52,6 +62,15 @@ export default function CategoryEditor(props: editorProps) {
             <label>Category Description:</label>
             <input type="text" value={props.category.description} onChange={(event)=>changeDescription(event.target.value)}></input>
         </div>
+        <div>
+            <label htmlFor="available">Subcategory availability:</label>
+            <input
+              id="available"
+              type="checkbox"
+              checked={props.category.available}
+              onChange={(event)=>changeAvailability(event.target.checked)}
+            />
+      </div>
       </div>
       <div className={styles.subCategoriesContainer}>
         {props.category.subcategories.map((subcategory,index)=>(
