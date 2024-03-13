@@ -7,7 +7,7 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteCategory,changeCategoryName,changeCategoryDescription, CategoryChange,addNewSubcategory } from '@/app/redux/menuCreatorSlice'
+import { deleteCategory,changeCategoryName,changeCategoryDescription, CategoryChange,createNewSubcategory } from '@/app/redux/menuCreatorSlice'
 import SubcategoryEditor from "./sub-category-editor";
 import { MenuCategory } from "@/app/types/types";
 
@@ -58,7 +58,7 @@ export default function CategoryEditor(props: editorProps) {
           <SubcategoryEditor key={index} subcategory={subcategory} categoryIndex={props.index} index={index}/>
         ))}
       </div>
-      <button onClick={()=>dispatch(addNewSubcategory(props.index))}>Create Subcategory</button>
+      <button onClick={()=>dispatch(createNewSubcategory(props.index))}>Create Subcategory</button>
     </div>
   );
 }

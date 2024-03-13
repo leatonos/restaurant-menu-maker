@@ -7,30 +7,47 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import {} from '@/app/redux/menuCreatorSlice'
+import {ItemReference, deleteItem} from '@/app/redux/menuCreatorSlice'
+import { Item } from "@/app/types/types";
 
+interface itemProps {
+  categoryIndex:number
+  subcategoryIndex:number
+  index:number
+  item:Item
+}
 
-export default function ItemEditor() {
+export default function ItemEditor(props:itemProps) {
 
-    const count = useSelector((state: RootState) => state.restaurantCreator.value)
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
+
+  function removeItem() {
+    const itemReference:ItemReference ={
+      itemIndex: props.index,
+      subcategoryIndex: props.subcategoryIndex,
+      categoryIndex: props.categoryIndex
+    }
+    dispatch(deleteItem(itemReference))
+  }
 
   return (
     <div className={styles.itemEditorContainer}>
-      <form>
+        <button onClick={()=> removeItem()}>Delete item</button>
         <div>
             <label>Item name:</label>
-            <input type="text"/>
+            <input type="text" value={props.item.name}/>
         </div>
         <div>
             <label>Item Description:</label>
-            <input type="text"/>
+            <input type="text" value={props.item.description}/>
         </div>
         <div>
             <label>Item price:</label>
-            <input type="number"/>
+            <input type="number" value={props.item.price}/>
         </div>
-      </form>
+        <div>
+            <label>Item availability:</label>
+        </div>
     </div>
   );
 }
