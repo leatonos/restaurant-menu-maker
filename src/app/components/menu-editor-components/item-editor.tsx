@@ -7,21 +7,13 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '@/app/redux/menuCreatorSlice'
+import {} from '@/app/redux/menuCreatorSlice'
 
 
 export default function ItemEditor() {
 
     const count = useSelector((state: RootState) => state.restaurantCreator.value)
     const dispatch = useDispatch()
-  
-    const useIncrement = () => {
-      dispatch(increment())
-    }
-
-    const useDecrement = () => {
-      dispatch(decrement())
-    }
 
   return (
     <div className={styles.itemEditorContainer}>

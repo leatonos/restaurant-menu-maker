@@ -7,9 +7,8 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '@/app/redux/menuCreatorSlice'
+import { deleteCategory,changeCategoryName,changeCategoryDescription, CategoryChange,addNewSubcategory } from '@/app/redux/menuCreatorSlice'
 import SubcategoryEditor from "./sub-category-editor";
-import ItemEditor from "./item-editor";
 import { MenuCategory } from "@/app/types/types";
 
 interface editorProps{
@@ -18,31 +17,48 @@ interface editorProps{
 }
 
 export default function CategoryEditor(props: editorProps) {
-
-    const count = useSelector((state: RootState) => state.restaurantCreator)
+    
     const dispatch = useDispatch()
-  
-    const useIncrement = () => {
-      dispatch(increment())
+    
+    const changeName =(text:string)=>{
+
+      const change:CategoryChange = {
+        text: text,
+        index: props.index
+      }
+
+      dispatch(changeCategoryName(change))
+    }
+    const changeDescription = (text:string)=>{
+
+      const change:CategoryChange = {
+        text: text,
+        index: props.index
+      }
+
+      dispatch(changeCategoryDescription(change))
     }
 
-    const useDecrement = () => {
-      dispatch(decrement())
-    }
 
   return (
     <div className={styles.categoryEditorContainer}>
-      <h1>{props.index}</h1>
+      <button onClick={()=>dispatch(deleteCategory(props.index))}>Delete Category</button>
+      <div className={styles.categoryEditor}>
         <div>
             <label>Category name:</label>
-            <input type="text"></input>
+            <input type="text" value={props.category.name} onChange={(event)=>changeName(event.target.value)}></input>
         </div>
         <div>
             <label>Category Description:</label>
-            <input type="text"></input>
+            <input type="text" value={props.category.description} onChange={(event)=>changeDescription(event.target.value)}></input>
         </div>
-      <SubcategoryEditor/>
-      <button>Create Subcategory</button>
+      </div>
+      <div className={styles.subCategoriesContainer}>
+        {props.category.subcategories.map((subcategory,index)=>(
+          <SubcategoryEditor key={index} subcategory={subcategory} categoryIndex={props.index} index={index}/>
+        ))}
+      </div>
+      <button onClick={()=>dispatch(addNewSubcategory(props.index))}>Create Subcategory</button>
     </div>
   );
 }

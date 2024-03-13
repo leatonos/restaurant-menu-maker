@@ -7,25 +7,34 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '@/app/redux/menuCreatorSlice'
+import { DeleteSubcategoryInfo, deleteSubcategory } from '@/app/redux/menuCreatorSlice'
 import ItemEditor from "./item-editor";
+import { Subcategory } from "@/app/types/types";
 
 
-export default function SubcategoryEditor() {
+interface editorProps{
+  subcategory:Subcategory,
+  categoryIndex:number
+  index:number,
+}
 
-    const count = useSelector((state: RootState) => state.restaurantCreator.value)
-    const dispatch = useDispatch()
-  
-    const useIncrement = () => {
-      dispatch(increment())
+export default function SubcategoryEditor(props:editorProps) {
+
+  const dispatch = useDispatch()
+
+  const deleteSubcat = ()=>{
+
+    const subcategoryReference:DeleteSubcategoryInfo ={
+      categoryIndex: props.categoryIndex,
+      subcategoryIndex: props.index
     }
 
-    const useDecrement = () => {
-      dispatch(decrement())
-    }
+    dispatch(deleteSubcategory(subcategoryReference))
+  }
 
   return (
     <div className={styles.subcategoryEditorContainer}>
+        <button onClick={deleteSubcat}>Delete subcategory</button>
         <div>
             <label>Subcategory name:</label>
             <input type="text"></input>
@@ -34,7 +43,6 @@ export default function SubcategoryEditor() {
             <label>Subcategory Description:</label>
             <input type="text"></input>
         </div>
-        <ItemEditor/>
       <button>Create Item</button>
     </div>
   );

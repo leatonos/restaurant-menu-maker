@@ -54,9 +54,10 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
       </div>
       <div className={styles.categoriesContainer}>
         {menuCategories.map((category, index)=>(
-          <CategoryEditor category={category} index={index}/>
+          <CategoryEditor key={index} category={category} index={index}/>
           ))}
       </div>
+      <button>Save Changes</button>
      
     </div>
   );
