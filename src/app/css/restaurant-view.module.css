@@ -1,0 +1,6 @@
+.categoryContainer{
+    display: flex;
+    flex-direction: column;
+    background-color: blue;
+    width: 100%;
+}
