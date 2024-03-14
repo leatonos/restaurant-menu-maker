@@ -20,12 +20,12 @@ export default function ItemView(props:{itemInfo:Item}) {
   return (
     <div className={styles.itemContainer}>
         <div className={styles.itemDetails}>
-            <h4>{props.itemInfo.name}</h4>
+            <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
             <p>{props.itemInfo.description}</p>
             <p>{props.itemInfo.price}</p>
         </div>
         <div className={styles.itemPhotoContainer}>
-
+            <img src="https://placehold.co/100"/>
         </div>
     </div>
   );

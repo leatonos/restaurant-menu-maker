@@ -4,6 +4,7 @@
     flex-wrap: wrap;
     justify-content: center;
     padding: 30px;
+    color: black;
 }
 
 .editorContainer{
@@ -72,4 +73,5 @@
     padding: 10px;
     word-wrap: break-word;
     background-color: yellowgreen;
+    overflow-y: auto;
 }
