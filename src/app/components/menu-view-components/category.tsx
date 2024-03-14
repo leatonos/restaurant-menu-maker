@@ -21,11 +21,11 @@ export default function CategoryView(props:{categoryInfo:MenuCategory}) {
 
   return (
     <div className={styles.categoryContainer}>
-        <div>
-            <h2>{props.categoryInfo.name}</h2>
+        <div className={styles.categoryDetails}>
+            <h2 className={styles.categoryTitle}>{props.categoryInfo.name}</h2>
             <p>{props.categoryInfo.description}</p>
         </div>
-        <div>
+        <div className={styles.subcategoriesContainer}>
             {subcategories.map((subcategory)=>(
                 <SubcategoryView subcategoryInfo={subcategory} />
             ))}

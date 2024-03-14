@@ -1,6 +1,40 @@
 .categoryContainer{
     display: flex;
     flex-direction: column;
-    background-color: blue;
+    background-color: black;
     width: 100%;
 }
+
+.categoryDetails{
+    display: block;
+}
+
+.categoryTitle{
+    text-align: center;
+}
+
+.subcategoriesContainer{
+
+}
+
+/* Items Section */
+
+.subcategoryContainer{
+
+}
+
+.subcategoryDetails{
+
+}
+
+.subcategoryTitle{
+
+}
+
+.itemsContainer{
+
+}
+
+
+/* Items Section */
+

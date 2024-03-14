@@ -20,12 +20,12 @@ export default function SubcategoryView(props:{subcategoryInfo:Subcategory}) {
   }
 
   return (
-    <div className={styles.categoryContainer}>
-        <div>
-            <h3>{props.subcategoryInfo.name}</h3>
+    <div className={styles.subcategoryContainer}>
+        <div className={styles.subcategoryDetails}>
+            <h3 className={styles.subcategoryTitle}>{props.subcategoryInfo.name}</h3>
             <p>{props.subcategoryInfo.description}</p>
         </div>
-        <div>
+        <div className={styles.itemsContainer}>
             {items.map((item)=>(
                 <ItemView itemInfo={item}/>
             ))}

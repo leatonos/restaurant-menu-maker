@@ -18,11 +18,14 @@ export default function ItemView(props:{itemInfo:Item}) {
   }
 
   return (
-    <div className={styles.categoryContainer}>
-        <div>
+    <div className={styles.itemContainer}>
+        <div className={styles.itemDetails}>
             <h4>{props.itemInfo.name}</h4>
             <p>{props.itemInfo.description}</p>
             <p>{props.itemInfo.price}</p>
+        </div>
+        <div className={styles.itemPhotoContainer}>
+
         </div>
     </div>
   );
