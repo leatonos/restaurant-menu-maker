@@ -26,8 +26,8 @@ export default function CategoryView(props:{categoryInfo:MenuCategory}) {
             <p>{props.categoryInfo.description}</p>
         </div>
         <div className={styles.subcategoriesContainer}>
-            {subcategories.map((subcategory)=>(
-                <SubcategoryView subcategoryInfo={subcategory} />
+            {subcategories.map((subcategory, index)=>(
+                <SubcategoryView key={index} subcategoryInfo={subcategory} />
             ))}
         </div>
     </div>

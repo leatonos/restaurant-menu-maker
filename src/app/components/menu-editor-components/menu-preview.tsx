@@ -24,8 +24,8 @@ export default function MenuPreview(props:{initialData:RestaurantMenu}) {
         <h2>Preview</h2>
         <h1>{menuInfo.restaurantName}</h1>
         <div className={styles.previewCategoryContainer}>
-          {categories.map((category)=>(
-            <CategoryView categoryInfo={category}/>
+          {categories.map((category,index)=>(
+            <CategoryView key={index} categoryInfo={category}/>
           ))}
         </div>
     </div>
