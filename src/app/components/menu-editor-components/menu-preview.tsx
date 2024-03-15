@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image";
 import styles from "@/app/css/restaurant-creator-page.module.css"
+import menuViewStyles from "@/app/css/restaurant-view.module.css"
 import { redirect } from  'next/navigation';
 import React, { useEffect } from 'react'
 import { MenuStyle, RestaurantMenu } from "@/app/types/types";
@@ -21,14 +22,16 @@ export default function MenuPreview(props:{initialData:RestaurantMenu}) {
     const categories = menuInfo.menuCategories
 
   return (
-    <div className={styles.previewContainer} style={{backgroundColor: menuStyle.backgroundColor}}>
+    <div className={styles.previewContainer}>
         <h2>Preview</h2>
-        <MenuHeader restaurantInfo={menuInfo} />
-        <div className={styles.previewCategoryContainer}>
-          {categories.map((category,index)=>(
-            <CategoryView key={index} categoryInfo={category}/>
-          ))}
-        </div>
+        <main className={styles.menuPreview}>
+          <MenuHeader restaurantInfo={menuInfo} />
+          <div className={menuViewStyles.menuContainer} style={{backgroundColor:menuStyle.backgroundColor}}>
+            {categories.map((category,index)=>(
+              <CategoryView key={index} categoryInfo={category}/>
+            ))}
+          </div>
+        </main>
     </div>
   );
 }

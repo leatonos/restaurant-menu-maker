@@ -11,6 +11,7 @@ import { createNewCategory, setInitialData, setRestaurantName, setRestaurantAddr
 import CategoryEditor from "./category-editor";
 import { RestaurantMenu } from "@/app/types/types";
 import MenuStyleEditor from "./menu-style-editor";
+import MenuDetailsEditor from "./menu-details-editor";
 
 
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
@@ -58,37 +59,16 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
-        <div className={styles.restaurantDetailsEditor}>
-          <h2>Menu Details</h2>
-          <div>
-            <label htmlFor="restaurantName">Restaurant name:</label>
-            <input 
-              type="text" 
-              defaultValue={restaurantMenuData.restaurantMenu.restaurantName} 
-              onChange={(event)=>setName(event.target.value)} 
-              id="restaurantName"
-            />
-          </div>
-          <div>
-            <label htmlFor="restaurantAddress">Restaurant address:</label>
-            <input 
-              type="text" 
-              defaultValue={restaurantMenuData.restaurantMenu.restaurantAddress} 
-              onChange={(event)=>setAddress(event.target.value)} 
-              id="restaurantAddress"
-            />
-          </div>
-        </div>   
+       <MenuDetailsEditor/>
        <MenuStyleEditor/>
-        <button onClick={()=>dispatch(createNewCategory())}>Create Category</button>
       </div>
       <div className={styles.categoriesContainer}>
+      <button onClick={()=>dispatch(createNewCategory())}>Create Category</button>
         {menuCategories.map((category, index)=>(
           <CategoryEditor key={index} category={category} index={index}/>
           ))}
+       <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)}>Save changes</button>
       </div>
-      <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)}>Save Changes</button>
-     
     </div>
   );
 }

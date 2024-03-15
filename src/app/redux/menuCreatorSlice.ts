@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { Item, MenuCategory, RestaurantMenu, Subcategory } from '../types/types'
+import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from '../types/types'
 
 export interface MenuState {
   restaurantMenu:RestaurantMenu
@@ -204,6 +204,10 @@ export const menuCreatorSlice = createSlice({
 
       item.photoURL = action.payload.change as string
 
+    },
+    //Colors
+    setMenuStyle:(state, action: PayloadAction<MenuStyle>)=>{
+      state.restaurantMenu.menuStyle = action.payload
     }
   }
 })
@@ -213,6 +217,7 @@ export const { setInitialData,
    createNewCategory,deleteCategory,setCategoryName,setCategoryDescription,setCategoryAvailability,
    createNewSubcategory,deleteSubcategory,setSubcategoryName,setSubcategoryDescription,setSubcategoryAvailalibity,
    deleteItem,createNewItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto,setItemPrice,
+   setMenuStyle,
    setRestaurantName,setRestaurantAddress } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer
