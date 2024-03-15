@@ -59,9 +59,9 @@ export const menuCreatorSlice = createSlice({
     //Categories
     createNewCategory: (state) => {
       const newEmptyCategory:MenuCategory = {
-        name: '',
+        name: 'New Category',
         available: true,
-        description: '',
+        description: 'A category description (optional)',
         subcategories: []
       }
       state.restaurantMenu.menuCategories.push(newEmptyCategory)
@@ -81,9 +81,9 @@ export const menuCreatorSlice = createSlice({
     //Subcategories
     createNewSubcategory:(state,action: PayloadAction<number>)=>{
       const newSubcategory:Subcategory = {
-        name: '',
+        name: 'Subcategory',
         available: true,
-        description: '',
+        description: 'Subcategory description (optional)',
         items: []
       }
       state.restaurantMenu.menuCategories[action.payload].subcategories.push(newSubcategory)
@@ -119,9 +119,9 @@ export const menuCreatorSlice = createSlice({
     createNewItem:(state,action: PayloadAction<SubcategoryReference>)=>{
 
       const newItem:Item = {
-        name: '',
+        name: 'Food or Beverage name',
         available: true,
-        description: '',
+        description: 'Food or Beverage description',
         photoURL: '',
         price: 0
       }

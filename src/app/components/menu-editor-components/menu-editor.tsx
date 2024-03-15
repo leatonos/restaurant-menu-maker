@@ -28,6 +28,32 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
       dispatch(setRestaurantAddress(newAddress))
     }
 
+    const saveChanges = async(updatedRestaurant:RestaurantMenu)=>{
+
+      try {
+        const response = await fetch('/api/update-restaurant', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedRestaurant),
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update restaurant');
+        }else{
+          const newRestaurantId = await response.json()
+          console.log(newRestaurantId.newRestaurantId)
+          //router.push(`/user/restaurant-creator/${newRestaurantId.newRestaurantId}`)
+        }
+        // Handle success response
+        console.log('Restaurant created successfully');
+    } catch (error) {
+        console.error('Error updating restaurant restaurant:', error);
+    }
+  
+  
+    }
+
   return (
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
@@ -57,7 +83,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
           <CategoryEditor key={index} category={category} index={index}/>
           ))}
       </div>
-      <button>Save Changes</button>
+      <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)}>Save Changes</button>
      
     </div>
   );
