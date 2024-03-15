@@ -14,13 +14,17 @@ export default function CategoryView(props:{categoryInfo:MenuCategory}) {
 
   const available = props.categoryInfo.available
   const subcategories = props.categoryInfo.subcategories
+
+  const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
+
+
   // Hides this section of the menu if user decides this is not available
   if(!available){
     return
   }
 
   return (
-    <div className={styles.categoryContainer}>
+    <div className={styles.categoryContainer} style={{backgroundColor:menuStyle.primaryColor}}>
         <div className={styles.categoryDetails}>
             <h2 className={styles.categoryTitle}>{props.categoryInfo.name}</h2>
             <p>{props.categoryInfo.description}</p>

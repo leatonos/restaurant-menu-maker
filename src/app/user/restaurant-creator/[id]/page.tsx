@@ -22,39 +22,7 @@ export default async function RestaurantMenuCreator({ params }: { params: { id: 
     return result.json()
   }
 
-  const createRestaurant = async(restaurantName:string, ownerId:string, restaurantAddress:string)=>{
-
-    try {
-      const response = await fetch('/api/update-restaurant', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ restaurantName:restaurantName, ownerId:ownerId, restaurantAddress:restaurantAddress }),
-      });
-
-      if (!response.ok) {
-          throw new Error('Failed to create restaurant');
-      }else{
-        const newRestaurantId = await response.json()
-        console.log(newRestaurantId.newRestaurantId)
-        //router.push(`/user/restaurant-creator/${newRestaurantId.newRestaurantId}`)
-      }
-
-
-      // Handle success response
-      console.log('Restaurant created successfully');
-  } catch (error) {
-      console.error('Error creating restaurant:', error);
-  }
-
-
-  }
-
   const restaurantData = await getRestaurantData(params.id) as RestaurantMenu
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
 
 
   return (

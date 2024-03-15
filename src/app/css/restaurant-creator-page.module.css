@@ -75,3 +75,7 @@
     background-color: yellowgreen;
     overflow-y: auto;
 }
+
+.previewCategoryContainer{
+    margin-top: 40px;
+}

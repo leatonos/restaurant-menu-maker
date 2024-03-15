@@ -38,7 +38,16 @@ const initialState: MenuState = {
     ownerId: '',
     restaurantName: '',
     restaurantAddress: '',
-    menuCategories: []
+    menuCategories: [],
+    menuStyle: {
+      restaurantLogo: 'https://placehold.co/100',
+      backgroundColor: '#ffffff',
+      menuColor: '#4A1A1A',
+      subMenuColor: '#4A1A1A',
+      primaryColor: '#ffffff',
+      secondaryColor: '#ffffff',
+      fontColor: '#000000'
+    }
   }
 }
 

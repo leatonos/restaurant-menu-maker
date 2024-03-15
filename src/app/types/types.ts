@@ -7,13 +7,12 @@ export type User ={
 }
 
 export type RestaurantMenu ={
-
     _id?:ObjectId,
     ownerId:string,
     restaurantName:string,
     restaurantAddress:string,
     menuCategories: MenuCategory[]
-
+    menuStyle:MenuStyle
 }
 
 export type MenuCategory = {
@@ -24,12 +23,10 @@ export type MenuCategory = {
 }
 
 export type Subcategory ={
-
     name:string,
     available:boolean,
     description: string,
     items: Item[]
-
 }
 
 export type Item = {
@@ -38,4 +35,14 @@ export type Item = {
     description: string,
     photoURL: string,
     price: number
+}
+
+export type MenuStyle = {
+    restaurantLogo:string,
+    backgroundColor:string,
+    menuColor:string,
+    subMenuColor:string,
+    primaryColor:string,
+    secondaryColor:string,
+    fontColor:string
 }

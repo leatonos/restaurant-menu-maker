@@ -24,7 +24,6 @@ export async function POST(request: Request)  {
       restaurantName:data.restaurantName,
       restaurantAddress:data.restaurantAddress,
       menuCategories:data.menuCategories,
-      
     }}
 
     try {
@@ -32,7 +31,7 @@ export async function POST(request: Request)  {
     if (!result) {
       return NextResponse.json({ message: 'Fail' }, { status: 404 })
     }
-    console.log(`: ${result.modifiedCount}`)
+    console.log(`Menus modified: ${result.modifiedCount}`)
     return NextResponse.json({ message: `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)` }, { status: 200 })
   } catch (error) {
     console.error(error);

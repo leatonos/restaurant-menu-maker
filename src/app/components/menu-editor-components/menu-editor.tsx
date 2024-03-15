@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createNewCategory, setInitialData, setRestaurantName, setRestaurantAddress} from '@/app/redux/menuCreatorSlice'
 import CategoryEditor from "./category-editor";
 import { RestaurantMenu } from "@/app/types/types";
+import MenuStyleEditor from "./menu-style-editor";
 
 
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
@@ -57,25 +58,28 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
-        <h2>Menu Editor</h2>
-        <div>
-          <label htmlFor="restaurantName">Restaurant name:</label>
-          <input 
-            type="text" 
-            defaultValue={restaurantMenuData.restaurantMenu.restaurantName} 
-            onChange={(event)=>setName(event.target.value)} 
-            id="restaurantName"
-          />
-        </div>
-        <div>
-          <label htmlFor="restaurantAddress">Restaurant address:</label>
-          <input 
-            type="text" 
-            defaultValue={restaurantMenuData.restaurantMenu.restaurantAddress} 
-            onChange={(event)=>setAddress(event.target.value)} 
-            id="restaurantAddress"
-          />
-        </div>
+        <div className={styles.restaurantDetailsEditor}>
+          <h2>Menu Details</h2>
+          <div>
+            <label htmlFor="restaurantName">Restaurant name:</label>
+            <input 
+              type="text" 
+              defaultValue={restaurantMenuData.restaurantMenu.restaurantName} 
+              onChange={(event)=>setName(event.target.value)} 
+              id="restaurantName"
+            />
+          </div>
+          <div>
+            <label htmlFor="restaurantAddress">Restaurant address:</label>
+            <input 
+              type="text" 
+              defaultValue={restaurantMenuData.restaurantMenu.restaurantAddress} 
+              onChange={(event)=>setAddress(event.target.value)} 
+              id="restaurantAddress"
+            />
+          </div>
+        </div>   
+       <MenuStyleEditor/>
         <button onClick={()=>dispatch(createNewCategory())}>Create Category</button>
       </div>
       <div className={styles.categoriesContainer}>
