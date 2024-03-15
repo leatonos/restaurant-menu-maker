@@ -12,6 +12,7 @@
 
 .menuContainer{
     height: calc(100% - 60px);
+    padding: 10px;
     overflow-y: auto;
 }
 
