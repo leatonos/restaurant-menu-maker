@@ -29,7 +29,6 @@ export default async function RestaurantMenuCreator({ params }: { params: { id: 
   return (
     <main>
       <UserHeader/>
-      <p>{JSON.stringify(restaurantData.menuStyle)}</p>
       <div className={styles.mainContainer}>
         <Suspense fallback={<div>Loading menus...</div>}>
           <MenuEditor initialData={restaurantData}/>

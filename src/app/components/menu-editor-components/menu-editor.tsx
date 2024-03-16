@@ -23,13 +23,6 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
       dispatch(setInitialData(props.initialData))
       dispatch(setMenuStyle(props.initialData.menuStyle))
     },[])
-  
-    const setName = (newName: string) =>{
-      dispatch(setRestaurantName(newName))
-    }
-    const setAddress = (newAddress: string) =>{
-      dispatch(setRestaurantAddress(newAddress))
-    }
 
     const saveChanges = async(updatedRestaurant:RestaurantMenu)=>{
 

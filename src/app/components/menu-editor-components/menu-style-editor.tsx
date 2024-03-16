@@ -43,7 +43,6 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
   return (
         <div className={styles.restaurantStyleEditor} >
           <h2>Menu Styles</h2>
-          <p>{props.initialStyle.backgroundColor}</p>
           <div>
             <label htmlFor="restaurantLogo">Restaurant logo:</label>
             <input 
