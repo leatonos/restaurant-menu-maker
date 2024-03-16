@@ -56,7 +56,7 @@ export default function CategoryEditor(props: editorProps) {
       <div className={styles.categoryEditor}>
         <div>
             <label>Category name:</label>
-            <input type="text" defaultValue="Category name" value={props.category.name} onChange={(event)=>changeName(event.target.value)}></input>
+            <input type="text" value={props.category.name} onChange={(event)=>changeName(event.target.value)}></input>
         </div>
         <div>
             <label>Category Description:</label>

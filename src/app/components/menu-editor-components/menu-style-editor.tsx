@@ -12,19 +12,19 @@ import CategoryEditor from "./category-editor";
 import { MenuStyle, RestaurantMenu } from "@/app/types/types";
 
 
-export default function MenuStyleEditor() {
+export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
 
     const restaurantMenuData = useSelector((state: RootState) => state.restaurantCreator)
     const dispatch = useDispatch()
     const menuStyle = restaurantMenuData.restaurantMenu.menuStyle
   
-    const [restaurantLogo,setRestaurantLogo] = useState('')
-    const [backgroundColor,setBackgroundColor] = useState('')
-    const [menuColor,setMenuColor] = useState('')
-    const [subMenuColor,setSubMenuColor] = useState('')
-    const [primaryColor,setPrimaryColor] = useState('')
-    const [secondaryColor,setSecondaryColor] = useState('')
-    const [fontColor,setFontColor] = useState('')
+    const [restaurantLogo,setRestaurantLogo] = useState(props.initialStyle.restaurantLogo)
+    const [backgroundColor,setBackgroundColor] = useState(props.initialStyle.backgroundColor)
+    const [menuColor,setMenuColor] = useState(props.initialStyle.menuColor)
+    const [subMenuColor,setSubMenuColor] = useState(props.initialStyle.subMenuColor)
+    const [primaryColor,setPrimaryColor] = useState(props.initialStyle.primaryColor)
+    const [secondaryColor,setSecondaryColor] = useState(props.initialStyle.secondaryColor)
+    const [fontColor,setFontColor] = useState(props.initialStyle.fontColor)
    
     const updatedStyle:MenuStyle = {
         restaurantLogo: restaurantLogo,
@@ -36,7 +36,6 @@ export default function MenuStyleEditor() {
         fontColor: fontColor
     }
 
-
     useEffect(()=>{
         dispatch(setMenuStyle(updatedStyle))
     },[backgroundColor,menuColor,subMenuColor,primaryColor,secondaryColor,fontColor])
@@ -44,8 +43,7 @@ export default function MenuStyleEditor() {
   return (
         <div className={styles.restaurantStyleEditor} >
           <h2>Menu Styles</h2>
-          <p>{menuStyle.menuColor}</p>
-          <p>{JSON.stringify(menuStyle.backgroundColor)}</p>
+          <p>{props.initialStyle.backgroundColor}</p>
           <div>
             <label htmlFor="restaurantLogo">Restaurant logo:</label>
             <input 

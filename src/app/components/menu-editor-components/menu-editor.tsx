@@ -7,7 +7,7 @@ import React, { useEffect } from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { createNewCategory, setInitialData, setRestaurantName, setRestaurantAddress} from '@/app/redux/menuCreatorSlice'
+import { createNewCategory, setInitialData, setRestaurantName, setRestaurantAddress, setMenuStyle} from '@/app/redux/menuCreatorSlice'
 import CategoryEditor from "./category-editor";
 import { RestaurantMenu } from "@/app/types/types";
 import MenuStyleEditor from "./menu-style-editor";
@@ -21,6 +21,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
     const menuCategories = restaurantMenuData.restaurantMenu.menuCategories
     useEffect(()=>{
       dispatch(setInitialData(props.initialData))
+      dispatch(setMenuStyle(props.initialData.menuStyle))
     },[])
   
     const setName = (newName: string) =>{
@@ -60,7 +61,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
        <MenuDetailsEditor/>
-       <MenuStyleEditor/>
+       <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
       </div>
       <div className={styles.categoriesContainer}>
       <button onClick={()=>dispatch(createNewCategory())}>Create Category</button>

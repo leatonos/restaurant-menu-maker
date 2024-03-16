@@ -24,6 +24,7 @@ export async function POST(request: Request)  {
       restaurantName:data.restaurantName,
       restaurantAddress:data.restaurantAddress,
       menuCategories:data.menuCategories,
+      menuStyle:data.menuStyle
     }}
 
     try {

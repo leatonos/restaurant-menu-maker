@@ -19,15 +19,17 @@ export default async function RestaurantMenuCreator({ params }: { params: { id: 
 
   async function getRestaurantData(id:string) {
     const result = await getRestaurant(params.id)
+    console.log("Data :")
     return result.json()
   }
 
   const restaurantData = await getRestaurantData(params.id) as RestaurantMenu
-
+  
 
   return (
     <main>
       <UserHeader/>
+      <p>{JSON.stringify(restaurantData.menuStyle)}</p>
       <div className={styles.mainContainer}>
         <Suspense fallback={<div>Loading menus...</div>}>
           <MenuEditor initialData={restaurantData}/>

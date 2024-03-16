@@ -17,12 +17,21 @@ export default function ItemView(props:{itemInfo:Item}) {
     return
   }
 
+  const formatPrice = (price: number) =>{
+    if(isNaN(price as number)){
+      return '0.00'
+    }else{
+      let correct = price as number
+      return correct.toFixed(2)
+    }
+  }
+
   return (
     <div className={styles.itemContainer}>
         <div className={styles.itemDetails}>
             <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
             <p>{props.itemInfo.description}</p>
-            <p>{props.itemInfo.price}</p>
+            <p>{formatPrice(props.itemInfo.price)}</p>
         </div>
         <div className={styles.itemPhotoContainer}>
             <img src="https://placehold.co/100"/>
