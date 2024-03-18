@@ -9,6 +9,7 @@ import { MenuCategory, RestaurantMenu } from "@/app/types/types";
 import type { RootState } from '@/app/redux/store'
 import {useSelector} from 'react-redux'
 import SubcategoryView from "./subcategory";
+import { useAppSelector } from "@/app/redux/hooks";
 
 export default function CategoryView(props:{categoryInfo:MenuCategory}) {
 
@@ -16,7 +17,7 @@ export default function CategoryView(props:{categoryInfo:MenuCategory}) {
   const subcategories = props.categoryInfo.subcategories
 
   const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
-
+  const fontColor = menuStyle.fontColor
 
   // Hides this section of the menu if user decides this is not available
   if(!available){
@@ -25,7 +26,7 @@ export default function CategoryView(props:{categoryInfo:MenuCategory}) {
 
   return (
     <div className={styles.categoryContainer} style={{backgroundColor:menuStyle.primaryColor}}>
-        <div className={styles.categoryDetails}>
+        <div className={styles.categoryDetails} style={{color:fontColor}}>
             <h2 className={styles.categoryTitle}>{props.categoryInfo.name}</h2>
             <p>{props.categoryInfo.description}</p>
         </div>

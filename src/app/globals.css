@@ -100,6 +100,30 @@ a {
   text-decoration: none;
 }
 
+input{
+  background-color: white;
+  color: black;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+/* Styling for input type color */
+input[type="color"] {
+  /* Add your desired styles here */
+  /* For example: */
+  border: none;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* Styling for input type file */
+input[type="file"] {
+  /* Add your desired styles here */
+  /* For example: */
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

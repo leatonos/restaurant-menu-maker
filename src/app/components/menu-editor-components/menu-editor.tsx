@@ -2,16 +2,24 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-creator-page.module.css"
 import { redirect } from  'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { createNewCategory, setInitialData, setRestaurantName, setRestaurantAddress, setMenuStyle} from '@/app/redux/menuCreatorSlice'
-import CategoryEditor from "./category-editor";
+import { createNewCategory, setInitialData} from '@/app/redux/menuCreatorSlice'
 import { RestaurantMenu } from "@/app/types/types";
+
+//Components
+import CategoryEditor from "./category-editor";
 import MenuStyleEditor from "./menu-style-editor";
 import MenuDetailsEditor from "./menu-details-editor";
+
+//Images
+import AddImage from '../../../../public/add.svg'
+import SaveIcon from '../../../../public/save.svg'
+
+
 
 
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
@@ -19,13 +27,20 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
     const restaurantMenuData = useSelector((state: RootState) => state.restaurantCreator)
     const dispatch = useDispatch()
     const menuCategories = restaurantMenuData.restaurantMenu.menuCategories
+    
+    const [savingStatus,setSavingState] = useState<string>('Save Changes')
+
+    //Gets the saved data from the database and stores it into the Redux store
     useEffect(()=>{
       dispatch(setInitialData(props.initialData))
-      dispatch(setMenuStyle(props.initialData.menuStyle))
     },[])
 
+    /**
+     * Saves changes into the database
+     * @param updatedRestaurant 
+     */
     const saveChanges = async(updatedRestaurant:RestaurantMenu)=>{
-
+      setSavingState('Saving...')
       try {
         const response = await fetch('/api/update-restaurant', {
             method: 'POST',
@@ -43,6 +58,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
         }
         // Handle success response
         console.log('Restaurant created successfully');
+        setSavingState('Save Changes')
     } catch (error) {
         console.error('Error updating restaurant restaurant:', error);
     }
@@ -53,16 +69,25 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
-       <MenuDetailsEditor/>
-       <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
+        <MenuDetailsEditor/>
+        <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
+        <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButton}>
+          <Image className={styles.createIcon} src={SaveIcon} alt={"Create new category button"} />
+            {savingStatus}
+        </button>
       </div>
       <div className={styles.categoriesContainer}>
-      <button onClick={()=>dispatch(createNewCategory())}>Create Category</button>
+        <div className={styles.createNewBox}>
+          <button onClick={()=>dispatch(createNewCategory())} className={styles.createButton}>
+            <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
+            Create new Category
+          </button>
+        </div>
         {menuCategories.map((category, index)=>(
           <CategoryEditor key={index} category={category} index={index}/>
           ))}
-       <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)}>Save changes</button>
       </div>
+      
     </div>
   );
-}
+} 

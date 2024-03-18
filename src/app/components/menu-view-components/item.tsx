@@ -11,6 +11,10 @@ import {useSelector} from 'react-redux'
 
 export default function ItemView(props:{itemInfo:Item}) {
 
+  //Custom Styles
+  const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
+  const fontColor = menuStyle.fontColor
+
   const available = props.itemInfo.available
   // Hides this section of the menu if user decides this is not available
   if(!available){
@@ -26,8 +30,10 @@ export default function ItemView(props:{itemInfo:Item}) {
     }
   }
 
+
+  
   return (
-    <div className={styles.itemContainer}>
+    <div className={styles.itemContainer} style={{color:fontColor}}>
         <div className={styles.itemDetails}>
             <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
             <p>{props.itemInfo.description}</p>

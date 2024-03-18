@@ -11,6 +11,10 @@ import { SubcategoryReference, deleteSubcategory,setSubcategoryName,setSubcatego
 import ItemEditor from "./item-editor";
 import { Subcategory } from "@/app/types/types";
 
+//Image imports
+import AddImage from '../../../../public/add.svg'
+import moveImage from '../../../../public/expand-arrows.png'
+import closeImage from '../../../../public/close.svg'
 
 interface editorProps{
   subcategory:Subcategory,
@@ -77,7 +81,18 @@ export default function SubcategoryEditor(props:editorProps) {
   return (
     <div className={styles.subcategoryEditorContainer}>
       <div>
-        <button onClick={deleteSubcat}>Delete subcategory</button>
+      <div className={styles.optionsContainer}>
+        <div className={styles.leftSide}>
+        <button className={styles.smallBtn}>
+            <Image className={styles.smallIconMove} src={moveImage} alt={"Move subcategory"}/>
+          </button>
+        </div>
+        <div className={styles.rightSide}>
+          <button onClick={deleteSubcat} className={styles.smallBtn}>
+            <Image className={styles.smallIcon} src={closeImage} alt={"Delete Subategory"}/>
+          </button>
+        </div>
+      </div>
         <div>
             <label>Subcategory name:</label>
             <input type="text" value={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
@@ -86,11 +101,6 @@ export default function SubcategoryEditor(props:editorProps) {
             <label>Subcategory Description:</label>
             <input type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>
         </div>
-      </div>
-      <div className={styles.itemsContainer}>
-        {props.subcategory.items.map((item, index)=>(
-          <ItemEditor key={index} categoryIndex={props.categoryIndex} subcategoryIndex={props.index} index={index} item={item} />
-        ))}
       </div>
       <div>
             <label htmlFor="available">Subcategory availability:</label>
@@ -101,7 +111,17 @@ export default function SubcategoryEditor(props:editorProps) {
               onChange={(event)=>changeAvailability(event.target.checked)}
             />
       </div>
-      <button onClick={addNewItem}>Create Item</button>
+      <div className={styles.itemsContainer}>
+        {props.subcategory.items.map((item, index)=>(
+          <ItemEditor key={index} categoryIndex={props.categoryIndex} subcategoryIndex={props.index} index={index} item={item} />
+        ))}
+      </div>
+      <div className={styles.createNewBox}>
+        <button onClick={addNewItem} className={styles.createButton}>
+          <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
+          Create new Item
+        </button>
+      </div>
     </div>
   );
 }

@@ -12,6 +12,12 @@ import { deleteCategory,setCategoryName,setCategoryDescription,setCategoryAvaila
 import SubcategoryEditor from "./sub-category-editor";
 import { MenuCategory } from "@/app/types/types";
 
+//Image imports
+import AddImage from '../../../../public/add.svg'
+import TrashImage from '../../../../public/trash.svg'
+import closeImage from '../../../../public/close.svg'
+import moveImage from '../../../../public/expand-arrows.png'
+
 interface editorProps{
   category:MenuCategory
   index:number
@@ -52,7 +58,18 @@ export default function CategoryEditor(props: editorProps) {
 
   return (
     <div className={styles.categoryEditorContainer}>
-      <button onClick={()=>dispatch(deleteCategory(props.index))}>Delete Category</button>
+      <div className={styles.optionsContainer}>
+        <div className={styles.leftSide}>
+        <button className={styles.smallBtn}>
+            <Image className={styles.smallIconMove} src={moveImage} alt={"Move Category"}/>
+          </button>
+        </div>
+        <div className={styles.rightSide}>
+          <button onClick={()=>dispatch(deleteCategory(props.index))} className={styles.smallBtn}>
+            <Image className={styles.smallIcon} src={closeImage} alt={"Delete Category"}/>
+          </button>
+        </div>
+      </div>
       <div className={styles.categoryEditor}>
         <div>
             <label>Category name:</label>
@@ -77,7 +94,12 @@ export default function CategoryEditor(props: editorProps) {
           <SubcategoryEditor key={index} subcategory={subcategory} categoryIndex={props.index} index={index}/>
         ))}
       </div>
-      <button onClick={()=>dispatch(createNewSubcategory(props.index))}>Create Subcategory</button>
+      <div className={styles.createNewBox}>
+        <button onClick={()=>dispatch(createNewSubcategory(props.index))} className={styles.createButton}>
+          <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
+          Create new Subcategory
+        </button>
+      </div>
     </div>
   );
 }

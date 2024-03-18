@@ -10,6 +10,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import {ItemReference, deleteItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto, ItemChange,setItemPrice} from '@/app/redux/menuCreatorSlice'
 import { Item } from "@/app/types/types";
 
+//Image imports
+import moveImage from '../../../../public/expand-arrows.png'
+import closeImage from '../../../../public/close.svg'
+
 interface itemProps {
   categoryIndex:number
   subcategoryIndex:number
@@ -66,7 +70,18 @@ export default function ItemEditor(props:itemProps) {
 
   return (
     <div className={styles.itemEditorContainer}>
-        <button onClick={()=> removeItem()}>Delete item</button>
+        <div className={styles.optionsContainer}>
+          <div className={styles.leftSide}>
+          <button className={styles.smallBtn}>
+              <Image className={styles.smallIconMove} src={moveImage} alt={"Delete Category"}/>
+            </button>
+          </div>
+          <div className={styles.rightSide}>
+            <button onClick={removeItem} className={styles.smallBtn}>
+              <Image className={styles.smallIcon} src={closeImage} alt={"Delete Item"}/>
+            </button>
+          </div>
+        </div>
         <div>
             <label>Item name:</label>
             <input type="text" onChange={(event)=>changeName(event.target.value)} value={props.item.name}/>
