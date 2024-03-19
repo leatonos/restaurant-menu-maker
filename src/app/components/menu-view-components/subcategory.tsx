@@ -25,7 +25,7 @@ export default function SubcategoryView(props:{subcategoryInfo:Subcategory}) {
   }
 
   return (
-    <div className={styles.subcategoryContainer} style={{backgroundColor: menuStyle.secondaryColor}}>
+    <div id={props.subcategoryInfo.name} className={styles.subcategoryContainer} style={{backgroundColor: menuStyle.secondaryColor}}>
         <div className={styles.subcategoryDetails} style={{color:fontColor}}>
             <h3 className={styles.subcategoryTitle}>{props.subcategoryInfo.name}</h3>
             <p>{props.subcategoryInfo.description}</p>
