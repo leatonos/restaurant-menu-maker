@@ -55,6 +55,24 @@ export default function CategoryEditor(props: editorProps) {
   
     }
 
+    function SubCategoriesList(){
+      return (
+        <div>
+          <div className={styles.subCategoriesContainer}>
+            {props.category.subcategories.map((subcategory,index)=>(
+              <SubcategoryEditor key={index} subcategory={subcategory} categoryIndex={props.index} index={index}/>
+            ))}
+          </div>
+          <div className={styles.createNewBox}>
+            <button onClick={()=>dispatch(createNewSubcategory(props.index))} className={styles.createButton}>
+              <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
+              Create new Subcategory
+            </button>
+          </div>
+        </div>
+      )
+    }
+
 
   return (
     <div className={styles.categoryEditorContainer}>
@@ -80,7 +98,7 @@ export default function CategoryEditor(props: editorProps) {
             <input type="text" value={props.category.description} onChange={(event)=>changeDescription(event.target.value)}></input>
         </div>
         <div>
-            <label htmlFor="available">Subcategory availability:</label>
+            <label htmlFor="available">Category availability:</label>
             <input
               id="available"
               type="checkbox"
@@ -89,17 +107,7 @@ export default function CategoryEditor(props: editorProps) {
             />
       </div>
       </div>
-      <div className={styles.subCategoriesContainer}>
-        {props.category.subcategories.map((subcategory,index)=>(
-          <SubcategoryEditor key={index} subcategory={subcategory} categoryIndex={props.index} index={index}/>
-        ))}
-      </div>
-      <div className={styles.createNewBox}>
-        <button onClick={()=>dispatch(createNewSubcategory(props.index))} className={styles.createButton}>
-          <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
-          Create new Subcategory
-        </button>
-      </div>
+      <SubCategoriesList/>
     </div>
   );
 }
