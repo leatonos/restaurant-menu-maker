@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-creator-page.module.css"
 import { redirect } from  'next/navigation';
-import React from 'react'
+import React, { useState } from 'react'
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
@@ -15,6 +15,8 @@ import { Subcategory } from "@/app/types/types";
 import AddImage from '../../../../public/add.svg'
 import moveImage from '../../../../public/expand-arrows.png'
 import closeImage from '../../../../public/close.svg'
+import minIcon from '../../../../public/minimize.svg'
+import maxIcon from '../../../../public/maximize.svg'
 
 interface editorProps{
   subcategory:Subcategory,
@@ -24,11 +26,16 @@ interface editorProps{
 
 export default function SubcategoryEditor(props:editorProps) {
 
+  const [showStatus, setShowing] = useState(true)
+
+
   const thisSubcategoryRef:SubcategoryReference = {
     categoryIndex: props.categoryIndex,
     subcategoryIndex: props.index
   }
+  
   const dispatch = useDispatch()
+  
   const deleteSubcat = ()=>{
 
     const subcategoryReference:SubcategoryReference ={
@@ -79,49 +86,76 @@ export default function SubcategoryEditor(props:editorProps) {
   }
 
   return (
-    <div className={styles.subcategoryEditorContainer}>
+    <main className={styles.subcategoryEditorContainer}>
       <div>
-      <div className={styles.optionsContainer}>
+      <header className={styles.optionsContainer}>
         <div className={styles.leftSide}>
         <button className={styles.smallBtn}>
             <Image className={styles.smallIconMove} src={moveImage} alt={"Move subcategory"}/>
           </button>
         </div>
         <div className={styles.rightSide}>
+          {!showStatus && (
+                <button onClick={()=>setShowing(true)} className={styles.smallBtn}>
+                <Image className={styles.smallIcon} src={maxIcon} alt={"Maximize"}/>
+              </button>
+              )}
+            {showStatus && (
+              <button onClick={()=>setShowing(false)} className={styles.smallBtn}>
+              <Image className={styles.smallIcon} src={minIcon} alt={"Minimize"}/>
+            </button>
+            )}
           <button onClick={deleteSubcat} className={styles.smallBtn}>
             <Image className={styles.smallIcon} src={closeImage} alt={"Delete Subategory"}/>
           </button>
         </div>
-      </div>
-        <div>
-            <label>Subcategory name:</label>
-            <input type="text" value={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
+      </header>
+      <div className={styles.categoryEditor}>
+        <div className={styles.editingContainer}>
+        <form className={styles.editingDetails}>
+          <div>
+              <label>Subcategory name:</label>
+              <input type="text" defaultValue={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
+          </div>
+          
+          <div>
+              <label>Subcategory Description:</label>
+              <input type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>
+          </div>
+          <div>
+              <label htmlFor="available">Subcategory availability:</label>
+              <input
+                id="available"
+                type="checkbox"
+                checked={props.subcategory.available}
+                onChange={(event)=>changeAvailability(event.target.checked)}
+              />
         </div>
-        <div>
-            <label>Subcategory Description:</label>
-            <input type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>
+        </form>
+        {!showStatus && (
+          <div className={styles.shortInfo}>
+            <p>Items: {props.subcategory.items.length}</p>
+          </div>
+          )}
         </div>
+       
       </div>
-      <div>
-            <label htmlFor="available">Subcategory availability:</label>
-            <input
-              id="available"
-              type="checkbox"
-              checked={props.subcategory.available}
-              onChange={(event)=>changeAvailability(event.target.checked)}
-            />
       </div>
-      <div className={styles.itemsContainer}>
-        {props.subcategory.items.map((item, index)=>(
-          <ItemEditor key={index} categoryIndex={props.categoryIndex} subcategoryIndex={props.index} index={index} item={item} />
-        ))}
-      </div>
-      <div className={styles.createNewBox}>
-        <button onClick={addNewItem} className={styles.createButton}>
-          <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
-          Create new Item
-        </button>
-      </div>
-    </div>
+      {showStatus && (
+        <>
+          <div className={styles.itemsContainer}>
+            {props.subcategory.items.map((item, index)=>(
+              <ItemEditor key={index} categoryIndex={props.categoryIndex} subcategoryIndex={props.index} index={index} item={item} />
+            ))}
+          </div>
+          <div className={styles.createNewBox}>
+            <button onClick={addNewItem} className={styles.createButton}>
+              <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
+              Create new Item
+            </button>
+          </div>
+        </>
+      )}
+    </main>
   );
 }

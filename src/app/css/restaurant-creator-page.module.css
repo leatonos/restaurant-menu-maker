@@ -43,6 +43,10 @@
     border-radius: 4px;
 }
 
+.editingContainer{
+    display: flex;
+}
+
 .subcategoryEditorContainer{
     display: flex;
     flex-direction: column;
@@ -73,6 +77,14 @@
 .optionsContainer{
     display: flex;
     justify-content: space-between;
+}
+
+.editingDetails{
+    width: 70%;
+}
+
+.shortInfo{
+    width: 30%;
 }
 
 .smallBtn{
