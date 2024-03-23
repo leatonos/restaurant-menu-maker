@@ -30,16 +30,12 @@ export default async function RestaurantMenuCreator({ params }: { params: { id: 
     const request = await getRestaurant(params.id)
     const result = await request.json() as RestaurantMenu
 
-    console.log(result.ownerId)
-    console.log(user.sub)
-
     //If user does not own this menu we send it back to the main menu
     if(result.ownerId != user.sub){
       redirect('/')
     }
 
     return result
-
 
   }
 

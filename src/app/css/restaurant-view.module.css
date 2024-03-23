@@ -28,7 +28,7 @@
 
 .navContainer {
     display: flex;
-    padding: 10px;
+    padding: 13px 0px;
     width: 100%;
     overflow-x: auto; /* Enable horizontal scrolling */
 }
@@ -36,7 +36,6 @@
 .catList {
     display: flex;
     flex-direction: row;
-    /* Assuming each item has a fixed width, you can adjust this accordingly */
     min-width: max-content; /* Prevent items from shrinking too much */
 }
 
