@@ -12,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: Request)  {
 
     const data:RestaurantMenu = await request.json()
-    console.log(data)
     
     const defaultMenuStyle:MenuStyle= {
       restaurantLogo: 'https://placehold.co/100',

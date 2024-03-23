@@ -12,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: Request)  {
 
     const data:RestaurantMenu = await request.json()
-    console.log(data)
     
     const client = await MongoClient.connect(uri);
     const restaurantCollection = client.db(dbName).collection(collectionName)
