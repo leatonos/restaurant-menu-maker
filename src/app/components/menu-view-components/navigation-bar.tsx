@@ -14,7 +14,7 @@ import { useAppSelector } from "@/app/redux/hooks";
 export default function MenuNavBar(props:{categories:MenuCategory[]}) {
 
   const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
-  const fontColor = menuStyle.fontColor
+  const fontColor = menuStyle.fontMenuColor
   const categories = props.categories
   const allSubcategories:Subcategory[] = []
   

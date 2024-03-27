@@ -12,6 +12,18 @@
     padding: 5px;
 }
 
+.boxOptions{
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.boxButton{
+  background-color:rgb(137, 142, 143);
+  border: none;
+  margin: 5px 10px;
+}
 
 /* Mobile Devices (up to 767px) */
 @media only screen and (max-width: 767px) {

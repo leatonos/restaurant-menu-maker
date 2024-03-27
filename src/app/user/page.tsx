@@ -10,6 +10,7 @@ import { Key, Suspense } from "react";
 import { RestaurantMenu } from "../types/types";
 import RestaurantBox from "../components/user-components/restaurant-box";
 import { ObjectId } from "mongodb";
+import AddImage from '../../../public/addWhite.svg'
 
 async function RestaurantsList({ownerId}: { ownerId : string }) {
   "use server"
@@ -17,6 +18,7 @@ async function RestaurantsList({ownerId}: { ownerId : string }) {
   
   return (
     <div className={styles.restaurantsPannel}>
+      <CreateRestaurantButton />
       {
         restaurants.map((restaurant)=>{
           const resId = restaurant._id as ObjectId
@@ -28,25 +30,36 @@ async function RestaurantsList({ownerId}: { ownerId : string }) {
   )
 }
 
+function CreateRestaurantButton() {
+  return(
+    <div className={styles.createBoxContainer}>
+      <a href="user/restaurant-creator" className={styles.createButton}>
+      <button className={styles.createButton}>
+        <Image className={styles.createIcon} src={AddImage} alt={""}/>
+        <p>Create Menu</p>
+      </button>
+      </a>
+    </div>
+  )
+}
+
 export default async function UserHome() {
 
   const session = await getSession() as Session
   const user = session.user
   const userRestaurants = await getRestaurantsFromUser(session.user.sub)
   
-
+ 
 
   if(!user){
     redirect('/')
   }
 
-
   return (
-    <main>
+    <main >
       <UserHeader/>
-      <h1>User Dashboard</h1>
-      <div>
-        <a href="user/restaurant-creator">Create new Menu</a>
+      <h1 style={{color:"white"}}>User Dashboard</h1>
+      <div style={{color:"white"}}>
       </div>
       <Suspense fallback={<div>Loading menus...</div>}>
         <RestaurantsList ownerId={user.sub} />

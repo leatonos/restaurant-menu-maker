@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "@/app/css/userpage.module.css";
 import { redirect } from  'next/navigation';
 import React, { useEffect, useState } from 'react'
 import MenuEditor from "@/app/components/menu-editor-components/menu-editor";
@@ -70,18 +70,20 @@ export default function RestaurantMenuCreator() {
   return (
     <main>
      <UserHeader/>
-     <form onSubmit={handleSubmit}>
-      <h1>Create your restaurant</h1>
-      <div className="form-control">
-        <label htmlFor="restaurant-name">Restaurant Name </label>
-        <input id="restaurant-name" onChange={(event) => setName(event.target.value)} type="text" required/>
-      </div>
-      <div className="form-control">
-        <label htmlFor="restaurant-address">Restaurant Address </label>
-        <input id="restaurant-address" onChange={(event) => setAddress(event.target.value)} type="text" required/>
-      </div>
-      <button type="submit">Create Menu</button>
-     </form>
+     <div className={styles.restaurantStarter}>
+      <form onSubmit={handleSubmit} className={styles.newRestaurantForm}>
+        <h1>Create your restaurant</h1>
+        <div className="form-control">
+          <label htmlFor="restaurant-name">Restaurant Name </label>
+          <input id="restaurant-name" onChange={(event) => setName(event.target.value)} type="text" required/>
+        </div>
+        <div className="form-control">
+          <label htmlFor="restaurant-address">Restaurant Address </label>
+          <input id="restaurant-address" onChange={(event) => setAddress(event.target.value)} type="text" required/>
+        </div>
+        <button type="submit">Create Menu</button>
+      </form>
+     </div>
     </main>
   );
 }

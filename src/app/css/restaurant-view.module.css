@@ -28,7 +28,7 @@
 
 .navContainer {
     display: flex;
-    padding: 13px 0px;
+    padding: 13px 10px;
     width: 100%;
     overflow-x: auto; /* Enable horizontal scrolling */
 }

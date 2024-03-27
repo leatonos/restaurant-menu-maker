@@ -25,6 +25,7 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
     const [primaryColor,setPrimaryColor] = useState(props.initialStyle.primaryColor)
     const [secondaryColor,setSecondaryColor] = useState(props.initialStyle.secondaryColor)
     const [fontColor,setFontColor] = useState(props.initialStyle.fontColor)
+    const [fontMenuColor,setFontMenuColor] = useState(props.initialStyle.fontColor)
    
     const updatedStyle:MenuStyle = {
         restaurantLogo: restaurantLogo,
@@ -33,12 +34,13 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
         subMenuColor: subMenuColor,
         primaryColor: primaryColor,
         secondaryColor: secondaryColor,
-        fontColor: fontColor
+        fontColor: fontColor,
+        fontMenuColor:fontMenuColor
     }
 
     useEffect(()=>{
         dispatch(setMenuStyle(updatedStyle))
-    },[backgroundColor,menuColor,subMenuColor,primaryColor,secondaryColor,fontColor])
+    },[backgroundColor,menuColor,subMenuColor,primaryColor,secondaryColor,fontColor,fontMenuColor])
 
   return (
         <div className={styles.restaurantStyleEditor} >
@@ -103,6 +105,15 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
               value={menuStyle.fontColor} 
               onChange={(event)=>setFontColor(event.target.value)} 
               id="fontColor"
+            />
+          </div>
+          <div>
+            <label htmlFor="menufontColor">Menu Font Color:</label>
+            <input 
+              type="color" 
+              value={menuStyle.fontMenuColor} 
+              onChange={(event)=>setFontMenuColor(event.target.value)} 
+              id="menufontColor"
             />
           </div>
         </div>   

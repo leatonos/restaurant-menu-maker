@@ -47,7 +47,8 @@ const initialState: MenuState = {
       subMenuColor: '#4A1A1A',
       primaryColor: '#ffffff',
       secondaryColor: '#ffffff',
-      fontColor: '#000000'
+      fontColor: '#000000',
+      fontMenuColor: '#fff'
     }
   }
 }

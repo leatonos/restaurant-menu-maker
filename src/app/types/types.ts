@@ -44,5 +44,6 @@ export type MenuStyle = {
     subMenuColor:string,
     primaryColor:string,
     secondaryColor:string,
-    fontColor:string
+    fontColor:string,
+    fontMenuColor:string
 }
