@@ -1,8 +1,9 @@
 "use client"
-import Image from "next/image";
 import styles from "@/app/css/restaurant-creator-page.module.css"
-import { redirect } from  'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
+import { Dropzone, FileWithPath, IMAGE_MIME_TYPE, MIME_TYPES  } from "@mantine/dropzone";
+import { MantineProvider } from '@mantine/core';
+import useSWRMutation from "swr/mutation";
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
