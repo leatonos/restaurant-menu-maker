@@ -1,7 +1,5 @@
 import Image from "next/image";
 import styles from "../css/userpage.module.css";
-import { useUser } from '@auth0/nextjs-auth0/client';
-import ProfileClient from "../components/user-components/userInfo";
 import { Session, getSession } from "@auth0/nextjs-auth0";
 import { redirect } from  'next/navigation';
 import UserHeader from "../components/user-components/user-header";
@@ -48,8 +46,6 @@ export default async function UserHome() {
   const session = await getSession() as Session
   const user = session.user
   const userRestaurants = await getRestaurantsFromUser(session.user.sub)
-  
- 
 
   if(!user){
     redirect('/')

@@ -4,6 +4,7 @@ import "./globals.css";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { store } from "./redux/store";
 import { Provider } from 'react-redux'
+import { MantineProvider } from "@mantine/core";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <UserProvider>
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <MantineProvider>  
+              {children}
+            </MantineProvider>
+            </body>
       </UserProvider>
     </html>
   );

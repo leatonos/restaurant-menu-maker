@@ -1,20 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoClient, ObjectId } from 'mongodb';
-import { NextRequest, NextResponse } from 'next/server'
+
 
 // Replace these with your actual connection details
 const uri = process.env.MONGODB_URI as string
 const dbName = "TheOnlineMenu";
-const collectionName = "Restaurants";
+const collectionName = "Gallery";
 
-
+import { NextRequest, NextResponse } from 'next/server'
  
-export async function GET(request: Request, context: { params: { id: string } })  {
+export async function GET(request: Request, context: { params: { ownerId: string } })  {
 
-  const objectId = context.params.id;
+  const ownerId = context.params.ownerId;
   const client = await MongoClient.connect(uri);
   
-  if (!objectId) {
+  if (!ownerId) {
     return NextResponse.json({ message: 'Missing objectId parameter' }, { status: 400 })
   }
 
@@ -23,9 +23,10 @@ export async function GET(request: Request, context: { params: { id: string } })
     const db = client.db(dbName);
     const collection = db.collection(collectionName);
 
-    const document = await collection.findOne({ _id: new ObjectId(objectId as string) });
+    const document = await collection.findOne({ ownerId: ownerId});
 
     if (!document) {
+        console.log('Gallery does not exist yet!')
       return NextResponse.json({ message: 'Document not found' }, { status: 404 })
     }
     return NextResponse.json(document, { status: 200 })

@@ -47,3 +47,17 @@ export type MenuStyle = {
     fontColor:string,
     fontMenuColor:string
 }
+
+export type Gallery = {
+    _id?:ObjectId | string,
+    galleryOwner:string,
+    files:GalleryFile[]
+}
+
+export type GalleryFile = {
+    fileId:string,
+    fileName:string,
+    fileType:string,
+    fileSize:number,
+    fileURL:string
+}

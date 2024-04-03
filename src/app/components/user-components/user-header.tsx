@@ -17,7 +17,7 @@ export default function UserHeader() {
         <div className={styles.menu}>
           <ul className={styles.menuList}>
             <li className={styles.menuItem}><a href="/user" className={styles.menuLink}>My menus</a></li>
-            <li className={styles.menuItem}><a href="#" className={styles.menuLink}>Account</a></li>
+            <li className={styles.menuItem}><a href="/user/gallery" className={styles.menuLink}>Gallery</a></li>
             <li className={styles.menuItem}><a href="/api/auth/logout" className={styles.menuLink}>Logoff</a></li>
           </ul>
         </div>

@@ -20,7 +20,7 @@ export async function createRestaurant(restaurantName:string, ownerId:string, re
     primaryColor: '#ffffff',
     secondaryColor: '#ffffff',
     fontColor: '#000000',
-    fontMenuColor: '#fff'
+    fontMenuColor: '#ffffff'
   }
 
 
