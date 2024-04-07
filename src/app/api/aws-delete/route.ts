@@ -68,6 +68,9 @@ export async function POST(request: NextRequest) {
       // Upload the file to S3
       const response = await s3.send(new DeleteObjectCommand({ Bucket, Key }));
       const databaseDeleteResult = await deleteFileByIdDatabase(deleteRequest.galleryId,fileToDelete.fileId)
+
+      console.log(response)
+
     })
   );
 

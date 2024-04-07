@@ -66,6 +66,8 @@ export async function POST(request: NextRequest) {
   const ownerId = formData.get("ownerId") as string;
   const galleryId = formData.get("galleryId") as string;
 
+  let uploadCount = 0
+
   const responses = await Promise.all(
     files.map(async (file) => {
       const Body = (await file.arrayBuffer()) as Buffer
@@ -79,10 +81,11 @@ export async function POST(request: NextRequest) {
 
       // Register these files in the database
       await updateGalleryDatabase(fileUrl, ownerId, galleryId,file.name,file.type,file.size)
+      uploadCount++
       return fileUrl;
     })
   );
 
   console.log("All files uploaded:", responses);
-  return NextResponse.json({message:'All files uploaded:'},{status:200});
+  return NextResponse.json({message:`A total of ${uploadCount} were uploaded!`},{status:200});
 }
