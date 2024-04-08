@@ -8,7 +8,7 @@ import useSWRMutation from "swr/mutation";
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { setMenuStyle } from '@/app/redux/menuCreatorSlice'
+import { setMenuStyle,setGalleryChangeReference } from '@/app/redux/menuCreatorSlice'
 import CategoryEditor from "./category-editor";
 import { MenuStyle, RestaurantMenu } from "@/app/types/types";
 
@@ -39,6 +39,10 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
         fontMenuColor:fontMenuColor
     }
 
+    const openGallery = () =>{
+      dispatch(setGalleryChangeReference("Logo"))
+    }
+
     useEffect(()=>{
         dispatch(setMenuStyle(updatedStyle))
     },[backgroundColor,menuColor,subMenuColor,primaryColor,secondaryColor,fontColor,fontMenuColor])
@@ -48,11 +52,7 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
           <h2>Menu Styles</h2>
           <div>
             <label htmlFor="restaurantLogo">Restaurant logo:</label>
-            <input 
-              type="file"
-              onChange={(event)=>setRestaurantLogo(event.target.value)} 
-              id="restaurantLogo"
-            />
+            <button id="restaurantLogo" onClick={openGallery}>Choose Image</button>
           </div>
           <div>
             <label htmlFor="backgroundColor">Background color:</label>

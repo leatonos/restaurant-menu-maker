@@ -40,17 +40,18 @@ export default async function RestaurantMenuCreator({ params }: { params: { id: 
   }
 
   const restaurantData = await getRestaurantData(params.id) as RestaurantMenu
-  
-
-  return (
-    <main>
-      <UserHeader/>
-      <div className={styles.mainContainer}>
-        <Suspense fallback={<div>Loading menus...</div>}>
-          <MenuEditor initialData={restaurantData}/>
-          <MenuPreview initialData={restaurantData}/>
-        </Suspense>
-      </div>
-    </main>
-  );
+ 
+  if(session){
+    return (
+      <main>
+        <UserHeader/>
+        <div className={styles.mainContainer}>
+          <Suspense fallback={<div>Loading menus...</div>}>
+            <MenuEditor initialData={restaurantData}/>
+            <MenuPreview initialData={restaurantData}/>
+          </Suspense>
+        </div>
+      </main>
+    );
+  }
 }

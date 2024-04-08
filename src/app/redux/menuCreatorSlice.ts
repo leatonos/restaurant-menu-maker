@@ -1,10 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from '../types/types'
-import { stat } from 'fs'
+import { access, stat } from 'fs'
 
 export interface MenuState {
   restaurantMenu:RestaurantMenu
+  galleryState:{
+    changeReference:ItemReference | string | undefined
+  }
 }
 
 export interface CategoryChange{
@@ -48,8 +51,11 @@ const initialState: MenuState = {
       primaryColor: '#ffffff',
       secondaryColor: '#ffffff',
       fontColor: '#000000',
-      fontMenuColor: '#fff'
+      fontMenuColor: '#ffffff'
     }
+  },
+  galleryState:{
+    changeReference: undefined
   }
 }
 
@@ -210,6 +216,10 @@ export const menuCreatorSlice = createSlice({
     //Colors
     setMenuStyle:(state, action: PayloadAction<MenuStyle>)=>{
       state.restaurantMenu.menuStyle = action.payload
+    },
+    //Selecting Image Feature
+    setGalleryChangeReference:(state, action:PayloadAction<ItemReference | string | undefined>)=>{
+      state.galleryState.changeReference = action.payload
     }
   }
 })
@@ -220,6 +230,7 @@ export const { setInitialData,
    createNewSubcategory,deleteSubcategory,setSubcategoryName,setSubcategoryDescription,setSubcategoryAvailalibity,
    deleteItem,createNewItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto,setItemPrice,
    setMenuStyle,
-   setRestaurantName,setRestaurantAddress } = menuCreatorSlice.actions
+   setRestaurantName,setRestaurantAddress,
+   setGalleryChangeReference } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer

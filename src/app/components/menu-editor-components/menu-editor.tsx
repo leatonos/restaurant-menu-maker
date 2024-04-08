@@ -14,17 +14,16 @@ import { RestaurantMenu } from "@/app/types/types";
 import CategoryEditor from "./category-editor";
 import MenuStyleEditor from "./menu-style-editor";
 import MenuDetailsEditor from "./menu-details-editor";
+import UserGallery from "../user-components/user-gallery";
 
 //Images
 import AddImage from '../../../../public/add.svg'
 import SaveIcon from '../../../../public/save.svg'
 
-
-
-
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
 
     const restaurantMenuData = useSelector((state: RootState) => state.restaurantCreator)
+    const galleryState = useSelector((state: RootState)=> state.restaurantCreator.galleryState)
     const dispatch = useDispatch()
     const menuCategories = restaurantMenuData.restaurantMenu.menuCategories
     
@@ -66,7 +65,22 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
   
     }
 
+    function GalleryModal(){
+      if(galleryState.changeReference){
+        return(
+          <div className={styles.galleryBackgroundContainer}>
+            <div className={styles.galleryContainer}>
+              <UserGallery ownerId={props.initialData.ownerId} selectingImage={true} />
+            </div>
+        </div>
+        )
+      }
+      
+    }
+
   return (
+    <>
+    <GalleryModal/>
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
         <MenuDetailsEditor/>
@@ -87,7 +101,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
           <CategoryEditor key={index} category={category} index={index}/>
           ))}
       </div>
-      
     </div>
+    </>
   );
 } 

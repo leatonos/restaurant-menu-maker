@@ -5,17 +5,29 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../css/gallery-box.module.css'
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { getGallery } from '@/app/server-actions/get-gallery';
+import { Gallery, GalleryFile } from '@/app/types/types';
+
+
+//Image Imports
 import Image from 'next/image';
 import DeleteImage from '../../../../public/trash.svg'
-import { Gallery, GalleryFile } from '@/app/types/types';
+import closeImage from '../../../../public/close.svg'
+
+// Redux Imports
+import type { RootState } from '@/app/redux/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { RestaurantMenu } from "@/app/types/types";
+import { setGalleryChangeReference } from "@/app/redux/menuCreatorSlice";
 
 interface MyProps {
     ownerId:string
+    selectingImage:boolean
 }
 
 interface GalleryItemProps {
     item:GalleryFile
 }
+
 
 
 export default function UserGallery( props: MyProps ){
@@ -61,6 +73,7 @@ export default function UserGallery( props: MyProps ){
           if (response.ok) {
             console.log('File deleted successfully');
             updateGallery(props.ownerId)
+            setSelectedFiles(undefined)
           } else {
             console.error('Failed to delete file');
           }
@@ -82,7 +95,6 @@ export default function UserGallery( props: MyProps ){
         body.append("ownerId", props.ownerId);
         body.append("galleryId", gallery?._id as string);
 
-
         const response = await fetch(url, { method: "POST", body });
         const result = await response.json()
         if(result){
@@ -92,6 +104,13 @@ export default function UserGallery( props: MyProps ){
       }
     const { trigger } = useSWRMutation("/api/aws-upload", uploadDocuments);
 
+    //Redux Actions
+    const dispatch = useDispatch()
+    const chooseImage = () =>{
+        alert("Ok")
+    }
+
+
 
     function GalleryItem(props:GalleryItemProps){
         return(
@@ -100,7 +119,6 @@ export default function UserGallery( props: MyProps ){
             </div>
         )
     }
-
 
     if(!gallery){
         return(
@@ -112,6 +130,13 @@ export default function UserGallery( props: MyProps ){
         gallery &&(
         <div className={styles.galleryBox} style={{color:"black"}}>
             <header className={styles.galleryHeader}>
+                <div className={styles.optionsContainer}>
+                    <div className={styles.rightSide}>
+                        <button onClick={()=>dispatch(setGalleryChangeReference(undefined))} className={styles.smallBtn}>
+                            <Image className={styles.smallIcon} src={closeImage} alt={"Close Gallery"}/>
+                        </button>
+                    </div>
+                </div>
             </header>
             <main className={styles.galleryMainContainer}>
                 <aside className={styles.galleryNavigation}>
@@ -132,24 +157,27 @@ export default function UserGallery( props: MyProps ){
                     </div>
                 </div>
                 <div className={styles.galleryItemDetails}>
-                    {selectedFiles && <>
-                        <div className={styles.galleryImageContainer}>
-                            <img src={selectedFiles[0].fileURL} className={styles.galleryDescriptionItemImage} />
-                        </div>
-                        <div className={styles.galleryItemInformation}>
-                            <h5>File name:</h5>
-                            <p>{selectedFiles[0].fileName}</p>
-                            <h5>File id:</h5>
-                            <p>{selectedFiles[0].fileId}</p>
-                            <h5>File type:</h5>
-                            <p>{selectedFiles[0].fileType}</p>
-                            <h5>File size:</h5>
-                            <p>{calcFileSize(selectedFiles[0].fileSize)}</p>
-                            <button onClick={() => deleteSelectedFiles(selectedFiles)} className={styles.deleteBtn}>Delete</button>
-                            <button className={styles.selectBtn}>Select Image</button>
-                        </div>
-                    </>}
-                    
+                    {selectedFiles && 
+                        <>
+                            <div className={styles.galleryImageContainer}>
+                                <img src={selectedFiles[0].fileURL} className={styles.galleryDescriptionItemImage} />
+                            </div>
+                            <div className={styles.galleryItemInformation}>
+                                <h5>File name:</h5>
+                                <p>{selectedFiles[0].fileName}</p>
+                                <h5>File id:</h5>
+                                <p>{selectedFiles[0].fileId}</p>
+                                <h5>File type:</h5>
+                                <p>{selectedFiles[0].fileType}</p>
+                                <h5>File size:</h5>
+                                <p>{calcFileSize(selectedFiles[0].fileSize)}</p>
+                                <button onClick={() => deleteSelectedFiles(selectedFiles)} className={styles.deleteBtn}>Delete</button>
+                                {props.selectingImage &&
+                                    <button className={styles.selectBtn} onClick={chooseImage}>Select Image</button>
+                                }
+                            </div>
+                        </>
+                    }
                 </div>
             </main>
         </div>

@@ -14,7 +14,7 @@ export default async function GalleryPage() {
 
   const session = await getSession() as Session
   const user = session.user
-  
+   
   if(!user){
     redirect('/')
   }
@@ -22,9 +22,8 @@ export default async function GalleryPage() {
   return (
     <main>
       <UserHeader/>
-      <h1 style={{color:"white"}}>Gallery</h1>
       <div className={styles.galleryPageContainer}>
-       <UserGallery ownerId={user.sub} />
+       <UserGallery ownerId={user.sub} selectingImage={false} />
       </div>
     </main>
   );
