@@ -16,6 +16,7 @@ import { MenuStyle, RestaurantMenu } from "@/app/types/types";
 export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
 
     const restaurantMenuData = useSelector((state: RootState) => state.restaurantCreator)
+    const restaurantLogoState = useSelector((state:RootState)=>state.restaurantCreator.restaurantMenu.menuStyle.restaurantLogo)
     const dispatch = useDispatch()
     const menuStyle = restaurantMenuData.restaurantMenu.menuStyle
   
@@ -29,7 +30,7 @@ export default function MenuStyleEditor(props:{initialStyle:MenuStyle}) {
     const [fontMenuColor,setFontMenuColor] = useState(props.initialStyle.fontColor)
    
     const updatedStyle:MenuStyle = {
-        restaurantLogo: restaurantLogo,
+        restaurantLogo: restaurantLogoState,
         backgroundColor: backgroundColor,
         menuColor: menuColor,
         subMenuColor: subMenuColor,

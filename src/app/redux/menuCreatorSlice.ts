@@ -220,6 +220,9 @@ export const menuCreatorSlice = createSlice({
     //Selecting Image Feature
     setGalleryChangeReference:(state, action:PayloadAction<ItemReference | string | undefined>)=>{
       state.galleryState.changeReference = action.payload
+    },
+    setLogoImage:(state, action:PayloadAction<string>)=>{
+      state.restaurantMenu.menuStyle.restaurantLogo = action.payload
     }
   }
 })
@@ -231,6 +234,6 @@ export const { setInitialData,
    deleteItem,createNewItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto,setItemPrice,
    setMenuStyle,
    setRestaurantName,setRestaurantAddress,
-   setGalleryChangeReference } = menuCreatorSlice.actions
+   setGalleryChangeReference,setLogoImage } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer

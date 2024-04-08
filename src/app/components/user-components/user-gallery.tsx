@@ -17,7 +17,7 @@ import closeImage from '../../../../public/close.svg'
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { RestaurantMenu } from "@/app/types/types";
-import { setGalleryChangeReference } from "@/app/redux/menuCreatorSlice";
+import { setGalleryChangeReference, setLogoImage } from "@/app/redux/menuCreatorSlice";
 
 interface MyProps {
     ownerId:string
@@ -31,10 +31,11 @@ interface GalleryItemProps {
 
 
 export default function UserGallery( props: MyProps ){
+    
     const [gallery,setGallery] = useState<Gallery | undefined>(undefined)
     const [uploadingStatus,setUploadingStatus] = useState<string>('Upload File')
     const [selectedFiles,setSelectedFiles] = useState<GalleryFile[] | undefined>(undefined)
-
+    
     const calcFileSize = (size:number) =>{
         if (size < 1024) {
             return size + ' bytes';
@@ -106,11 +107,14 @@ export default function UserGallery( props: MyProps ){
 
     //Redux Actions
     const dispatch = useDispatch()
+    const galleryState = useSelector((state: RootState)=> state.restaurantCreator.galleryState)
     const chooseImage = () =>{
-        alert("Ok")
+        
+        if(galleryState.changeReference === "Logo" && selectedFiles){
+            dispatch(setLogoImage(selectedFiles[0].fileURL))
+        }
+        
     }
-
-
 
     function GalleryItem(props:GalleryItemProps){
         return(

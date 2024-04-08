@@ -18,7 +18,7 @@ export default function MenuHeader(props:{restaurantInfo:RestaurantMenu}) {
   return (
     <header className={styles.menuHeader} style={{background:restaurantStyles.menuColor}}>
       <div className={styles.topHeader}>
-         <img src="https://placehold.co/100" />
+         <img src={restaurantStyles.restaurantLogo} />
       </div>
          <MenuNavBar categories={restaurantCategories}/>
     </header>
