@@ -93,8 +93,8 @@ export default function CategoryEditor(props: editorProps) {
         <div className={styles.editingContainer}>
           <form className={styles.editingDetails}>
             <div>
-                <label>Category name:</label>
-                <input type="text" value={props.category.name} onChange={(event)=>changeName(event.target.value)}></input>
+              <label>Category name:</label>
+              <input type="text" value={props.category.name} onChange={(event)=>changeName(event.target.value)}></input>
             </div>
             <div>
               <label>Category Description:</label>

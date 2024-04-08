@@ -40,7 +40,7 @@ export default function ItemView(props:{itemInfo:Item}) {
             <p>{formatPrice(props.itemInfo.price)}</p>
         </div>
         <div className={styles.itemPhotoContainer}>
-            <img src="https://placehold.co/100"/>
+            <img src={props.itemInfo.photoURL} width={100}/>
         </div>
     </div>
   );

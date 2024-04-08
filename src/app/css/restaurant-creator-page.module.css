@@ -74,6 +74,13 @@
     border-radius: 4px;
 }
 
+.itemEditingArea{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px
+}
+
 .optionsContainer{
     display: flex;
     justify-content: space-between;

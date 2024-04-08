@@ -139,7 +139,7 @@ export const menuCreatorSlice = createSlice({
         name: 'Food or Beverage name',
         available: true,
         description: 'Food or Beverage description',
-        photoURL: '',
+        photoURL: 'https://placehold.co/100',
         price: 0
       }
 
@@ -223,6 +223,15 @@ export const menuCreatorSlice = createSlice({
     },
     setLogoImage:(state, action:PayloadAction<string>)=>{
       state.restaurantMenu.menuStyle.restaurantLogo = action.payload
+    },
+    setItemImage:(state, action:PayloadAction<ItemChange>)=>{
+      const itemRef = action.payload.itemReference
+      
+      const category = state.restaurantMenu.menuCategories[itemRef.categoryIndex]
+      const subcategory = category.subcategories[itemRef.subcategoryIndex]
+      const item = subcategory.items[itemRef.itemIndex]
+
+      item.photoURL = action.payload.change as string
     }
   }
 })
@@ -234,6 +243,6 @@ export const { setInitialData,
    deleteItem,createNewItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto,setItemPrice,
    setMenuStyle,
    setRestaurantName,setRestaurantAddress,
-   setGalleryChangeReference,setLogoImage } = menuCreatorSlice.actions
+   setGalleryChangeReference,setLogoImage,setItemImage } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer

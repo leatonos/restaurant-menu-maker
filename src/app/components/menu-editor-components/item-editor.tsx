@@ -7,7 +7,7 @@ import React from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import {ItemReference, deleteItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto, ItemChange,setItemPrice} from '@/app/redux/menuCreatorSlice'
+import {ItemReference, deleteItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto, ItemChange,setItemPrice, setGalleryChangeReference} from '@/app/redux/menuCreatorSlice'
 import { Item } from "@/app/types/types";
 
 //Image imports
@@ -30,12 +30,7 @@ export default function ItemEditor(props:itemProps) {
     categoryIndex: props.categoryIndex
   }
   const removeItem=()=>{
-  const itemReference:ItemReference ={
-      itemIndex: props.index,
-      subcategoryIndex: props.subcategoryIndex,
-      categoryIndex: props.categoryIndex
-  }
-    dispatch(deleteItem(itemReference))
+    dispatch(deleteItem(itemRef))
   }
 
   const changeName = (newName:string)=>{
@@ -82,27 +77,34 @@ export default function ItemEditor(props:itemProps) {
             </button>
           </div>
         </div>
-        <div>
-            <label>Item name:</label>
-            <input type="text" onChange={(event)=>changeName(event.target.value)} value={props.item.name}/>
-        </div>
-        <div>
-            <label>Item Description:</label>
-            <input type="text" onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
-        </div>
-        <div>
-            <label>Item price:</label>
-            <input type="number" min={0} onChange={(event)=>changePrice(parseFloat(event.target.value))} value={props.item.price}/>
-        </div>
-        <div>
-            <label htmlFor="available">Item availability:</label>
-            <input
-              id="available"
-              type="checkbox"
-              checked={props.item.available}
-              onChange={(event)=>changeAvailability(event.target.checked)}
-            />
-        </div>
+        <div className={styles.itemEditingArea}>
+          <div className={styles.itemDetailsEditor}>
+            <div>
+                <label>Item name:</label>
+                <input type="text" onChange={(event)=>changeName(event.target.value)} value={props.item.name}/>
+            </div>
+            <div>
+                <label>Item Description:</label>
+                <input type="text" onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
+            </div>
+            <div>
+                <label>Item price:</label>
+                <input type="number" min={0} onChange={(event)=>changePrice(parseFloat(event.target.value))} value={props.item.price}/>
+            </div>
+            <div>
+                <label htmlFor="available">Item availability:</label>
+                <input
+                  id="available"
+                  type="checkbox"
+                  checked={props.item.available}
+                  onChange={(event)=>changeAvailability(event.target.checked)}
+                />
+            </div>
+          </div>
+          <div onClick={()=>dispatch(setGalleryChangeReference(itemRef))} className={styles.itemImageEditor}>
+            <img src={props.item.photoURL} alt="Image of your menu item" width={100}/>  
+          </div>
+        </div> 
     </div>
   );
 }

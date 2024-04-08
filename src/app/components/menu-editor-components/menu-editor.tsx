@@ -74,8 +74,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
             </div>
         </div>
         )
-      }
-      
+      } 
     }
 
   return (
