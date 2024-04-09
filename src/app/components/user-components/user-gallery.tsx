@@ -145,13 +145,15 @@ export default function UserGallery( props: MyProps ){
         gallery &&(
         <div className={styles.galleryBox} style={{color:"black"}}>
             <header className={styles.galleryHeader}>
-                <div className={styles.optionsContainer}>
-                    <div className={styles.rightSide}>
-                        <button onClick={()=>dispatch(setGalleryChangeReference(undefined))} className={styles.smallBtn}>
-                            <Image className={styles.smallIcon} src={closeImage} alt={"Close Gallery"}/>
-                        </button>
+                { props.selectingImage &&
+                    <div className={styles.optionsContainer}>
+                      <div className={styles.rightSide}>
+                          <button onClick={()=>dispatch(setGalleryChangeReference(undefined))} className={styles.smallBtn}>
+                              <Image className={styles.smallIcon} src={closeImage} alt={"Close Gallery"}/>
+                          </button>
+                      </div>
                     </div>
-                </div>
+                }
             </header>
             <main className={styles.galleryMainContainer}>
                 <aside className={styles.galleryNavigation}>
