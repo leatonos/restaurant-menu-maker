@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-view.module.css"
 import React, { useEffect } from 'react'
-import { MenuCategory, RestaurantMenu } from "@/app/types/types";
+import { MenuCategory, MenuStyle, RestaurantMenu } from "@/app/types/types";
 
 
 // Redux Imports
@@ -11,12 +11,12 @@ import {useSelector} from 'react-redux'
 import SubcategoryView from "./subcategory";
 import { useAppSelector } from "@/app/redux/hooks";
 
-export default function CategoryView(props:{categoryInfo:MenuCategory}) {
+export default function CategoryView(props:{categoryInfo:MenuCategory, menuStyle: MenuStyle}) {
 
   const available = props.categoryInfo.available
   const subcategories = props.categoryInfo.subcategories
 
-  const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
+  const menuStyle = props.menuStyle
   const fontColor = menuStyle.fontColor
 
   // Hides this section of the menu if user decides this is not available
@@ -32,7 +32,7 @@ export default function CategoryView(props:{categoryInfo:MenuCategory}) {
         </div>
         <div className={styles.subcategoriesContainer}>
             {subcategories.map((subcategory, index)=>(
-                <SubcategoryView key={index} subcategoryInfo={subcategory} />
+                <SubcategoryView key={index} subcategoryInfo={subcategory} menuStyle={menuStyle} />
             ))}
         </div>
     </div>

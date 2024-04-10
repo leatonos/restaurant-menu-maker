@@ -20,7 +20,7 @@ export default function MenuHeader(props:{restaurantInfo:RestaurantMenu}) {
       <div className={styles.topHeader}>
          <img src={restaurantStyles.restaurantLogo} />
       </div>
-         <MenuNavBar categories={restaurantCategories}/>
+         <MenuNavBar categories={restaurantCategories} navBarStyle={restaurantStyles}/>
     </header>
   );
 }

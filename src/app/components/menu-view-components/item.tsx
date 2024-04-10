@@ -2,17 +2,17 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-view.module.css"
 import React, { useEffect } from 'react'
-import { Item, MenuCategory, RestaurantMenu, Subcategory } from "@/app/types/types";
+import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from "@/app/types/types";
 
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import {useSelector} from 'react-redux'
 
-export default function ItemView(props:{itemInfo:Item}) {
+export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
 
   //Custom Styles
-  const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
+  const menuStyle = props.menuStyle
   const fontColor = menuStyle.fontColor
 
   const available = props.itemInfo.available
@@ -30,6 +30,13 @@ export default function ItemView(props:{itemInfo:Item}) {
     }
   }
 
+  const ProductImage = (imageProp:{imageURL:string}) =>{
+    if(imageProp.imageURL === 'https://placehold.co/100'){
+      return <></>
+    }else{
+      return <img src={imageProp.imageURL} width={100}/>
+    }
+  }
 
   
   return (
@@ -40,7 +47,7 @@ export default function ItemView(props:{itemInfo:Item}) {
             <p>{formatPrice(props.itemInfo.price)}</p>
         </div>
         <div className={styles.itemPhotoContainer}>
-            <img src={props.itemInfo.photoURL} width={100}/>
+            <ProductImage imageURL={props.itemInfo.photoURL}/>
         </div>
     </div>
   );

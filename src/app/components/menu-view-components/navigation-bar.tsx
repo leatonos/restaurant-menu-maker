@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-view.module.css"
 import React, { useEffect } from 'react'
-import { MenuCategory, RestaurantMenu, Subcategory } from "@/app/types/types";
+import { MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from "@/app/types/types";
 
 
 // Redux Imports
@@ -11,9 +11,9 @@ import {useSelector} from 'react-redux'
 import SubcategoryView from "./subcategory";
 import { useAppSelector } from "@/app/redux/hooks";
 
-export default function MenuNavBar(props:{categories:MenuCategory[]}) {
+export default function MenuNavBar(props:{categories:MenuCategory[],navBarStyle:MenuStyle}) {
 
-  const menuStyle = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuStyle)
+  const menuStyle = props.navBarStyle
   const fontColor = menuStyle.fontMenuColor
   const categories = props.categories
   const allSubcategories:Subcategory[] = []

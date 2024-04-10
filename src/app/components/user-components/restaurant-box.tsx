@@ -7,6 +7,8 @@ import { deleteRestaurant } from '@/app/server-actions/delete-restaurant';
 import Image from 'next/image';
 import EditImage from '../../../../public/edit.svg'
 import DeleteImage from '../../../../public/trash.svg'
+import PreviewImage from '../../../../public/preview.svg'
+
 
 interface MyProps {
     restaurantId:string;
@@ -34,6 +36,12 @@ export default function RestaurantBox( props: MyProps ){
         <div className={styles.boxContainer}>
             <h2>{restaurantName}</h2>
             <div className={styles.boxOptions}>
+                <button className={styles.boxButton}>
+                    <a aria-label='Preview Restaurant' href={`restaurant/${restaurantId}`}>
+                        <Image src={PreviewImage} alt={''} />
+                        <p>Preview</p>
+                    </a>
+                </button>
                 <button className={styles.boxButton}>
                     <a aria-label='Edit Restaurant' href={`user/restaurant-creator/${restaurantId}`}>
                         <Image src={EditImage} alt={''} />
