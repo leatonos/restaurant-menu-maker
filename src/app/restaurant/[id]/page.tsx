@@ -16,10 +16,10 @@ export default async function Restaurant({ params }: { params: { id: string } })
     const restaurantData = await getRestaurantData(params.id)
 
     return (
-        <div>
+       
             <Suspense fallback={<div>Loading...</div>}>
                 <MenuView restaurantInfo={restaurantData}/>
             </Suspense>
-        </div>
+       
         )
   }

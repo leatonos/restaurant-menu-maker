@@ -18,15 +18,13 @@ export default function MenuView(props:{restaurantInfo:RestaurantMenu}) {
     const categories = menuInfo.menuCategories
 
   return (
-    <div className={styles.previewContainer}>
-        <main className={styles.menuPreview}>
+    <div className={menuViewStyles.menuView}>
           <MenuHeader restaurantInfo={menuInfo} />
           <div className={menuViewStyles.menuContainer} style={{backgroundColor:menuStyle.backgroundColor}}>
             {categories.map((category,index)=>(
               <CategoryView key={index} categoryInfo={category} menuStyle={menuStyle}/>
             ))}
           </div>
-        </main>
     </div>
   )
 }
