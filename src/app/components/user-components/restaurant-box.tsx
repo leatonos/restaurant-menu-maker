@@ -10,7 +10,6 @@ import EditImage from '../../../../public/edit.svg'
 import DeleteImage from '../../../../public/trash.svg'
 import PreviewImage from '../../../../public/preview.svg'
 
-
 interface MyProps {
     restaurantId:string;
     restaurantName:string;
