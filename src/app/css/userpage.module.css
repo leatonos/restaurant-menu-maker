@@ -5,24 +5,7 @@
 }
 
 
-.createBoxContainer{
-    width: calc( 25% - 50px);
-    text-align: center;
-    height: 320px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    justify-content: center;
-    border: 6px dashed #fff;
-    border-radius: 5px;
-    margin: 15px 20px;
-    padding: 5px;
-}
 
-.createIcon{
-    width: 35px;
-    margin-right: 20px;
-}
 
 .createButton{
     display: flex;
@@ -58,3 +41,68 @@
     justify-content: center;
     align-items: center;
 }
+
+
+/* Boxes */
+.boxContainer{
+    width: calc( 25% - 50px);
+    max-width: 320px;
+    text-align: center;
+    height: 320px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    background-color:rgb(137, 142, 143);
+    border-radius: 5px;
+    margin: 15px 20px;
+    padding: 5px;
+}
+
+.boxOptions{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.boxButton{
+  background-color:rgb(137, 142, 143);
+  border: none;
+  margin: 5px 10px;
+}
+
+.createBoxContainer{
+    width: calc( 25% - 50px);
+    max-width: 320px;
+    text-align: center;
+    height: 320px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    border: 6px dashed #fff;
+    border-radius: 5px;
+    margin: 15px 20px;
+    padding: 5px;
+}
+
+.createIcon{
+    width: 35px;
+    margin-right: 20px;
+}
+
+
+/* Mobile Devices (up to 767px) */
+@media only screen and (max-width: 767px) {
+    .boxContainer{
+        width: 180px;
+        height: auto;
+        margin: 5px;
+    }
+  }
+  
+  /* Tablets (768px to 1023px) */
+  @media only screen and (min-width: 768px) and (max-width: 1023px) {
+    /* Your CSS styles for tablets here */
+  }
+
