@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Restaurant Menu Maker",
-  description: "Create your digital menu for free",
+  description: "Restaurant Menu Maker is a free platform to create online and responsive menus for your restaurant",
 };
 
 export default function RootLayout({
@@ -22,9 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <UserProvider>
           <body className={inter.className}>
-            <MantineProvider>  
               {children}
-            </MantineProvider>
             </body>
       </UserProvider>
     </html>

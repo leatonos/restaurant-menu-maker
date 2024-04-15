@@ -18,10 +18,9 @@ export default async function Home() {
 
 
   return (
-    <main>
+    <main style={{color:'white'}}>
       <HomeHeader/>
-      <h1>Homepage</h1>
-      <a href="/api/auth/login">Login</a><br></br>
+      <h1>Restaurant Menu Maker is a free platform <br/>to create online and responsive menus for your restaurant</h1>
     </main>
   );
 }

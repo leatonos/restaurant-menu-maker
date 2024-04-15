@@ -149,13 +149,13 @@
 
 
   /* Media query for desktop computers */
-  /*
+  
 @media only screen and (min-width: 1025px) {
    .menuView{
         display: flex;
    }
    .menuHeader{
-        display: flex;
+        display: block;
         width: 25%;
         height: 100vh;
     }
@@ -165,7 +165,7 @@
         width: 75%;
     }
     .navContainer {
-        flex-direction: column;
+        display: flex;
         padding: 13px 10px;
         width: 100%;
         overflow-x: hidden; 
@@ -176,6 +176,3 @@
         min-width: max-content; 
     }
 }
-*/
-
-  

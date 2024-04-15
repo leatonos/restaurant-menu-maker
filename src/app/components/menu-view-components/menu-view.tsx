@@ -1,7 +1,6 @@
 "use client"
 import Image from "next/image";
-import styles from "@/app/css/restaurant-creator-page.module.css"
-import menuViewStyles from "@/app/css/restaurant-view.module.css"
+import menuViewStyles from "@/app/css/restaurant-view-fullscreen.module.css"
 import { redirect } from  'next/navigation';
 import React, { useEffect } from 'react'
 import { MenuStyle, RestaurantMenu } from "@/app/types/types";

@@ -7,8 +7,8 @@ export default function HomeHeader() {
     <header className={styles.homeHeader}>
         <div className={styles.menu}>
             <ul className={styles.menuList}>
-                <li className={styles.menuItem}><a href="/user" className={styles.menuLink}>About</a></li>
-                <li className={styles.menuItem}><a href="/user" className={styles.menuLink}>About</a></li>
+                <li className={styles.menuItem}><a href="#" className={styles.menuLink}>About</a></li>
+                <li className={styles.menuItem}><a href="#" className={styles.menuLink}>Contact us</a></li>
             </ul>
         </div>
         <div className={styles.menu}>
