@@ -157,7 +157,7 @@ export default function UserGallery( props: MyProps ){
             </header>
             <main className={styles.galleryMainContainer}>
                 <aside className={styles.galleryNavigation}>
-                    <h2>Navigation</h2>
+                    <h2>Navigation **Not implemented**</h2>
                     <p>Images</p>
                     <p>Fonts</p>
                 </aside>
