@@ -188,10 +188,13 @@ export default function UserGallery( props: MyProps ){
                                 <p>{selectedFiles[0].fileType}</p>
                                 <h5>File size:</h5>
                                 <p>{calcFileSize(selectedFiles[0].fileSize)}</p>
-                                <button onClick={() => deleteSelectedFiles(selectedFiles)} className={styles.deleteBtn}>Delete</button>
-                                {props.selectingImage &&
-                                    <button className={styles.selectBtn} onClick={chooseImage}>Select Image</button>
-                                }
+                                <div className={styles.groupButton}>
+                                    <button onClick={() => deleteSelectedFiles(selectedFiles)} className={styles.deleteBtn}>Delete</button>
+                                    {props.selectingImage &&
+                                        <button className={styles.selectBtn} onClick={chooseImage}>Select Image</button>
+                                    }
+                                </div>
+                               
                             </div>
                         </>
                     }
