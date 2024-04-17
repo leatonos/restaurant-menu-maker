@@ -19,6 +19,7 @@ import UserGallery from "../user-components/user-gallery";
 //Images
 import AddImage from '../../../../public/add.svg'
 import SaveIcon from '../../../../public/save.svg'
+import RightArrowImage from '../../../../public/arrow-right.svg'
 
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
 
@@ -79,18 +80,22 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
 
   return (
     <>
+    
     <GalleryModal/>
     <div className={styles.editorContainer}>
       <div className={styles.restaurantInfoEditor}>
         <MenuDetailsEditor/>
         <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
         <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButton}>
-          <Image className={styles.createIcon} src={SaveIcon} alt={"Create new category button"} />
+          <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
             {savingStatus}
         </button>
       </div>
+      <div className={styles.sideTab}>
+        <Image className={styles.leftArrowIcon} src={RightArrowImage} alt={'Open Options'} />
+      </div>
       <div className={styles.categoriesContainer}>
-        <div className={styles.createNewBox}>
+        <div className={styles.createNewCategoryBox}>
           <button onClick={()=>dispatch(createNewCategory())} className={styles.createButton}>
             <Image className={styles.createIcon} src={AddImage} alt={"Create new category button"} />
             Create new Category
@@ -99,6 +104,10 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
         {menuCategories.map((category, index)=>(
           <CategoryEditor key={index} category={category} index={index}/>
           ))}
+        <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButtonMobile}>
+          <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
+            {savingStatus}
+        </button>
       </div>
     </div>
     </>

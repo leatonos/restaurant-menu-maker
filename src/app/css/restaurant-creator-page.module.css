@@ -121,6 +121,20 @@
     border: 6px dashed #000000;
 }
 
+.createNewCategoryBox{
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0; 
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    color: black;
+    width: calc(100% - 10px);
+    margin: 5px;
+    background-color: white;
+    border: 6px dashed #000000;
+}
+
 .createButton{
     display: flex;
     align-items: center;
@@ -145,6 +159,10 @@
     font-size: 16px;
     text-decoration: none;
     cursor: pointer;
+}
+
+.saveButtonMobile{
+    display: none;
 }
 
 .createIcon{
@@ -184,3 +202,136 @@
 .galleryContainer{
     width: 80%;
 }
+
+.sideTab{
+    display: none;
+}
+
+/* Media query for mobile phones */
+@media only screen and (max-width: 600px) {
+    .mainContainer{
+        padding: 0px;
+        height: calc(100vh - 70px);
+    }
+
+    .previewContainer{
+        display: none;
+    }
+
+    .editorContainer{
+        display: flex;
+        flex-direction: row;
+        color: black;
+        width: 100%;
+        padding: 10px;
+        background-color: white;
+    }
+    
+    .restaurantInfoEditor{
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 250px;
+    }
+
+    .categoriesContainer{
+        background-color: white;
+        height: calc(100vh - 90px);
+        width:100%;
+        overflow-y: auto;
+    }
+
+    .subcategoryEditorContainer{
+        display: flex;
+        flex-direction: column;
+        color: black;
+        width: calc(100% - 10px);
+        padding: 5px;
+        margin: 5px;
+        background-color: white;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 4px;
+    }
+    
+    .itemEditorContainer{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        color: black;
+        width: calc(100% - 15px);
+        padding: 5px;
+        margin: 5px;
+        background-color: white;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 4px;
+    }
+    
+    .itemEditingArea{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 10px
+    }
+    .optionsContainer{
+        display: flex;
+        width: calc(100% - 10px);
+        justify-content: space-between;
+    }
+
+    .editingContainer{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .editingDetails{
+        width: 100%;
+    }
+    
+    .shortInfo{
+        width: 100%;
+    }
+    
+    .saveButtonMobile{
+        position: -webkit-sticky; /* For Safari */
+        position: sticky;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 0px;
+        border: none;
+        background-color: white;
+        color: #333;
+        font-size: 16px;
+        text-decoration: none;
+        cursor: pointer;
+        bottom: 0;
+        z-index: 100;
+    }
+
+    .sideTab {
+        display: block;
+        position: fixed;
+        left: 0; /* Position the tab on the left side of the viewport */
+        top: 50%; /* Position the tab in the middle vertically */
+        transform: translateY(-50%); /* Center the tab vertically */
+        background-color: #ffffff; /* Background color of the tab */
+        color: white; /* Text color */
+        border-top-right-radius: 5px; /* Rounded corners */
+        border-bottom-right-radius: 5px;
+        z-index: 1000; /* Set a higher z-index to ensure the tab appears above other content */
+        cursor: pointer; /* Change cursor to pointer on hover */
+      }
+      
+      .tab:hover {
+        background-color: #0056b3; /* Change background color on hover */
+      }
+
+      .leftArrowIcon{
+        width: 30px;
+      }
+
+  }
+  
