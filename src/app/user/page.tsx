@@ -55,8 +55,6 @@ export default async function UserHome() {
     <main >
       <UserHeader/>
       <h1 style={{color:"white"}}>User Dashboard</h1>
-      <div style={{color:"white"}}>
-      </div>
       <Suspense fallback={<div>Loading menus...</div>}>
         <RestaurantsList ownerId={user.sub} />
       </Suspense>
