@@ -4,7 +4,6 @@ import PreviewStyle from "@/app/css/restaurant-view.module.css"
 import FullscreenStyle from '@/app/css/restaurant-view-fullscreen.module.css'
 import React, { useEffect, useState } from 'react'
 import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from "@/app/types/types";
-import { imageExists } from "./imageCheck";
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
