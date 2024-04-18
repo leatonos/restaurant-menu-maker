@@ -4,7 +4,7 @@ import PreviewStyle from "@/app/css/restaurant-view.module.css"
 import FullscreenStyle from '@/app/css/restaurant-view-fullscreen.module.css'
 import React, { useEffect, useState } from 'react'
 import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from "@/app/types/types";
-
+import { imageExists } from "./imageCheck";
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
@@ -49,11 +49,15 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
     }
   }
 
+
+
   const ProductImage = (imageProp:{imageURL:string}) =>{
+
     if(imageProp.imageURL === 'https://placehold.co/100'){
       return <></>
-    }else{
-      return <img src={imageProp.imageURL} width={100}/>
+    }
+    else{
+      return <img src={imageProp.imageURL} width={100} onError={({ currentTarget }) => {currentTarget.style.display = 'none'}}/>
     }
   }
 
@@ -61,12 +65,12 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
   return (
     <div className={styles.itemContainer} style={{color:fontColor}}>
         <div className={styles.itemDetails}>
-            <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
-            <p>{props.itemInfo.description}</p>
-            <p>{formatPrice(props.itemInfo.price)}</p>
+          <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
+          <p>{props.itemInfo.description}</p>
+          <p>{formatPrice(props.itemInfo.price)}</p>
         </div>
         <div className={styles.itemPhotoContainer}>
-            <ProductImage imageURL={props.itemInfo.photoURL}/>
+          <ProductImage imageURL={props.itemInfo.photoURL}/>
         </div>
     </div>
   );

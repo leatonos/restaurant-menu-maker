@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-creator-page.module.css"
 import { redirect } from  'next/navigation';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
@@ -22,6 +22,14 @@ interface itemProps {
 }
 
 export default function ItemEditor(props:itemProps) {
+
+  const [itemImage,setItemImage] = useState<string>(props.item.photoURL)
+
+  //Makes sure to change the image if the image error was fixed
+  
+  useEffect(()=>{
+    setItemImage(props.item.photoURL)
+  },[props.item.photoURL])
 
   const dispatch = useDispatch()
   const itemRef:ItemReference ={
@@ -102,7 +110,7 @@ export default function ItemEditor(props:itemProps) {
             </div>
           </div>
           <div onClick={()=>dispatch(setGalleryChangeReference(itemRef))} className={styles.itemImageEditor}>
-            <img src={props.item.photoURL} alt="Image of your menu item" width={100}/>  
+            <img src={itemImage} alt="Image of your menu item" width={100} onError={() => setItemImage('https://placehold.co/100')}/>  
           </div>
         </div> 
     </div>
