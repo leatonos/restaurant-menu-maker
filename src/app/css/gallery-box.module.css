@@ -155,6 +155,7 @@
 @media only screen and (max-width: 600px){
     .galleryBox{
         width: 100%;
+        height: 100vh;
         margin: 0;
     }
     .galleryMainContainer{
