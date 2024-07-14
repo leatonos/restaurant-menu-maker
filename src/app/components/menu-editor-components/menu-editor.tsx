@@ -20,6 +20,7 @@ import UserGallery from "../user-components/user-gallery";
 import AddImage from '../../../../public/add.svg'
 import SaveIcon from '../../../../public/save.svg'
 import RightArrowImage from '../../../../public/arrow-right.svg'
+import PreviewImage from '../../../../public/preview.svg'
 
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
 
@@ -91,10 +92,18 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
         <div className={styles.restaurantInfoEditor}>
           <MenuDetailsEditor/>
           <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
-          <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButton}>
-            <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
-              {savingStatus}
-          </button>
+          <div className={styles.buttons}>
+            <button className={styles.previewButton}>
+              <Image className={styles.createIcon} src={PreviewImage} alt={"Preview menu"} />
+              <a target="_blank" href={`https://menufactory.org/restaurant/${restaurantMenuData.restaurantMenu._id}`}>
+                Preview menu
+              </a>
+            </button>
+            <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButton}>
+              <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
+                {savingStatus}
+            </button>
+          </div>
         </div>
         <div className={styles.sideTab}>
             <Image className={`${styles.leftArrowIcon} ${isMenuVisible ? styles.hide : styles.show}`}

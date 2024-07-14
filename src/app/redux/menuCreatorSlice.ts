@@ -76,9 +76,9 @@ export const menuCreatorSlice = createSlice({
     //Categories
     createNewCategory: (state) => {
       const newEmptyCategory:MenuCategory = {
-        name: 'New Category',
+        name: '',
         available: true,
-        description: 'A category description (optional)',
+        description: '',
         subcategories: []
       }
       state.restaurantMenu.menuCategories.push(newEmptyCategory)
@@ -98,9 +98,9 @@ export const menuCreatorSlice = createSlice({
     //Subcategories
     createNewSubcategory:(state,action: PayloadAction<number>)=>{
       const newSubcategory:Subcategory = {
-        name: 'Subcategory',
+        name: '',
         available: true,
-        description: 'Subcategory description (optional)',
+        description: '',
         items: []
       }
       state.restaurantMenu.menuCategories[action.payload].subcategories.push(newSubcategory)
@@ -136,9 +136,9 @@ export const menuCreatorSlice = createSlice({
     createNewItem:(state,action: PayloadAction<SubcategoryReference>)=>{
 
       const newItem:Item = {
-        name: 'Food or Beverage name',
+        name: '',
         available: true,
-        description: 'Food or Beverage description',
+        description: '',
         photoURL: 'https://placehold.co/100',
         price: 0
       }
