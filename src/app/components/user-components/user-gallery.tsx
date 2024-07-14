@@ -1,5 +1,5 @@
 'use client'
-import { Dropzone, FileWithPath } from "@mantine/dropzone";
+import { Dropzone, FileWithPath, IMAGE_MIME_TYPE  } from "@mantine/dropzone";
 import useSWRMutation from "swr/mutation";
 import React, { useEffect, useState } from 'react';
 import styles from '../../css/gallery-box.module.css'
@@ -168,7 +168,10 @@ export default function UserGallery( props: MyProps ){
                         ))}
                     </div>
                     <div className={styles.galleryUploadArea}>
-                        <Dropzone onDrop={(files) => trigger({ files })}>
+                        <Dropzone 
+                            onDrop={(files) => trigger({ files })}
+                            accept={IMAGE_MIME_TYPE}
+                        >
                             <button className={styles.uploadBtn}>Upload</button>
                         </Dropzone>
                     </div>

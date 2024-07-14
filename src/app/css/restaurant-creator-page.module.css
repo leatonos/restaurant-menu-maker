@@ -218,6 +218,31 @@
         display: none;
     }
 
+    .infoEditorContainer{
+        height: auto;
+        position:fixed;
+        left:-245px;
+        display: flex;
+        flex-direction: row;
+        transition: left 0.5s ease-in-out;
+        z-index: 99999;
+    }
+
+    .infoEditorContainer.visible{
+        left:0;
+    }
+    .infoEditorContainer.hidden {
+        left:-245px;
+    }
+
+    .restaurantInfoEditor{
+        padding: 15px;
+        background-color: white;
+        display: flex;
+        width: 100%;
+    }
+
+
     .editorContainer{
         display: flex;
         flex-direction: row;
@@ -226,14 +251,36 @@
         padding: 10px;
         background-color: white;
     }
-    
-    .restaurantInfoEditor{
+
+    .saveButton{
         display: none;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 250px;
     }
 
+    .sideTab {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white; /* Text color */
+        cursor: pointer; /* Change cursor to pointer on hover */
+    }
+
+    .leftArrowIcon{
+        width: 30px;
+        border-radius: 0 10px 10px 0;
+        background-color: white;
+        transition: transform .51s ease-in-out;
+    }
+
+    .leftArrowIcon.show{
+        transform: scaleX(1);
+
+    }
+
+    .leftArrowIcon.hide{
+        transform: scaleX(-1);
+    }
+    
+    
     .categoriesContainer{
         background-color: white;
         height: calc(100vh - 90px);
@@ -311,41 +358,18 @@
         z-index: 100;
     }
 
-    .sideTab {
-        display: block;
-        position: fixed;
-        left: 0; /* Position the tab on the left side of the viewport */
-        top: 50%; /* Position the tab in the middle vertically */
-        transform: translateY(-50%); /* Center the tab vertically */
-        background-color: #ffffff; /* Background color of the tab */
-        color: white; /* Text color */
-        border-top-right-radius: 5px; /* Rounded corners */
-        border-bottom-right-radius: 5px;
-        z-index: 1000; /* Set a higher z-index to ensure the tab appears above other content */
-        cursor: pointer; /* Change cursor to pointer on hover */
-      }
-      
-      .tab:hover {
-        background-color: #0056b3; /* Change background color on hover */
-      }
-
-      .leftArrowIcon{
-        width: 30px;
-      }
-
-
-      .galleryBackgroundContainer{
-        position: fixed;
-        top: 0;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        width: 100vw;
-        height: 100vh;
-        z-index: 9999;
-        background-color: rgba(44, 44, 44, .4);
+  
+    .galleryBackgroundContainer{
+    position: fixed;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background-color: rgba(44, 44, 44, .4);
     }
-    
     .galleryContainer{
         width: 100%;
     }

@@ -29,6 +29,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
     const menuCategories = restaurantMenuData.restaurantMenu.menuCategories
     
     const [savingStatus,setSavingState] = useState<string>('Save Changes')
+    const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
 
     //Gets the saved data from the database and stores it into the Redux store
     useEffect(()=>{
@@ -66,6 +67,10 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
   
     }
 
+    const toggleSideOptions = () =>{
+      setIsMenuVisible(!isMenuVisible);
+    }
+
     function GalleryModal(){
       if(galleryState.changeReference){
         return(
@@ -79,20 +84,23 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
     }
 
   return (
-    <>
-    
+    <> 
     <GalleryModal/>
     <div className={styles.editorContainer}>
-      <div className={styles.restaurantInfoEditor}>
-        <MenuDetailsEditor/>
-        <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
-        <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButton}>
-          <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
-            {savingStatus}
-        </button>
-      </div>
-      <div className={styles.sideTab}>
-        <Image className={styles.leftArrowIcon} src={RightArrowImage} alt={'Open Options'} />
+      <div className={`${styles.infoEditorContainer} ${isMenuVisible ? styles.visible : styles.hidden}`}>
+        <div className={styles.restaurantInfoEditor}>
+          <MenuDetailsEditor/>
+          <MenuStyleEditor initialStyle={props.initialData.menuStyle} />
+          <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButton}>
+            <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
+              {savingStatus}
+          </button>
+        </div>
+        <div className={styles.sideTab}>
+            <Image className={`${styles.leftArrowIcon} ${isMenuVisible ? styles.hide : styles.show}`}
+              src={RightArrowImage} alt={'Open Options'} onClick={toggleSideOptions}
+            />
+        </div>
       </div>
       <div className={styles.categoriesContainer}>
         <div className={styles.createNewCategoryBox}>
