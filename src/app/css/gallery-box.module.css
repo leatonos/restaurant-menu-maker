@@ -4,6 +4,7 @@
     flex-direction: column;
     background-color: white;
     width: 100%;
+    z-index: 9999999999999;
 }
 
 .galleryHeader{
@@ -158,6 +159,7 @@
         height: 100vh;
         overflow-y: auto;
         margin: 0;
+        z-index: 999999999999999;
     }
     .galleryMainContainer{
         flex-direction: column;

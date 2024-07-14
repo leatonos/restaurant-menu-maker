@@ -229,7 +229,7 @@
         display: flex;
         flex-direction: row;
         transition: left 0.5s ease-in-out;
-        z-index: 99999;
+        z-index: 101;
     }
 
     .infoEditorContainer.visible{
