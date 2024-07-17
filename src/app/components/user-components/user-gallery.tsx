@@ -6,6 +6,7 @@ import styles from '../../css/gallery-box.module.css'
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { getGallery } from '@/app/server-actions/get-gallery';
 import { Gallery, GalleryFile } from '@/app/types/types';
+import ImageCropper from "./image-cropper";
 
 
 //Image Imports
@@ -18,6 +19,7 @@ import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { RestaurantMenu } from "@/app/types/types";
 import { ItemChange, ItemReference, setGalleryChangeReference, setItemImage, setLogoImage } from "@/app/redux/menuCreatorSlice";
+import { setCropperStatus } from "@/app/redux/gallerySlice";
 
 interface MyProps {
     ownerId:string
@@ -33,6 +35,7 @@ interface GalleryItemProps {
 export default function UserGallery( props: MyProps ){
     
     const [gallery,setGallery] = useState<Gallery | undefined>(undefined)
+    const [newImageSrc, setNewImageSrc] = useState<string>('')
     const [uploadingStatus,setUploadingStatus] = useState<string>('Upload File')
     const [selectedFiles,setSelectedFiles] = useState<GalleryFile[] | undefined>(undefined)
     
@@ -87,27 +90,12 @@ export default function UserGallery( props: MyProps ){
         updateGallery(props.ownerId)
     },[])
 
-    async function uploadDocuments(url: string, { arg }: { arg: { files: FileWithPath[] } }){
-        const body = new FormData();
-        arg.files.forEach((file) => {
-          body.append("file", file, file.name);
-        });
-      
-        body.append("ownerId", props.ownerId);
-        body.append("galleryId", gallery?._id as string);
-
-        const response = await fetch(url, { method: "POST", body });
-        const result = await response.json()
-        if(result){
-            updateGallery(props.ownerId)
-        }
-        console.log(result)
-      }
-    const { trigger } = useSWRMutation("/api/aws-upload", uploadDocuments);
 
     //Redux Actions
     const dispatch = useDispatch()
     const galleryState = useSelector((state: RootState)=> state.restaurantCreator.galleryState)
+    const cropper = useSelector((state: RootState)=> state.gallery.showCropper
+)
     
     const chooseImage = () =>{
         
@@ -127,6 +115,11 @@ export default function UserGallery( props: MyProps ){
 
     }
 
+    const openCropper = (files: FileWithPath[]) =>{
+        setNewImageSrc(URL.createObjectURL(files[0]))
+        dispatch(setCropperStatus(true))
+    }
+
     function GalleryItem(props:GalleryItemProps){
         return(
             <div onClick={()=>setSelectedFiles([props.item])} className={styles.galleryItem}>
@@ -143,69 +136,72 @@ export default function UserGallery( props: MyProps ){
 
     return (
         gallery &&(
-        <div className={styles.galleryBox} style={{color:"black"}}>
-            <header className={styles.galleryHeader}>
-                { props.selectingImage &&
-                    <div className={styles.optionsContainer}>
-                      <div className={styles.rightSide}>
-                          <button onClick={()=>dispatch(setGalleryChangeReference(undefined))} className={styles.smallBtn}>
-                              <Image className={styles.smallIcon} src={closeImage} alt={"Close Gallery"}/>
-                          </button>
-                      </div>
-                    </div>
+            <>
+                {cropper && 
+                    <ImageCropper ownerId={props.ownerId} galleryId={gallery?._id as string} imgSrc={newImageSrc}/>
                 }
-            </header>
-            <main className={styles.galleryMainContainer}>
-                <aside className={styles.galleryNavigation}>
-                    <h2>Navigation **Not implemented**</h2>
-                    <p>Images</p>
-                    <p>Fonts</p>
-                </aside>
-                <div className={styles.galleryItemListContainer}>
-                    <div className={styles.galleryList}>
-                        {gallery.files.map((file)=>(
-                            <GalleryItem key={file.fileId} item={file} />
-                        ))}
-                    </div>
-                    <div className={styles.galleryUploadArea}>
-                        <Dropzone 
-                            onDrop={(files) => trigger({ files })}
-                            accept={IMAGE_MIME_TYPE}
-                        >
-                            <button className={styles.uploadBtn}>Upload</button>
-                        </Dropzone>
-                    </div>
-                </div>
-                <div className={styles.galleryItemDetails}>
-                    {selectedFiles && 
-                        <>
-                            <div className={styles.galleryImageContainer}>
-                                <img src={selectedFiles[0].fileURL} className={styles.galleryDescriptionItemImage} />
+                <div className={styles.galleryBox} style={{color:"black"}}>
+                    <header className={styles.galleryHeader}>
+                        { props.selectingImage &&
+                            <div className={styles.optionsContainer}>
+                            <div className={styles.rightSide}>
+                                <button onClick={()=>dispatch(setGalleryChangeReference(undefined))} className={styles.smallBtn}>
+                                    <Image className={styles.smallIcon} src={closeImage} alt={"Close Gallery"}/>
+                                </button>
                             </div>
-                            <div className={styles.galleryItemInformation}>
-                                <h5>File name:</h5>
-                                <p>{selectedFiles[0].fileName}</p>
-                                <h5>File id:</h5>
-                                <p>{selectedFiles[0].fileId}</p>
-                                <h5>File type:</h5>
-                                <p>{selectedFiles[0].fileType}</p>
-                                <h5>File size:</h5>
-                                <p>{calcFileSize(selectedFiles[0].fileSize)}</p>
-                                <div className={styles.groupButton}>
-                                    <button onClick={() => deleteSelectedFiles(selectedFiles)} className={styles.deleteBtn}>Delete</button>
-                                    {props.selectingImage &&
-                                        <button className={styles.selectBtn} onClick={chooseImage}>Select Image</button>
-                                    }
-                                </div>
-                               
                             </div>
-                        </>
-                    }
+                        }
+                    </header>
+                    <main className={styles.galleryMainContainer}>
+                        <aside className={styles.galleryNavigation}>
+                            <h2>Navigation **Not implemented**</h2>
+                            <p>Images</p>
+                            <p>Fonts</p>
+                        </aside>
+                        <div className={styles.galleryItemListContainer}>
+                            <div className={styles.galleryList}>
+                                {gallery.files.map((file)=>(
+                                    <GalleryItem key={file.fileId} item={file} />
+                                ))}
+                            </div>
+                            <div className={styles.galleryUploadArea}>
+                                <Dropzone 
+                                    onDrop={(files) => openCropper(files)}
+                                    accept={IMAGE_MIME_TYPE}
+                                    >
+                                    <button className={styles.uploadBtn}>Upload</button>
+                                </Dropzone>
+                            </div>
+                        </div>
+                        <div className={styles.galleryItemDetails}>
+                            {selectedFiles && 
+                                <>
+                                    <div className={styles.galleryImageContainer}>
+                                        <img src={selectedFiles[0].fileURL} className={styles.galleryDescriptionItemImage} />
+                                    </div>
+                                    <div className={styles.galleryItemInformation}>
+                                        <h5>File name:</h5>
+                                        <p>{selectedFiles[0].fileName}</p>
+                                        <h5>File id:</h5>
+                                        <p>{selectedFiles[0].fileId}</p>
+                                        <h5>File type:</h5>
+                                        <p>{selectedFiles[0].fileType}</p>
+                                        <h5>File size:</h5>
+                                        <p>{calcFileSize(selectedFiles[0].fileSize)}</p>
+                                        <div className={styles.groupButton}>
+                                            <button onClick={() => deleteSelectedFiles(selectedFiles)} className={styles.deleteBtn}>Delete</button>
+                                            {props.selectingImage &&
+                                                <button className={styles.selectBtn} onClick={chooseImage}>Select Image</button>
+                                            }
+                                        </div>
+                                    
+                                    </div>
+                                </>
+                            }
+                        </div>
+                    </main>
                 </div>
-            </main>
-        </div>
+            </>
        )
-        
     )
-
 }

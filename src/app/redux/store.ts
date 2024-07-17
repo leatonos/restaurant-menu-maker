@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import menuCreatorSlice from './menuCreatorSlice'
+import gallerySlice from './gallerySlice'
 
 export const store = configureStore({
   reducer: {
-    restaurantCreator: menuCreatorSlice
+    restaurantCreator: menuCreatorSlice,
+    gallery:gallerySlice,
   },
 })
 

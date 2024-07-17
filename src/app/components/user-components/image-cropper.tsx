@@ -8,9 +8,17 @@ import ReactCrop, {
   convertToPixelCrop,
 } from 'react-image-crop'
 import { useDebounceEffect } from './useDebounceEffect'
-import { canvasPreview } from './canvasPreview,'
+import { canvasPreview } from './canvasPreview'
 
+//CSS Styles imports
+import styles from '../../css/gallery-box.module.css'
 import 'react-image-crop/dist/ReactCrop.css'
+
+//Redux imports
+import { useSelector, useDispatch } from 'react-redux'
+import { setCropperStatus } from '@/app/redux/gallerySlice'
+
+
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -30,7 +38,14 @@ function centerAspectCrop(mediaWidth: number, mediaHeight: number,aspect: number
   )
 }
 
-export default function ImageCropper() {
+interface MyProps {
+  ownerId:string
+  galleryId:string
+  imgSrc:string
+}
+
+export default function ImageCropper(props:MyProps) {
+  
   const [imgSrc, setImgSrc] = useState('')
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
@@ -40,18 +55,10 @@ export default function ImageCropper() {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const [scale, setScale] = useState(1)
   const [rotate, setRotate] = useState(0)
-  const [aspect, setAspect] = useState<number | undefined>(16 / 9)
+  const [aspect, setAspect] = useState<number | undefined>(200 / 150)
 
-  function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files && e.target.files.length > 0) {
-      setCrop(undefined) // Makes crop preview update between images.
-      const reader = new FileReader()
-      reader.addEventListener('load', () =>
-        setImgSrc(reader.result?.toString() || ''),
-      )
-      reader.readAsDataURL(e.target.files[0])
-    }
-  }
+
+  const dispatch = useDispatch()
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     if (aspect) {
@@ -132,34 +139,61 @@ export default function ImageCropper() {
     [completedCrop, scale, rotate],
   )
 
-  function handleToggleAspectClick() {
-    if (aspect) {
-      setAspect(undefined)
-    } else {
-      setAspect(16 / 9)
+  const captureImage = (canvas: HTMLCanvasElement): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error('Canvas is empty'));
+        }
+      }, 'image/png');
+    });
+  };
 
-      if (imgRef.current) {
-        const { width, height } = imgRef.current
-        const newCrop = centerAspectCrop(width, height, 16 / 9)
-        setCrop(newCrop)
-        // Updates the preview
-        setCompletedCrop(convertToPixelCrop(newCrop, width, height))
-      }
+  const uploadImage = async (imageBlob:Blob) => {
+    const formData = new FormData();
+    formData.append('file', imageBlob, 'image.png');
+    formData.append("ownerId", props.ownerId);
+    formData.append("galleryId", props.galleryId as string);
+  
+    const response = await fetch('/api/aws-upload', {
+      method: 'POST',
+      body: formData,
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to upload image');
     }
-  }
+  
+    return response.json();
+  };
+
+
+  const handleUpload = async () => {
+    try {
+      const canvas = previewCanvasRef.current as HTMLCanvasElement;
+      const imageBlob = await captureImage(canvas);
+      const result = await uploadImage(imageBlob);
+      console.log('Image uploaded successfully:', result);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
 
   return (
-    <div className="App" style={{background:'white'}}>
+    <div className={styles.cropperContainer} style={{background:'white'}}>
       <div className="Crop-Controls">
-        <input type="file" accept="image/*" onChange={onSelectFile} />
         <div>
-          <label htmlFor="scale-input">Scale: </label>
+          <label htmlFor="scale-input">Zoom </label>
           <input
             id="scale-input"
-            type="number"
+            type="range"
+            min='0.1'
+            max='5'
             step="0.1"
             value={scale}
-            disabled={!imgSrc}
+            disabled={!props.imgSrc}
             onChange={(e) => setScale(Number(e.target.value))}
           />
         </div>
@@ -167,39 +201,41 @@ export default function ImageCropper() {
           <label htmlFor="rotate-input">Rotate: </label>
           <input
             id="rotate-input"
-            type="number"
+            type="range"
+            min='-180'
+            max='180'
             value={rotate}
-            disabled={!imgSrc}
+            disabled={!props.imgSrc}
             onChange={(e) =>
               setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
             }
           />
         </div>
         <div>
-          <button onClick={handleToggleAspectClick}>
-            Toggle aspect {aspect ? 'off' : 'on'}
-          </button>
+       
         </div>
       </div>
-      {!!imgSrc && (
+      {/* This represents the image cropper after you select an image */}
+      {!!props.imgSrc && (
         <ReactCrop
           crop={crop}
           onChange={(_, percentCrop) => setCrop(percentCrop)}
           onComplete={(c) => setCompletedCrop(c)}
-          aspect={aspect}
-          // minWidth={400}
-          minHeight={100}
+          aspect={200/150}
+          minWidth={200}
+          minHeight={150}
           // circularCrop
         >
           <img
             ref={imgRef}
             alt="Crop me"
-            src={imgSrc}
-            style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+            src={props.imgSrc}
+            style={{ width:'300px', transform: `scale(${scale}) rotate(${rotate}deg)` }}
             onLoad={onImageLoad}
           />
         </ReactCrop>
       )}
+      {/* This represents the cropped image preview */}
       {!!completedCrop && (
         <>
           <div>
@@ -214,23 +250,8 @@ export default function ImageCropper() {
             />
           </div>
           <div>
-            <button onClick={onDownloadCropClick}>Download Crop</button>
-            <div style={{ fontSize: 12, color: '#666' }}>
-              If you get a security error when downloading try opening the
-              Preview in a new tab (icon near top right).
-            </div>
-            <a
-              href="#hidden"
-              ref={hiddenAnchorRef}
-              download
-              style={{
-                position: 'absolute',
-                top: '-200vh',
-                visibility: 'hidden',
-              }}
-            >
-              Hidden download
-            </a>
+            <button onClick={handleUpload}>Save Image</button>
+            <button onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>
           </div>
         </>
       )}

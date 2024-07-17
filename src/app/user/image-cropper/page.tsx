@@ -24,7 +24,7 @@ export default async function CropperTestPage() {
     <main>
       <UserHeader/>
       <div className={styles.galleryPageContainer}>
-       <ImageCropper></ImageCropper>
+       
       </div>
     </main>
   );
