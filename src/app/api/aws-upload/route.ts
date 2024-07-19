@@ -27,10 +27,12 @@ async function updateGalleryDatabase(url:string, ownerId: string, galleryId: str
 
     const db = client.db(dbName);
     const collection = db.collection<Gallery>(collectionName);
+
+    const newFileId = new ObjectId().toHexString()
     
     const filter = { _id : new ObjectId(galleryId) }
     const newGalleryFile:GalleryFile = {
-      fileId: new ObjectId().toHexString(),
+      fileId: newFileId,
       fileName: fileName,
       fileType: fileType,
       fileSize: fileSize,
@@ -38,14 +40,20 @@ async function updateGalleryDatabase(url:string, ownerId: string, galleryId: str
     } 
 
     const updateAction = { $push : { "files": newGalleryFile } }
-
     const updateResult = await collection.updateOne(filter, updateAction )
+
+    if (updateResult.modifiedCount === 1) {
+      return newGalleryFile;
+    } else {
+      throw new Error('Failed to update the gallery');
+    }
 
   } catch (error) {
     console.error(error);
   } finally {
     await client.close();
   }
+
 
 }
 
@@ -67,6 +75,7 @@ export async function POST(request: NextRequest) {
   const galleryId = formData.get("galleryId") as string;
 
   let uploadCount = 0
+  let galleryFiles: GalleryFile[] = []
 
   const responses = await Promise.all(
     files.map(async (file) => {
@@ -80,12 +89,14 @@ export async function POST(request: NextRequest) {
       const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
 
       // Register these files in the database
-      await updateGalleryDatabase(fileUrl, ownerId, galleryId,file.name,file.type,file.size)
+      const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId,file.name,file.type,file.size)
       uploadCount++
+      const galleryItem = databaseResult as GalleryFile
+      galleryFiles.push(galleryItem)
       return fileUrl;
     })
   );
 
-  console.log("All files uploaded:", responses);
-  return NextResponse.json({message:`A total of ${uploadCount} were uploaded!`},{status:200});
+  console.log("All files uploaded:", galleryFiles);
+  return NextResponse.json({message:`A total of ${uploadCount} were uploaded!`, images:galleryFiles},{status:200});
 }

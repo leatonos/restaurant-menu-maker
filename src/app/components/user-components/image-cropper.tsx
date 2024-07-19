@@ -16,7 +16,8 @@ import 'react-image-crop/dist/ReactCrop.css'
 
 //Redux imports
 import { useSelector, useDispatch } from 'react-redux'
-import { setCropperStatus } from '@/app/redux/gallerySlice'
+import { setCropperStatus, addGalleryFile } from '@/app/redux/gallerySlice'
+import { GalleryFile } from '@/app/types/types'
 
 
 
@@ -153,7 +154,7 @@ export default function ImageCropper(props:MyProps) {
 
   const uploadImage = async (imageBlob:Blob) => {
     const formData = new FormData();
-    formData.append('file', imageBlob, 'image.png');
+    formData.append('file', imageBlob, props.imgSrc);
     formData.append("ownerId", props.ownerId);
     formData.append("galleryId", props.galleryId as string);
   
@@ -165,17 +166,28 @@ export default function ImageCropper(props:MyProps) {
     if (!response.ok) {
       throw new Error('Failed to upload image');
     }
+
+    const result = await response.json()
+
+    console.log(result)
   
-    return response.json();
+    return result
   };
 
-
   const handleUpload = async () => {
+
+    interface resultType{
+      message:string;
+      images:GalleryFile[]
+    }
+
     try {
       const canvas = previewCanvasRef.current as HTMLCanvasElement;
       const imageBlob = await captureImage(canvas);
-      const result = await uploadImage(imageBlob);
+      const result:resultType = await uploadImage(imageBlob);
       console.log('Image uploaded successfully:', result);
+      dispatch(addGalleryFile(result.images[0]))
+      dispatch(setCropperStatus(false))
     } catch (error) {
       console.error('Error uploading image:', error);
     }

@@ -19,7 +19,7 @@ import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { RestaurantMenu } from "@/app/types/types";
 import { ItemChange, ItemReference, setGalleryChangeReference, setItemImage, setLogoImage } from "@/app/redux/menuCreatorSlice";
-import { setCropperStatus } from "@/app/redux/gallerySlice";
+import { setCropperStatus, setGallery } from "@/app/redux/gallerySlice";
 
 interface MyProps {
     ownerId:string
@@ -34,10 +34,12 @@ interface GalleryItemProps {
 
 export default function UserGallery( props: MyProps ){
     
-    const [gallery,setGallery] = useState<Gallery | undefined>(undefined)
     const [newImageSrc, setNewImageSrc] = useState<string>('')
     const [uploadingStatus,setUploadingStatus] = useState<string>('Upload File')
     const [selectedFiles,setSelectedFiles] = useState<GalleryFile[] | undefined>(undefined)
+
+    const gallery = useSelector((state: RootState) => state.gallery.gallery)
+
     
     const calcFileSize = (size:number) =>{
         if (size < 1024) {
@@ -52,7 +54,7 @@ export default function UserGallery( props: MyProps ){
     const updateGallery = async (ownerId:string) =>{
         const galleryRequest = await getGallery(ownerId) as Gallery
         console.log(galleryRequest)
-        setGallery(galleryRequest)
+        dispatch(setGallery(galleryRequest))
     }
 
     const deleteSelectedFiles = async(filesToDelete: GalleryFile[]) => {
@@ -117,6 +119,7 @@ export default function UserGallery( props: MyProps ){
 
     const openCropper = (files: FileWithPath[]) =>{
         setNewImageSrc(URL.createObjectURL(files[0]))
+        console.log(files[0])
         dispatch(setCropperStatus(true))
     }
 
