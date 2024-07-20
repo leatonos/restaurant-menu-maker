@@ -148,7 +148,7 @@ export default function ImageCropper(props:MyProps) {
         } else {
           reject(new Error('Canvas is empty'));
         }
-      }, 'image/png');
+      }, 'image/webp', 0.7);
     });
   };
 

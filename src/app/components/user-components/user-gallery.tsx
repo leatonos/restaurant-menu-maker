@@ -35,7 +35,6 @@ interface GalleryItemProps {
 export default function UserGallery( props: MyProps ){
     
     const [newImageSrc, setNewImageSrc] = useState<string>('')
-    const [uploadingStatus,setUploadingStatus] = useState<string>('Upload File')
     const [selectedFiles,setSelectedFiles] = useState<GalleryFile[] | undefined>(undefined)
 
     const gallery = useSelector((state: RootState) => state.gallery.gallery)
