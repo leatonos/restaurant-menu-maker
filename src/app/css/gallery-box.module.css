@@ -156,10 +156,81 @@
 /* Cropper */
 
 .cropperContainer{
+    padding: 15px;
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    left: 10vw;
+    top: 10vh;
+    width: 80vw;
+    height: 80vh;
     display: block;
     z-index: 999;
 }
+
+.cropControls{
+    padding: 5px;
+}
+
+.cropperImages{
+    padding: 15px;
+    background-color: #45a049;
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: row;
+}
+
+.cropper{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    padding: 15px;
+    background-color: yellowgreen;
+}
+
+.previewContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    background-color: #d32f2f;
+}
+
+.buttonWrapper{
+    display: flex;
+}
+
+.saveBtn{
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancelBtn{
+    display: inline-block;
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+
 
 
 @media only screen and (max-width: 600px){

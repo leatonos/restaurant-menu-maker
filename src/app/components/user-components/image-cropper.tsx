@@ -195,7 +195,7 @@ export default function ImageCropper(props:MyProps) {
 
   return (
     <div className={styles.cropperContainer} style={{background:'white'}}>
-      <div className="Crop-Controls">
+      <div className={styles.cropControls}>
         <div>
           <label htmlFor="scale-input">Zoom </label>
           <input
@@ -227,46 +227,50 @@ export default function ImageCropper(props:MyProps) {
        
         </div>
       </div>
-      {/* This represents the image cropper after you select an image */}
-      {!!props.imgSrc && (
-        <ReactCrop
-          crop={crop}
-          onChange={(_, percentCrop) => setCrop(percentCrop)}
-          onComplete={(c) => setCompletedCrop(c)}
-          aspect={200/150}
-          minWidth={200}
-          minHeight={150}
-          // circularCrop
-        >
-          <img
-            ref={imgRef}
-            alt="Crop me"
-            src={props.imgSrc}
-            style={{ width:'300px', transform: `scale(${scale}) rotate(${rotate}deg)` }}
-            onLoad={onImageLoad}
-          />
-        </ReactCrop>
-      )}
-      {/* This represents the cropped image preview */}
-      {!!completedCrop && (
-        <>
-          <div>
-            <canvas
-              ref={previewCanvasRef}
-              style={{
-                border: '1px solid black',
-                objectFit: 'contain',
-                width: completedCrop.width,
-                height: completedCrop.height,
-              }}
-            />
-          </div>
-          <div>
-            <button onClick={handleUpload}>Save Image</button>
-            <button onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>
-          </div>
-        </>
-      )}
+      <div className={styles.cropperImages}>
+        {/* This represents the image cropper after you select an image */}
+        < div className={styles.cropper}>
+          {!!props.imgSrc && (
+                  <ReactCrop
+                    crop={crop}
+                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                    onComplete={(c) => setCompletedCrop(c)}
+                    aspect={200/150}
+                    minWidth={200}
+                    minHeight={150}
+                    // circularCrop
+                  >
+                    <img
+                      ref={imgRef}
+                      alt="Crop me"
+                      src={props.imgSrc}
+                      style={{ width:'100%', transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                      onLoad={onImageLoad}
+                    />
+                  </ReactCrop>
+          )}
+        </div>
+       
+              {/* This represents the cropped image preview */}
+              <div className={styles.previewContainer}>
+                {!!completedCrop && (
+                    
+                      <canvas
+                        ref={previewCanvasRef}
+                        style={{
+                          objectFit: 'contain',
+                          width: completedCrop.width,
+                          height: completedCrop.height,
+                        }}
+                      />
+                  
+                )}
+              </div>
+        </div>
+        <div className={styles.buttonWrapper}>
+          <button className={styles.saveBtn} onClick={handleUpload}>Save Image</button>
+          <button className={styles.cancelBtn} onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>
+        </div>
     </div>
   )
 }
