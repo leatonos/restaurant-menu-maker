@@ -175,6 +175,7 @@
     padding: 15px;
     width: 100%;
     min-height: 300px;
+    max-height: calc(60vh - 120px);
 }
 
 .cropper{
@@ -182,6 +183,7 @@
     justify-content: center;
     width: 50%;
     padding: 15px;
+    max-height: 100%;
 }
 
 .previewContainer{

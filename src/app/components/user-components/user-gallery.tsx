@@ -173,6 +173,7 @@ export default function UserGallery( props: MyProps ){
                                 <Dropzone 
                                     onDrop={(files) => openCropper(files)}
                                     accept={IMAGE_MIME_TYPE}
+                                    multiple={false}
                                     >
                                     <button className={styles.uploadBtn}>Upload</button>
                                 </Dropzone>

@@ -256,16 +256,16 @@ export default function ImageCropper(props:MyProps) {
                     crop={crop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
-                    aspect={200/150}
+                    aspect={1}
                     minWidth={200}
-                    minHeight={150}
+                    minHeight={200}
                     // circularCrop
                   >
                     <img
                       ref={imgRef}
                       alt="Crop me"
                       src={props.imgSrc}
-                      style={{ width:'100%', transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                      style={{ width:'100%', height:'auto', maxHeight:'calc(60vh - 215px)', objectFit:'contain', transform: `scale(${scale}) rotate(${rotate}deg)` }}
                       onLoad={onImageLoad}
                     />
                   </ReactCrop>
@@ -281,7 +281,7 @@ export default function ImageCropper(props:MyProps) {
                         style={{
                           objectFit: 'contain',
                           width: /*completedCrop.width*/'200px',
-                          height: /*completedCrop.height*/"150px",
+                          height: /*completedCrop.height*/"",
                         }}
                       />
                     </>
