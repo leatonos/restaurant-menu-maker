@@ -58,8 +58,9 @@
   }
 
 .galleryList{
-    display: flex;
+    display:flex;
     flex-wrap: wrap;
+    align-content: flex-start;
     height: calc(100% - 50px);
     overflow-y: auto;
 }
@@ -70,9 +71,6 @@
     align-items: center;
     width: 20%;
     padding: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .galleryItemImage{
@@ -160,11 +158,10 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    left: 10vw;
-    top: 10vh;
-    width: 80vw;
-    height: 80vh;
-    display: block;
+    left: 20vw;
+    top: 20vh;
+    width: 60vw;
+    height: 60vh;
     z-index: 999;
 }
 
@@ -173,12 +170,11 @@
 }
 
 .cropperImages{
-    padding: 15px;
-    background-color: #45a049;
-    width: 100%;
-    min-height: 300px;
     display: flex;
     flex-direction: row;
+    padding: 15px;
+    width: 100%;
+    min-height: 300px;
 }
 
 .cropper{
@@ -186,7 +182,6 @@
     justify-content: center;
     width: 50%;
     padding: 15px;
-    background-color: yellowgreen;
 }
 
 .previewContainer{
@@ -194,7 +189,6 @@
     justify-content: center;
     align-items: center;
     width: 50%;
-    background-color: #d32f2f;
 }
 
 .buttonWrapper{
@@ -244,16 +238,17 @@
     .galleryMainContainer{
         flex-direction: column;
     }
-
+    
     .galleryNavigation{
         display: none;
     }
     .galleryItemListContainer{
         width: 100%;
-        height: calc(70vh - 60px);
+        height: calc(50vh - 60px);
     }
     .galleryItem{
-        width: 30%;
+        width: 33.33%;
+        height: auto;
     }
     .galleryItemDetails{
         width: 100%;
@@ -275,4 +270,33 @@
     .groupButton{
         display: flex;
     }
+
+    /*Cropper*/
+
+    .cropperContainer{
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        top:0;
+        justify-content: center;
+    }
+
+    .cropperImages{
+        flex-direction: column;
+    }
+
+    .cropper{
+        width: 100%;
+    }
+
+    .previewContainer{
+        width: 100%;
+    }
+
+    .buttonWrapper{
+        justify-content:space-around;
+        padding: 15px;
+    }
+
+
 }

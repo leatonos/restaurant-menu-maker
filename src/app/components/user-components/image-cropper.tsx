@@ -10,6 +10,10 @@ import ReactCrop, {
 import { useDebounceEffect } from './useDebounceEffect'
 import { canvasPreview } from './canvasPreview'
 
+//Images and icons
+import Image from 'next/image'
+import closeImage from '../../../../public/close.svg'
+
 //CSS Styles imports
 import styles from '../../css/gallery-box.module.css'
 import 'react-image-crop/dist/ReactCrop.css'
@@ -18,6 +22,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCropperStatus, addGalleryFile } from '@/app/redux/gallerySlice'
 import { GalleryFile } from '@/app/types/types'
+import ItemView from '../menu-view-components/item'
 
 
 
@@ -43,11 +48,11 @@ interface MyProps {
   ownerId:string
   galleryId:string
   imgSrc:string
+  imageName:string
 }
 
 export default function ImageCropper(props:MyProps) {
   
-  const [imgSrc, setImgSrc] = useState('')
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const hiddenAnchorRef = useRef<HTMLAnchorElement>(null)
@@ -153,8 +158,12 @@ export default function ImageCropper(props:MyProps) {
   };
 
   const uploadImage = async (imageBlob:Blob) => {
+
+     // Convert Blob to File
+    const imageFile = new File([imageBlob], props.imageName, { type: imageBlob.type });
+
     const formData = new FormData();
-    formData.append('file', imageBlob, props.imgSrc);
+    formData.append('file', imageFile, props.imageName);
     formData.append("ownerId", props.ownerId);
     formData.append("galleryId", props.galleryId as string);
   
@@ -195,6 +204,17 @@ export default function ImageCropper(props:MyProps) {
 
   return (
     <div className={styles.cropperContainer} style={{background:'white'}}>
+       <header className={styles.galleryHeader}>
+            
+                <div className={styles.optionsContainer}>
+                <div className={styles.rightSide}>
+                    <button onClick={()=> dispatch(setCropperStatus(false))} className={styles.smallBtn}>
+                        <Image className={styles.smallIcon} src={closeImage} alt={"Close Cropper"}/>
+                    </button>
+                </div>
+                </div>
+          
+      </header>
       <div className={styles.cropControls}>
         <div>
           <label htmlFor="scale-input">Zoom </label>
@@ -228,6 +248,7 @@ export default function ImageCropper(props:MyProps) {
         </div>
       </div>
       <div className={styles.cropperImages}>
+        
         {/* This represents the image cropper after you select an image */}
         < div className={styles.cropper}>
           {!!props.imgSrc && (
@@ -254,15 +275,17 @@ export default function ImageCropper(props:MyProps) {
               {/* This represents the cropped image preview */}
               <div className={styles.previewContainer}>
                 {!!completedCrop && (
-                    
+                    <>
                       <canvas
                         ref={previewCanvasRef}
                         style={{
                           objectFit: 'contain',
-                          width: completedCrop.width,
-                          height: completedCrop.height,
+                          width: /*completedCrop.width*/'200px',
+                          height: /*completedCrop.height*/"150px",
                         }}
                       />
+                    </>
+                      
                   
                 )}
               </div>

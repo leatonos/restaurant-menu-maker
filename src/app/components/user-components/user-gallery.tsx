@@ -35,6 +35,7 @@ interface GalleryItemProps {
 export default function UserGallery( props: MyProps ){
     
     const [newImageSrc, setNewImageSrc] = useState<string>('')
+    const [newImageName, setNewImageName] = useState<string>('')
     const [selectedFiles,setSelectedFiles] = useState<GalleryFile[] | undefined>(undefined)
 
     const gallery = useSelector((state: RootState) => state.gallery.gallery)
@@ -65,6 +66,8 @@ export default function UserGallery( props: MyProps ){
             galleryId: thisGallery._id as string,
             filesToDelete: filesToDelete
         }
+
+        console.log(deleteRequest)
 
         try {
         const response = await fetch('/api/aws-delete', {
@@ -118,7 +121,7 @@ export default function UserGallery( props: MyProps ){
 
     const openCropper = (files: FileWithPath[]) =>{
         setNewImageSrc(URL.createObjectURL(files[0]))
-        console.log(files[0])
+        setNewImageName(files[0].name)
         dispatch(setCropperStatus(true))
     }
 
@@ -140,7 +143,7 @@ export default function UserGallery( props: MyProps ){
         gallery &&(
             <>
                 {cropper && 
-                    <ImageCropper ownerId={props.ownerId} galleryId={gallery?._id as string} imgSrc={newImageSrc}/>
+                    <ImageCropper ownerId={props.ownerId} galleryId={gallery?._id as string} imgSrc={newImageSrc} imageName={newImageName}/>
                 }
                 <div className={styles.galleryBox} style={{color:"black"}}>
                     <header className={styles.galleryHeader}>

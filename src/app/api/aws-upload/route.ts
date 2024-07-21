@@ -19,7 +19,7 @@ const collectionName = "Galleries";
  * @param fileType 
  * @param fileSize 
  */
-async function updateGalleryDatabase(url:string, ownerId: string, galleryId: string, fileName: string, fileType:string, fileSize:number){
+async function updateGalleryDatabase(url:string, ownerId: string, galleryId: string, fileName: string, fileType:string, fileSize:number, newfileId:string){
 
   const client = await MongoClient.connect(uri);
 
@@ -28,11 +28,11 @@ async function updateGalleryDatabase(url:string, ownerId: string, galleryId: str
     const db = client.db(dbName);
     const collection = db.collection<Gallery>(collectionName);
 
-    const newFileId = new ObjectId().toHexString()
+    
     
     const filter = { _id : new ObjectId(galleryId) }
     const newGalleryFile:GalleryFile = {
-      fileId: newFileId,
+      fileId: newfileId,
       fileName: fileName,
       fileType: fileType,
       fileSize: fileSize,
@@ -69,6 +69,9 @@ const s3 = new S3Client({
 
 // endpoint to upload a file to the bucket
 export async function POST(request: NextRequest) {
+
+  const newFileId = new ObjectId().toHexString()
+
   const formData = await request.formData();
   const files = formData.getAll("file") as File[];
   const ownerId = formData.get("ownerId") as string;
@@ -80,7 +83,7 @@ export async function POST(request: NextRequest) {
   const responses = await Promise.all(
     files.map(async (file) => {
       const Body = (await file.arrayBuffer()) as Buffer
-      const Key = `${galleryId}/${file.name}`;
+      const Key = `${galleryId}/${file.name}-${newFileId}`;
 
       // Upload the file to S3
       const response = await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
@@ -89,7 +92,7 @@ export async function POST(request: NextRequest) {
       const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
 
       // Register these files in the database
-      const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId,file.name,file.type,file.size)
+      const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId,file.name,file.type,file.size,newFileId)
       uploadCount++
       const galleryItem = databaseResult as GalleryFile
       galleryFiles.push(galleryItem)
