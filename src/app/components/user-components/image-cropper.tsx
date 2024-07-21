@@ -61,7 +61,7 @@ export default function ImageCropper(props:MyProps) {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const [scale, setScale] = useState(1)
   const [rotate, setRotate] = useState(0)
-  const [aspect, setAspect] = useState<number | undefined>(200 / 150)
+  const [aspect, setAspect] = useState<number | undefined>(200 / 175)
 
 
   const dispatch = useDispatch()
@@ -256,9 +256,9 @@ export default function ImageCropper(props:MyProps) {
                     crop={crop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
-                    aspect={1}
+                    aspect={aspect}
                     minWidth={200}
-                    minHeight={200}
+                    minHeight={175}
                     // circularCrop
                   >
                     <img
