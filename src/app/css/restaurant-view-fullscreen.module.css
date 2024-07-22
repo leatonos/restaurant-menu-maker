@@ -171,8 +171,45 @@
         overflow-x: hidden; 
     }
     .catList {
+        margin-top: 15px;
         display: flex;
         flex-direction: column;
         min-width: max-content; 
     }
+
+    .navItem{
+        display: inline-block;
+        padding: 10px 0px;
+    }
+
+    .itemsContainer{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+
+    /* Items Section */
+    .itemContainer{
+        display: flex;
+        width: 33.33%;
+        padding: 15px;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    .itemDetails{
+        padding-right: 10px;
+        width: 67%;
+    }
+    .itemTitle{
+        margin-bottom: 10px;
+    }
+    .itemPhotoContainer{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 33%;
+    }
+
+    
 }
