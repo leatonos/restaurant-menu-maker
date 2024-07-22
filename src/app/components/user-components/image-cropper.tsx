@@ -62,6 +62,8 @@ export default function ImageCropper(props:MyProps) {
   const [scale, setScale] = useState(1)
   const [rotate, setRotate] = useState(0)
   const [aspect, setAspect] = useState<number | undefined>(200 / 175)
+  const [saveBtnDisabled, setSaveBtnState] = useState<boolean>(false)
+  const [saveBtnText, setSaveBtnText] = useState<string>('Save Image')
 
 
   const dispatch = useDispatch()
@@ -192,9 +194,13 @@ export default function ImageCropper(props:MyProps) {
 
     try {
       const canvas = previewCanvasRef.current as HTMLCanvasElement;
+      setSaveBtnState(true);
+      setSaveBtnText("Uploading Image...")
       const imageBlob = await captureImage(canvas);
       const result:resultType = await uploadImage(imageBlob);
       console.log('Image uploaded successfully:', result);
+      setSaveBtnState(false);
+      setSaveBtnText("Image uploaded!")
       dispatch(addGalleryFile(result.images[0]))
       dispatch(setCropperStatus(false))
     } catch (error) {
@@ -289,9 +295,9 @@ export default function ImageCropper(props:MyProps) {
                   
                 )}
               </div>
-        </div>
+      </div>
         <div className={styles.buttonWrapper}>
-          <button className={styles.saveBtn} onClick={handleUpload}>Save Image</button>
+          <button className={styles.saveBtn} disabled={saveBtnDisabled} onClick={handleUpload}>{saveBtnText}</button>
           <button className={styles.cancelBtn} onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>
         </div>
     </div>

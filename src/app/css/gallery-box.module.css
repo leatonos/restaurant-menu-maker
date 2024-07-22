@@ -280,18 +280,22 @@
         height: 100vh;
         left: 0;
         top:0;
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .cropperImages{
+        background-color: yellow;
         flex-direction: column;
+        max-height: none;
     }
 
     .cropper{
+        background-color: #0d47a1;
         width: 100%;
     }
 
     .previewContainer{
+        background-color: #d32f2f;
         width: 100%;
     }
 
