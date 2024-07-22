@@ -295,6 +295,7 @@
     }
 
     .previewContainer{
+        display: none;
         background-color: #d32f2f;
         width: 100%;
     }

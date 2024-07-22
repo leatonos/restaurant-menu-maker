@@ -285,9 +285,9 @@ export default function ImageCropper(props:MyProps) {
                       <canvas
                         ref={previewCanvasRef}
                         style={{
-                          objectFit: 'contain',
+                          objectFit: 'cover',
                           width: /*completedCrop.width*/'200px',
-                          height: /*completedCrop.height*/"",
+                          height: /*completedCrop.height*/"auto",
                         }}
                       />
                     </>
