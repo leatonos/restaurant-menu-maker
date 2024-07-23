@@ -111,7 +111,7 @@ export default function ImageCropper(props:MyProps) {
     // You might want { type: "image/jpeg", quality: <0 to 1> } to
     // reduce image size
     const blob = await offscreen.convertToBlob({
-      type: 'image/png',
+      type: 'image/jpeg',
     })
 
     if (blobUrlRef.current) {
