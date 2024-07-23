@@ -155,7 +155,7 @@ export default function ImageCropper(props:MyProps) {
         } else {
           reject(new Error('Canvas is empty'));
         }
-      }, 'image/webp', 0.2);
+      }, 'image/webp', 0.7);
     });
   };
 
@@ -165,7 +165,7 @@ export default function ImageCropper(props:MyProps) {
     const imageFile = new File([imageBlob], props.imageName, { type: imageBlob.type });
 
     const formData = new FormData();
-    formData.append('file', imageFile, props.imageName);
+    formData.append('file', imageBlob, props.imageName);
     formData.append("ownerId", props.ownerId);
     formData.append("galleryId", props.galleryId as string);
   

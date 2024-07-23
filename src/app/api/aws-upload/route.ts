@@ -1,12 +1,10 @@
-
 import { NextRequest, NextResponse } from "next/server";
-import { S3Client,  ListObjectsCommand,  PutObjectCommand } from "@aws-sdk/client-s3";
-import { Document, MongoClient, ObjectId, UpdateFilter } from 'mongodb';
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { MongoClient, ObjectId } from 'mongodb';
 import { Gallery, GalleryFile } from "@/app/types/types";
-import { getGallery } from "@/app/server-actions/get-gallery";
 
 // Replace these with your actual connection details
-const uri = process.env.MONGODB_URI as string
+const uri = process.env.MONGODB_URI as string;
 const dbName = "TheOnlineMenu";
 const collectionName = "Galleries";
 
@@ -19,46 +17,40 @@ const collectionName = "Galleries";
  * @param fileType 
  * @param fileSize 
  */
-async function updateGalleryDatabase(url:string, ownerId: string, galleryId: string, fileName: string, fileType:string, fileSize:number, newfileId:string){
-
-  const client = await MongoClient.connect(uri);
+async function updateGalleryDatabase(url: string, ownerId: string, galleryId: string, fileName: string, fileType: string, fileSize: number, newfileId: string): Promise<GalleryFile> {
+  const client = new MongoClient(uri);
 
   try {
-
+    await client.connect();
     const db = client.db(dbName);
     const collection = db.collection<Gallery>(collectionName);
 
-    
-    
-    const filter = { _id : new ObjectId(galleryId) }
-    const newGalleryFile:GalleryFile = {
+    const filter = { _id: new ObjectId(galleryId) };
+    const newGalleryFile: GalleryFile = {
       fileId: newfileId,
       fileName: fileName,
       fileType: fileType,
       fileSize: fileSize,
-      fileURL:url
-    } 
+      fileURL: url
+    };
 
-    const updateAction = { $push : { "files": newGalleryFile } }
-    const updateResult = await collection.updateOne(filter, updateAction )
+    const updateAction = { $push: { "files": newGalleryFile } };
+    const updateResult = await collection.updateOne(filter, updateAction);
 
     if (updateResult.modifiedCount === 1) {
       return newGalleryFile;
     } else {
       throw new Error('Failed to update the gallery');
     }
-
   } catch (error) {
-    console.error(error);
+    console.error('Database update error:', error);
+    throw error;
   } finally {
     await client.close();
   }
-
-
 }
 
-
-const Bucket = 's3-restaurant-menu-maker'
+const Bucket = 's3-restaurant-menu-maker';
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -67,39 +59,42 @@ const s3 = new S3Client({
   }
 });
 
-// endpoint to upload a file to the bucket
+// Endpoint to upload a file to the bucket
 export async function POST(request: NextRequest) {
+  try {
+    const newFileId = new ObjectId().toHexString();
+    const formData = await request.formData();
+    const files = formData.getAll("file") as File[];
+    const ownerId = formData.get("ownerId") as string;
+    const galleryId = formData.get("galleryId") as string;
 
-  const newFileId = new ObjectId().toHexString()
+    let uploadCount = 0;
+    let galleryFiles: GalleryFile[] = [];
 
-  const formData = await request.formData();
-  const files = formData.getAll("file") as File[];
-  const ownerId = formData.get("ownerId") as string;
-  const galleryId = formData.get("galleryId") as string;
+    const responses = await Promise.all(
+      files.map(async (file) => {
+        const arrayBuffer = await file.arrayBuffer();
+        const Body = Buffer.from(arrayBuffer);
+        const Key = `${galleryId}/${file.name}-${newFileId}`;
 
-  let uploadCount = 0
-  let galleryFiles: GalleryFile[] = []
+        // Upload the file to S3
+        await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
 
-  const responses = await Promise.all(
-    files.map(async (file) => {
-      const Body = (await file.arrayBuffer()) as Buffer
-      const Key = `${galleryId}/${file.name}-${newFileId}`;
+        // Construct the URL for the uploaded file
+        const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
 
-      // Upload the file to S3
-      const response = await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
+        // Register these files in the database
+        const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId, file.name, file.type, file.size, newFileId);
+        uploadCount++;
+        galleryFiles.push(databaseResult);
+        return fileUrl;
+      })
+    );
 
-      // Construct the URL for the uploaded file
-      const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
-
-      // Register these files in the database
-      const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId,file.name,file.type,file.size,newFileId)
-      uploadCount++
-      const galleryItem = databaseResult as GalleryFile
-      galleryFiles.push(galleryItem)
-      return fileUrl;
-    })
-  );
-
-  console.log("All files uploaded:", galleryFiles);
-  return NextResponse.json({message:`A total of ${uploadCount} were uploaded!`, images:galleryFiles},{status:200});
+    console.log("All files uploaded:", galleryFiles);
+    return NextResponse.json({ message: `A total of ${uploadCount} were uploaded!`, images: galleryFiles }, { status: 200 });
+  } catch (error) {
+    console.error('File upload error:', error);
+    return NextResponse.json({ message: 'Failed to upload files', error: error }, { status: 500 });
+  }
 }
