@@ -36,6 +36,7 @@ export default function UserGallery( props: MyProps ){
     
     const [newImageSrc, setNewImageSrc] = useState<string>('')
     const [newImageName, setNewImageName] = useState<string>('')
+    const [newImageFile, setNewImageFile] = useState<File>()
     const [selectedFiles,setSelectedFiles] = useState<GalleryFile[] | undefined>(undefined)
 
     const gallery = useSelector((state: RootState) => state.gallery.gallery)
@@ -92,7 +93,7 @@ export default function UserGallery( props: MyProps ){
 
     useEffect(()=>{
         updateGallery(props.ownerId)
-    },[])
+    },[props.ownerId])
 
 
     //Redux Actions
@@ -122,6 +123,7 @@ export default function UserGallery( props: MyProps ){
     const openCropper = (files: FileWithPath[]) =>{
         setNewImageSrc(URL.createObjectURL(files[0]))
         setNewImageName(files[0].name)
+        setNewImageFile(files[0])
         dispatch(setCropperStatus(true))
     }
 
@@ -142,8 +144,8 @@ export default function UserGallery( props: MyProps ){
     return (
         gallery &&(
             <>
-                {cropper && 
-                    <ImageCropper ownerId={props.ownerId} galleryId={gallery?._id as string} imgSrc={newImageSrc} imageName={newImageName}/>
+                {cropper && newImageFile && 
+                    <ImageCropper ownerId={props.ownerId} galleryId={gallery?._id as string} imgSrc={newImageSrc} imageName={newImageName} imgFile={newImageFile}/>
                 }
                 <div className={styles.galleryBox} style={{color:"black"}}>
                     <header className={styles.galleryHeader}>
@@ -159,7 +161,8 @@ export default function UserGallery( props: MyProps ){
                     </header>
                     <main className={styles.galleryMainContainer}>
                         <aside className={styles.galleryNavigation}>
-                            <h2>Navigation **Not implemented**</h2>
+                            <h2>**Not implemented**</h2>
+                            <h2>Navigation</h2>
                             <p>Images</p>
                             <p>Fonts</p>
                         </aside>

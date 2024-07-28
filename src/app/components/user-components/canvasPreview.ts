@@ -62,4 +62,19 @@ export async function canvasPreview(
   )
 
   ctx.restore()
+
+  return new Promise<{
+    render: string;
+    file: Blob | null;
+  }>((resolve) => {
+    canvas.toBlob((file) => {
+      if (file != null) {
+        const files: Blob | MediaSource = file;
+        resolve({
+          render: URL.createObjectURL(files),
+          file: file,
+        });
+      }
+    }, 'image/jpeg');
+  });
 }

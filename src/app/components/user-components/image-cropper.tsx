@@ -32,7 +32,7 @@ function centerAspectCrop(mediaWidth: number, mediaHeight: number,aspect: number
   return centerCrop(
     makeAspectCrop(
       {
-        unit: '%',
+        unit: 'px',
         width: 90,
       },
       aspect,
@@ -47,7 +47,8 @@ function centerAspectCrop(mediaWidth: number, mediaHeight: number,aspect: number
 interface MyProps {
   ownerId:string
   galleryId:string
-  imgSrc:string
+  imgSrc:string,
+  imgFile:File,
   imageName:string
 }
 
@@ -63,6 +64,7 @@ export default function ImageCropper(props:MyProps) {
   const [rotate, setRotate] = useState(0)
   const [aspect, setAspect] = useState<number | undefined>(200 / 175)
   const [saveBtnDisabled, setSaveBtnState] = useState<boolean>(false)
+  const [originalImageFile, setOriginalImageFile] = useState<File | null>(null);
   const [saveBtnText, setSaveBtnText] = useState<string>('Save Image')
 
 
@@ -72,56 +74,6 @@ export default function ImageCropper(props:MyProps) {
     if (aspect) {
       const { width, height } = e.currentTarget
       setCrop(centerAspectCrop(width, height, aspect))
-    }
-  }
-
-  async function onDownloadCropClick() {
-    const image = imgRef.current
-    const previewCanvas = previewCanvasRef.current
-    if (!image || !previewCanvas || !completedCrop) {
-      throw new Error('Crop canvas does not exist')
-    }
-
-    // This will size relative to the uploaded image
-    // size. If you want to size according to what they
-    // are looking at on screen, remove scaleX + scaleY
-    const scaleX = image.naturalWidth / image.width
-    const scaleY = image.naturalHeight / image.height
-
-    const offscreen = new OffscreenCanvas(
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-    )
-    const ctx = offscreen.getContext('2d')
-    if (!ctx) {
-      throw new Error('No 2d context')
-    }
-
-    ctx.drawImage(
-      previewCanvas,
-      0,
-      0,
-      previewCanvas.width,
-      previewCanvas.height,
-      0,
-      0,
-      offscreen.width,
-      offscreen.height,
-    )
-    // You might want { type: "image/jpeg", quality: <0 to 1> } to
-    // reduce image size
-    const blob = await offscreen.convertToBlob({
-      type: 'image/jpeg',
-    })
-
-    if (blobUrlRef.current) {
-      URL.revokeObjectURL(blobUrlRef.current)
-    }
-    blobUrlRef.current = URL.createObjectURL(blob)
-
-    if (hiddenAnchorRef.current) {
-      hiddenAnchorRef.current.href = blobUrlRef.current
-      hiddenAnchorRef.current.click()
     }
   }
 
@@ -163,7 +115,8 @@ export default function ImageCropper(props:MyProps) {
 
      // Convert Blob to File
     const imageFile = new File([imageBlob], props.imageName, { type: imageBlob.type });
-
+    console.log(imageFile)
+   
     const formData = new FormData();
     formData.append('file', imageBlob, props.imageName);
     formData.append("ownerId", props.ownerId);
@@ -185,6 +138,32 @@ export default function ImageCropper(props:MyProps) {
     return result
   };
 
+  const uploadOriginalImage = async (fileImage:File | null) => {
+  
+   const formData = new FormData();
+   formData.append('file', props.imgFile, props.imageName);
+   formData.append("ownerId", props.ownerId);
+   formData.append("galleryId", props.galleryId as string);
+   formData.append('imageCrop', JSON.stringify(completedCrop))
+ 
+   const response = await fetch('/api/aws-upload-sharp-cropper', {
+     method: 'POST',
+     body: formData,
+   });
+ 
+   if (!response.ok) {
+     throw new Error('Failed to upload image');
+   }
+
+   const result = await response.json()
+
+   console.log(result)
+ 
+   return result
+ };
+
+
+
   const handleUpload = async () => {
 
     interface resultType{
@@ -197,7 +176,8 @@ export default function ImageCropper(props:MyProps) {
       setSaveBtnState(true);
       setSaveBtnText("Uploading Image...")
       const imageBlob = await captureImage(canvas);
-      const result:resultType = await uploadImage(imageBlob);
+      //const result:resultType = await uploadImage(imageBlob);
+      const result:resultType = await uploadOriginalImage(originalImageFile);
       console.log('Image uploaded successfully:', result);
       setSaveBtnState(false);
       setSaveBtnText("Image uploaded!")
@@ -206,6 +186,7 @@ export default function ImageCropper(props:MyProps) {
     } catch (error) {
       console.error('Error uploading image:', error);
     }
+
   };
 
   return (
@@ -250,13 +231,14 @@ export default function ImageCropper(props:MyProps) {
           />
         </div>
         <div>
-       
+        <p>Testing crops:{JSON.stringify(crop)}</p>
+        <p>Testing crops:{JSON.stringify(completedCrop)}</p>
         </div>
       </div>
       <div className={styles.cropperImages}>
-        
+       
         {/* This represents the image cropper after you select an image */}
-        < div className={styles.cropper}>
+        <div className={styles.cropper}>
           {!!props.imgSrc && (
                   <ReactCrop
                     crop={crop}
@@ -269,9 +251,10 @@ export default function ImageCropper(props:MyProps) {
                   >
                     <img
                       ref={imgRef}
+                      className={styles.originalImage}
                       alt="Crop me"
                       src={props.imgSrc}
-                      style={{ width:'100%', height:'auto', maxHeight:'calc(60vh - 215px)', objectFit:'contain', transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                      style={{transform: `scale(${scale}) rotate(${rotate}deg)`}}
                       onLoad={onImageLoad}
                     />
                   </ReactCrop>
@@ -282,12 +265,13 @@ export default function ImageCropper(props:MyProps) {
               <div className={styles.previewContainer}>
                 {!!completedCrop && (
                     <>
+                      <p></p>
                       <canvas
                         ref={previewCanvasRef}
                         style={{
                           objectFit: 'cover',
                           width: /*completedCrop.width*/'200px',
-                          height: /*completedCrop.height*/"auto",
+                          height: /*completedCrop.height*/"175px",
                         }}
                       />
                     </>

@@ -3,6 +3,8 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { MongoClient, ObjectId } from 'mongodb';
 import { Gallery, GalleryFile } from "@/app/types/types";
 import sharp from "sharp"
+import { Crop } from "react-image-crop";
+import { sharpImageCrop } from "@/app/utils/sharpCropper";
 
 // Replace these with your actual connection details
 const uri = process.env.MONGODB_URI as string;
@@ -68,17 +70,19 @@ export async function POST(request: NextRequest) {
     const files = formData.getAll("file") as File[];
     const ownerId = formData.get("ownerId") as string;
     const galleryId = formData.get("galleryId") as string;
+    const imageCropString = formData.get('imageCrop') as string
+
+    const imageCrop:Crop = JSON.parse(imageCropString)
 
     let uploadCount = 0;
     let galleryFiles: GalleryFile[] = [];
 
+    console.log(files)
+
     const responses = await Promise.all(
       files.map(async (file) => {
-
-        console.log(file)
-
         const arrayBuffer = await file.arrayBuffer();
-        const Body = Buffer.from(arrayBuffer);
+        const Body = await sharpImageCrop(arrayBuffer,imageCrop,200,175)
         const Key = `${galleryId}/${file.name}-${newFileId}`;
 
         // Upload the file to S3
