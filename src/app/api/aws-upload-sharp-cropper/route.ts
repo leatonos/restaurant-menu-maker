@@ -65,6 +65,7 @@ const s3 = new S3Client({
 // Endpoint to upload a file to the bucket
 export async function POST(request: NextRequest) {
   try {
+    console.log('API got info')
     const newFileId = new ObjectId().toHexString();
     const formData = await request.formData();
     const files = formData.getAll("file") as File[];
@@ -81,10 +82,12 @@ export async function POST(request: NextRequest) {
 
     const responses = await Promise.all(
       files.map(async (file) => {
+        console.log('uploading Image...')
         const arrayBuffer = await file.arrayBuffer();
         const Body = await sharpImageCrop(arrayBuffer,imageCrop,200,175)
         const Key = `${galleryId}/${file.name}-${newFileId}`;
 
+        console.log('Sending Image to AWS...')
         // Upload the file to S3
         await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
 

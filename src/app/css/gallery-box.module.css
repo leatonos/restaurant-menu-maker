@@ -301,6 +301,10 @@
         width: 100%;
     }
 
+    .originalImage{
+        max-height: 50vh;
+    }
+
     .previewContainer{
         display: none;
         background-color: #d32f2f;

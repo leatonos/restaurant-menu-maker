@@ -66,6 +66,7 @@ export default function ImageCropper(props:MyProps) {
   const [saveBtnDisabled, setSaveBtnState] = useState<boolean>(false)
   const [originalImageFile, setOriginalImageFile] = useState<File | null>(null);
   const [saveBtnText, setSaveBtnText] = useState<string>('Save Image')
+  const [status, setLogStatus] = useState<string>('')
 
 
   const dispatch = useDispatch()
@@ -176,8 +177,10 @@ export default function ImageCropper(props:MyProps) {
       setSaveBtnState(true);
       setSaveBtnText("Uploading Image...")
       const imageBlob = await captureImage(canvas);
+      setLogStatus('Attepmting sending image')
       //const result:resultType = await uploadImage(imageBlob);
       const result:resultType = await uploadOriginalImage(originalImageFile);
+      setLogStatus(result.message)
       console.log('Image uploaded successfully:', result);
       setSaveBtnState(false);
       setSaveBtnText("Image uploaded!")
@@ -192,15 +195,13 @@ export default function ImageCropper(props:MyProps) {
   return (
     <div className={styles.cropperContainer} style={{background:'white'}}>
        <header className={styles.galleryHeader}>
-            
                 <div className={styles.optionsContainer}>
-                <div className={styles.rightSide}>
-                    <button onClick={()=> dispatch(setCropperStatus(false))} className={styles.smallBtn}>
-                        <Image className={styles.smallIcon} src={closeImage} alt={"Close Cropper"}/>
-                    </button>
+                  <div className={styles.rightSide}>
+                      <button onClick={()=> dispatch(setCropperStatus(false))} className={styles.smallBtn}>
+                          <Image className={styles.smallIcon} src={closeImage} alt={"Close Cropper"}/>
+                      </button>
+                  </div>
                 </div>
-                </div>
-          
       </header>
       <div className={styles.cropControls}>
         <div>
@@ -275,11 +276,10 @@ export default function ImageCropper(props:MyProps) {
                         }}
                       />
                     </>
-                      
-                  
                 )}
               </div>
       </div>
+      <p>{status}</p>
         <div className={styles.buttonWrapper}>
           <button className={styles.saveBtn} disabled={saveBtnDisabled} onClick={handleUpload}>{saveBtnText}</button>
           <button className={styles.cancelBtn} onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>
