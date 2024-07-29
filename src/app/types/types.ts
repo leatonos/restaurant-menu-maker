@@ -61,3 +61,9 @@ export type GalleryFile = {
     fileSize:number,
     fileURL:string
 }
+
+export interface Resolution{
+    width:number;
+    height:number;
+  }
+  

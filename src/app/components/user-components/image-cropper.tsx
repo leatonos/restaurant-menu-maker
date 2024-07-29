@@ -9,6 +9,7 @@ import ReactCrop, {
 } from 'react-image-crop'
 import { useDebounceEffect } from './useDebounceEffect'
 import { canvasPreview } from './canvasPreview'
+import { Resolution } from '@/app/types/types'
 
 //Images and icons
 import Image from 'next/image'
@@ -32,7 +33,7 @@ function centerAspectCrop(mediaWidth: number, mediaHeight: number,aspect: number
   return centerCrop(
     makeAspectCrop(
       {
-        unit: 'px',
+        unit: '%',
         width: 90,
       },
       aspect,
@@ -46,7 +47,7 @@ function centerAspectCrop(mediaWidth: number, mediaHeight: number,aspect: number
 
 interface MyProps {
   ownerId:string
-  galleryId:string
+  galleryId:string,
   imgSrc:string,
   imgFile:File,
   imageName:string
@@ -62,9 +63,9 @@ export default function ImageCropper(props:MyProps) {
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const [scale, setScale] = useState(1)
   const [rotate, setRotate] = useState(0)
-  const [aspect, setAspect] = useState<number | undefined>(200 / 175)
+  const [aspect, setAspect] = useState<number | undefined>(250 / 200)
+  const [originalResolution, setOriginalRes] = useState<Resolution>({width:0,height:0})
   const [saveBtnDisabled, setSaveBtnState] = useState<boolean>(false)
-  const [originalImageFile, setOriginalImageFile] = useState<File | null>(null);
   const [saveBtnText, setSaveBtnText] = useState<string>('Save Image')
   const [status, setLogStatus] = useState<string>('')
 
@@ -75,6 +76,10 @@ export default function ImageCropper(props:MyProps) {
     if (aspect) {
       const { width, height } = e.currentTarget
       setCrop(centerAspectCrop(width, height, aspect))
+      setOriginalRes({
+        width:width,
+        height:height
+      })
     }
   }
 
@@ -139,14 +144,15 @@ export default function ImageCropper(props:MyProps) {
     return result
   };
 
-  const uploadOriginalImage = async (fileImage:File | null) => {
+  const uploadOriginalImage = async (fileImage:File) => {
   
    const formData = new FormData();
    setLogStatus(`Sending: ${JSON.stringify(props.imgFile)}`)
-   formData.append('file', props.imgFile, props.imageName);
+   formData.append('file', fileImage, props.imageName);
    formData.append("ownerId", props.ownerId);
    formData.append("galleryId", props.galleryId as string);
    formData.append('imageCrop', JSON.stringify(completedCrop))
+   formData.append('originalResolution', JSON.stringify(originalResolution))
  
    const response = await fetch('/api/aws-upload-sharp-cropper', {
      method: 'POST',
@@ -165,8 +171,6 @@ export default function ImageCropper(props:MyProps) {
    return result
  };
 
-
-
   const handleUpload = async () => {
 
     interface resultType{
@@ -181,7 +185,7 @@ export default function ImageCropper(props:MyProps) {
       //const imageBlob = await captureImage(canvas);
       setLogStatus('Attepmting sending image')
       //const result:resultType = await uploadImage(imageBlob);
-      const result:resultType = await uploadOriginalImage(originalImageFile);
+      const result:resultType = await uploadOriginalImage(props.imgFile);
       setLogStatus(JSON.stringify(result))
       console.log('Image uploaded successfully:', result);
       setSaveBtnState(false);
@@ -234,8 +238,6 @@ export default function ImageCropper(props:MyProps) {
           />
         </div>
         <div>
-        <p>Testing crops:{JSON.stringify(crop)}</p>
-        <p>Testing crops:{JSON.stringify(completedCrop)}</p>
         </div>
       </div>
       <div className={styles.cropperImages}>
@@ -249,7 +251,7 @@ export default function ImageCropper(props:MyProps) {
                     onComplete={(c) => setCompletedCrop(c)}
                     aspect={aspect}
                     minWidth={200}
-                    minHeight={175}
+                    minHeight={195}
                     // circularCrop
                   >
                     <img
@@ -273,15 +275,15 @@ export default function ImageCropper(props:MyProps) {
                         ref={previewCanvasRef}
                         style={{
                           objectFit: 'cover',
-                          width: /*completedCrop.width*/'200px',
-                          height: /*completedCrop.height*/"175px",
+                          width: /*completedCrop.width*/'250px',
+                          height: /*completedCrop.height*/"200px",
                         }}
                       />
                     </>
                 )}
               </div>
       </div>
-      <p>{status}</p>
+      
         <div className={styles.buttonWrapper}>
           <button className={styles.saveBtn} disabled={saveBtnDisabled} onClick={handleUpload}>{saveBtnText}</button>
           <button className={styles.cancelBtn} onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>

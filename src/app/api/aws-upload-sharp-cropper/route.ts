@@ -5,6 +5,7 @@ import { Gallery, GalleryFile } from "@/app/types/types";
 import sharp from "sharp"
 import { Crop } from "react-image-crop";
 import { sharpImageCrop } from "@/app/utils/sharpCropper";
+import { Resolution } from "@/app/types/types";
 
 // Replace these with your actual connection details
 const uri = process.env.MONGODB_URI as string;
@@ -65,15 +66,17 @@ const s3 = new S3Client({
 // Endpoint to upload a file to the bucket
 export async function POST(request: NextRequest) {
   try {
-    console.log('API got info')
+
     const newFileId = new ObjectId().toHexString();
     const formData = await request.formData();
     const files = formData.getAll("file") as File[];
     const ownerId = formData.get("ownerId") as string;
     const galleryId = formData.get("galleryId") as string;
     const imageCropString = formData.get('imageCrop') as string
+    const originalResolutionString = formData.get('originalResolution') as string
 
     const imageCrop:Crop = JSON.parse(imageCropString)
+    const originalResolution:Resolution = JSON.parse(originalResolutionString)
 
     let uploadCount = 0;
     let galleryFiles: GalleryFile[] = [];
@@ -84,7 +87,7 @@ export async function POST(request: NextRequest) {
       files.map(async (file) => {
         console.log('uploading Image...')
         const arrayBuffer = await file.arrayBuffer();
-        const Body = await sharpImageCrop(arrayBuffer,imageCrop,200,175)
+        const Body = await sharpImageCrop(arrayBuffer,imageCrop,originalResolution,250,200)
         const Key = `${galleryId}/${file.name}-${newFileId}`;
 
         console.log('Sending Image to AWS...')

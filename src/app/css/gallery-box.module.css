@@ -175,7 +175,6 @@
     padding: 15px;
     width: 100%;
     min-height: 300px;
-    max-height: calc(60vh - 120px);
 }
 
 .cropper{
@@ -189,7 +188,7 @@
 .originalImage{
     width:100%;
     height:auto;
-    max-height:calc(60vh - 215px);
+    max-height: calc(60vh - 250px) !important;
     object-fit:contain;
 }
 
@@ -308,7 +307,8 @@
     .previewContainer{
         display: none;
         background-color: #d32f2f;
-        width: 100%;
+        width: 250px;
+        height: 200px;
     }
 
     .buttonWrapper{
