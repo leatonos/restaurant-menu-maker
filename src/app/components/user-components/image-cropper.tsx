@@ -142,6 +142,7 @@ export default function ImageCropper(props:MyProps) {
   const uploadOriginalImage = async (fileImage:File | null) => {
   
    const formData = new FormData();
+   setLogStatus(`Sending: ${JSON.stringify(props.imgFile)}`)
    formData.append('file', props.imgFile, props.imageName);
    formData.append("ownerId", props.ownerId);
    formData.append("galleryId", props.galleryId as string);
@@ -153,6 +154,7 @@ export default function ImageCropper(props:MyProps) {
    });
  
    if (!response.ok) {
+    setLogStatus(`${JSON.stringify(response)}`)
      throw new Error('Failed to upload image');
    }
 
@@ -176,11 +178,11 @@ export default function ImageCropper(props:MyProps) {
       const canvas = previewCanvasRef.current as HTMLCanvasElement;
       setSaveBtnState(true);
       setSaveBtnText("Uploading Image...")
-      const imageBlob = await captureImage(canvas);
+      //const imageBlob = await captureImage(canvas);
       setLogStatus('Attepmting sending image')
       //const result:resultType = await uploadImage(imageBlob);
       const result:resultType = await uploadOriginalImage(originalImageFile);
-      setLogStatus(result.message)
+      setLogStatus(JSON.stringify(result))
       console.log('Image uploaded successfully:', result);
       setSaveBtnState(false);
       setSaveBtnText("Image uploaded!")

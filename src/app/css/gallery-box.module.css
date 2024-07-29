@@ -302,7 +302,7 @@
     }
 
     .originalImage{
-        max-height: 50vh;
+        max-height: 350px !important;
     }
 
     .previewContainer{
