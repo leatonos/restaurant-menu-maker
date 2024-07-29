@@ -290,13 +290,11 @@
     }
 
     .cropperImages{
-        background-color: yellow;
         flex-direction: column;
         max-height: none;
     }
 
     .cropper{
-        background-color: #0d47a1;
         width: 100%;
     }
 
@@ -306,7 +304,6 @@
 
     .previewContainer{
         display: none;
-        background-color: #d32f2f;
         width: 250px;
         height: 200px;
     }
