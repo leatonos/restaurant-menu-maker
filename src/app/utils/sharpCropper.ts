@@ -19,12 +19,24 @@ export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, 
     console.log('Original Resolution')
     console.log(originalResolution)
     console.log('Cropping:')
-    console.log(originalResolution)
+    console.log(CroppingDetails)
 
     const left = Math.round(CroppingDetails.x)
     const top = Math.round(CroppingDetails.y)
     const croppingWidth = Math.round(CroppingDetails.width)
     const croppingHeight = Math.round(CroppingDetails.height)
+
+    const coords = {
+        left: left,
+        top: top,
+        width: croppingWidth,
+        height: croppingHeight
+    }
+
+    console.log('Coordinates:')
+    console.log(coords)
+
+
     console.log('Cropping Image...')
     const resizedImage = sharp(image)
         .resize({width:originalResolution.width, height:originalResolution.height})
@@ -34,7 +46,6 @@ export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, 
             width: croppingWidth,
             height: croppingHeight
         })
-        .resize({width:250, height:200})
         .toBuffer()
 
     return resizedImage
