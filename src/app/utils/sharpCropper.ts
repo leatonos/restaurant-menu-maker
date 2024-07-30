@@ -37,7 +37,7 @@ export async function sharpImageCrop(image: ArrayBuffer, croppingDetails: Crop, 
     console.log('Cropping Image...')
     
     const croppedImage = await sharp(image)
-        .resize({width:originalResolution.width, height:originalResolution.height})
+        .resize({width:originalResolution.width, height:originalResolution.height,fit:'contain'})
         .extract({
             left: left,
             top: top,
