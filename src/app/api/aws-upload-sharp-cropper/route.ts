@@ -85,12 +85,12 @@ export async function POST(request: NextRequest) {
 
     const responses = await Promise.all(
       files.map(async (file) => {
-        console.log('uploading Image...')
+        console.log('Processing Image...')
         const arrayBuffer = await file.arrayBuffer();
         const Body = await sharpImageCrop(arrayBuffer,imageCrop,originalResolution,250,200)
-        const Key = `${galleryId}/${file.name}-${newFileId}`;
+        const Key = `${galleryId}/${newFileId}-${file.name}`;
 
-        console.log('Sending Image to AWS...')
+        console.log('Uploading to AWS...')
         // Upload the file to S3
         await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
 
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
         const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
 
         // Register these files in the database
-        const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId, file.name, file.type, file.size, newFileId);
+        const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId, file.name, file.type, Body.byteLength, newFileId);
         uploadCount++;
         galleryFiles.push(databaseResult);
         return fileUrl;
