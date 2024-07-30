@@ -46,14 +46,18 @@ export async function sharpImageCrop(image: ArrayBuffer, croppingDetails: Crop, 
         })
         .toBuffer()
 
+    /*
     
-    console.log('Resizing and Optimizing Image...')
-    const optimizedImage = sharp(croppedImage)
+       console.log('Resizing and Optimizing Image...')
+        const optimizedImage = sharp(croppedImage)
         .resize({ width: finalWidth, height: finalHeight })
         .webp({ quality: 80 }) // You can adjust the quality as needed
         .toBuffer()
 
-    return optimizedImage
+    
+    */
+ 
+    return croppedImage
 
    
 }
