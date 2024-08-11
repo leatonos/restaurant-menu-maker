@@ -183,7 +183,7 @@ export default function ImageCropper(props:MyProps) {
       setSaveBtnState(true);
       setSaveBtnText("Uploading Image...")
       //const imageBlob = await captureImage(canvas);
-      setLogStatus('Attepmting sending image')
+      setLogStatus('Attepmting sending image...')
       //const result:resultType = await uploadImage(imageBlob);
       const result:resultType = await uploadOriginalImage(props.imgFile);
       setLogStatus(JSON.stringify(result))
@@ -250,8 +250,8 @@ export default function ImageCropper(props:MyProps) {
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
                     aspect={aspect}
-                    minWidth={200}
-                    minHeight={195}
+                    minWidth={250}
+                    minHeight={200}
                     // circularCrop
                   >
                     <img

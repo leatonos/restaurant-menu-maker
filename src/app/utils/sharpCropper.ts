@@ -1,63 +1,59 @@
-import sharp from 'sharp'
-import { Crop } from 'react-image-crop'
-import { Resolution } from '../types/types'
+import sharp from 'sharp';
+import { Crop } from 'react-image-crop';
+import { Resolution } from '../types/types';
 
 /**
- * Gets an ArrayBuffer and crops the image returns a Buffer
+ * Gets an ArrayBuffer and crops the image, then returns a Buffer
  * you can use this buffer to send it to AWS
  * 
  * @param image 
- * @param croppingDetails 
- * @param width 
- * @param height 
+ * @param CroppingDetails 
+ * @param originalResolution 
+ * @param finalWidth 
+ * @param finalHeight 
  * 
  * @returns 
  */
-export async function sharpImageCrop(image: ArrayBuffer, croppingDetails: Crop, originalResolution:Resolution, finalWidth:number, finalHeight:number) {
+export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, originalResolution: Resolution, finalWidth: number, finalHeight: number) {
+    try {
+        console.log('Original Resolution');
+        console.log(originalResolution);
+        console.log('Cropping:');
+        console.log(CroppingDetails);
 
+        const left = Math.round(CroppingDetails.x);
+        const top = Math.round(CroppingDetails.y);
+        const croppingWidth = Math.round(CroppingDetails.width);
+        const croppingHeight = Math.round(CroppingDetails.height);
 
-    console.log('Original Resolution')
-    console.log(originalResolution)
-    console.log('Cropping:')
-    console.log(croppingDetails)
+        console.log('Cropping Image...');
+        const croppedImage = await sharp(image)
+            .resize({ width: originalResolution.width, height: originalResolution.height })
+            .extract({
+                left: left,
+                top: top,
+                width: croppingWidth,
+                height: croppingHeight
+            })
+            .toBuffer();
 
-    const left = Math.round(croppingDetails.x)
-    const top = Math.round(croppingDetails.y)
-    const croppingWidth = Math.round(croppingDetails.width)
-    const croppingHeight = Math.round(croppingDetails.height)
+        console.log('Resizing and Optimizing Image...');
+        const optimizedImage = await sharp(croppedImage)
+            .resize({ width: finalWidth, height: finalHeight })
+            .webp({ quality: 100 }) // You can adjust the quality as needed
+            .toBuffer();
 
-    const coords = {
-        left: left,
-        top: top,
-        width: croppingWidth,
-        height: croppingHeight
+        const imageSize = Buffer.byteLength(optimizedImage);
+        console.log(`Optimized Image Size: ${imageSize} bytes`);
+
+        return optimizedImage;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error processing image:', error);
+            throw new Error(`Error processing image: ${error.message}`);
+        } else {
+            console.error('Unknown error processing image:', error);
+            throw new Error('Unknown error processing image');
+        }
     }
-
-
-    console.log('Cropping Image...')
-    
-    const croppedImage = await sharp(image)
-        .resize({width:originalResolution.width, height:originalResolution.height,fit:'contain'})
-        .extract({
-            left: left,
-            top: top,
-            width: croppingWidth,
-            height: croppingHeight
-        })
-        .toBuffer()
-
-    /*
-    
-       console.log('Resizing and Optimizing Image...')
-        const optimizedImage = sharp(croppedImage)
-        .resize({ width: finalWidth, height: finalHeight })
-        .webp({ quality: 80 }) // You can adjust the quality as needed
-        .toBuffer()
-
-    
-    */
- 
-    return croppedImage
-
-   
 }

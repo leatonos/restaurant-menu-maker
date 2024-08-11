@@ -85,23 +85,36 @@ export async function POST(request: NextRequest) {
 
     const responses = await Promise.all(
       files.map(async (file) => {
-        console.log('Processing Image...')
-        const arrayBuffer = await file.arrayBuffer();
-        const Body = await sharpImageCrop(arrayBuffer,imageCrop,originalResolution,250,200)
-        const Key = `${galleryId}/${newFileId}-${file.name}`;
 
-        console.log('Uploading to AWS...')
-        // Upload the file to S3
-        await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
+        try{
 
-        // Construct the URL for the uploaded file
-        const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
+          console.log('Processing Image...')
+          const arrayBuffer = await file.arrayBuffer();
+          const Body = await sharpImageCrop(arrayBuffer,imageCrop,originalResolution,250,200)
+          const Key = `${galleryId}/${newFileId}-${file.name}`;
 
-        // Register these files in the database
-        const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId, file.name, file.type, Body.byteLength, newFileId);
-        uploadCount++;
-        galleryFiles.push(databaseResult);
-        return fileUrl;
+          console.log('Uploading to AWS...')
+          // Upload the file to S3
+          await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
+
+          // Construct the URL for the uploaded file
+          const fileUrl = `https://${Bucket}.s3.amazonaws.com/${encodeURIComponent(Key)}`;
+
+          // Register these files in the database
+          const databaseResult = await updateGalleryDatabase(fileUrl, ownerId, galleryId, file.name, file.type, Body.byteLength, newFileId);
+          uploadCount++;
+          galleryFiles.push(databaseResult);
+          return fileUrl;
+
+        }catch (error) {
+          if (error instanceof Error) {
+            console.error('Error processing file:', error);
+            throw new Error(`Error processing file ${file.name}: ${error.message}`);
+          } else {
+            console.error('Unknown error processing file:', error);
+            throw new Error(`Unknown error processing file ${file.name}`);
+          }
+        }
       })
     );
 
