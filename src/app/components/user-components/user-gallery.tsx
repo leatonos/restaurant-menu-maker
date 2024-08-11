@@ -8,7 +8,6 @@ import { getGallery } from '@/app/server-actions/get-gallery';
 import { Gallery, GalleryFile } from '@/app/types/types';
 import ImageCropper from "./image-cropper";
 
-
 //Image Imports
 import Image from 'next/image';
 import DeleteImage from '../../../../public/trash.svg'
@@ -29,8 +28,6 @@ interface MyProps {
 interface GalleryItemProps {
     item:GalleryFile
 }
-
-
 
 export default function UserGallery( props: MyProps ){
     

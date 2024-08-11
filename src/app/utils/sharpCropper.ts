@@ -37,6 +37,7 @@ export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, 
             })
             .toBuffer();
 
+        /*
         console.log('Resizing and Optimizing Image...');
         const optimizedImage = await sharp(croppedImage)
             .resize({ width: finalWidth, height: finalHeight })
@@ -45,8 +46,8 @@ export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, 
 
         const imageSize = Buffer.byteLength(optimizedImage);
         console.log(`Optimized Image Size: ${imageSize} bytes`);
-
-        return optimizedImage;
+        */
+        return croppedImage;
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error processing image:', error);
