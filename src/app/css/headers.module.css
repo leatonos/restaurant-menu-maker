@@ -1,5 +1,5 @@
 .userHeader {
-    background-color: #333;
+    background-color: var(--primaryColor);
     color: #fff;
     display: flex;
     justify-content: space-between;
@@ -8,8 +8,8 @@
   }
 
 .homeHeader {
-    background-color: #333;
-    color: #fff;
+    background-color: var(--primaryColor);
+    color: var(--thirdColor);
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -6,6 +6,9 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from  'next/navigation';
 import HomeHeader from "./components/home-page-header";
 
+//Images imports
+import MainLogo from "../../public/logos/Menu Factory - Horizontal.svg"
+
 export default async function Home() {
 
   const session = await getSession();
@@ -18,9 +21,18 @@ export default async function Home() {
 
 
   return (
-    <main style={{color:'white'}}>
+    <main>
       <HomeHeader/>
-      <h1>Restaurant Menu Maker is a free platform <br/>to create online and responsive menus for your restaurant</h1>
+      <div className={styles.mainContainer}>
+        <section className={styles.firstContainer}>
+          <div className={styles.titleBox}>
+            <h1>Restaurant Menu Maker is a free platform <br/>to create online and responsive menus for your restaurant</h1>
+          </div>
+          <div className={styles.logoBox}>
+            <Image src={MainLogo} className={styles.mainLogo} alt={""}/>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }

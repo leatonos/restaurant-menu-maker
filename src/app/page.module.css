@@ -5,6 +5,28 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  padding: 15px;
+}
+
+.mainContainer{
+  padding: 10px;
+}
+
+.firstContainer{
+  display: flex;
+  flex-direction: row;
+}
+.firstContainer{
+  height: calc(100vh - 120px);
+}
+.titleBox{
+  width: 50%;
+}
+.logoBox{
+  width: 50%;
+}
+.mainLogo{
+  width: 100%;
 }
 
 .description {
