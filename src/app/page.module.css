@@ -14,19 +14,26 @@
 
 .firstContainer{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  padding: 2em;
 }
 .firstContainer{
   height: calc(100vh - 120px);
 }
 .titleBox{
-  width: 50%;
+  width: 100%;
+  text-align: center;
 }
 .logoBox{
-  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 .mainLogo{
   width: 100%;
+  max-width: 650px;
+  height: auto;
 }
 
 .description {

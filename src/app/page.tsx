@@ -25,11 +25,11 @@ export default async function Home() {
       <HomeHeader/>
       <div className={styles.mainContainer}>
         <section className={styles.firstContainer}>
-          <div className={styles.titleBox}>
-            <h1>Restaurant Menu Maker is a free platform <br/>to create online and responsive menus for your restaurant</h1>
-          </div>
           <div className={styles.logoBox}>
             <Image src={MainLogo} className={styles.mainLogo} alt={""}/>
+          </div>
+          <div className={styles.titleBox}>
+            <h1>Create online and responsive menus for free</h1>
           </div>
         </section>
       </div>
