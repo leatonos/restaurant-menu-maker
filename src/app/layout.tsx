@@ -9,15 +9,11 @@ import { MantineProvider } from "@mantine/core";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Restaurant Menu Maker",
-  description: "Restaurant Menu Maker is a free platform to create online and responsive menus for your restaurant",
+  title: "Menu Factory",
+  description: "Menu Factory is a free online platform to create online and responsive menus ",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>){
   return (
     <html lang="en">
       <UserProvider>

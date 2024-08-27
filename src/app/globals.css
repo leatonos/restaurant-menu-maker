@@ -33,11 +33,16 @@ body {
 
 h1,h2,h3, button{
   font-family: Gilroy-Bold;
-  color:  var(--primaryColor);
+  color: var(--primaryColor);
 }
 
-p,a{
+a{
   font-family: Gilroy-Medium;
+  color: var(--primaryColor);
+}
+
+p{
+  font-family: Gilroy-Regular;
 }
 
 body {
