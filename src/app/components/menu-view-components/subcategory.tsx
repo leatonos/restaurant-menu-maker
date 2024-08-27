@@ -48,8 +48,8 @@ export default function SubcategoryView(props:{subcategoryInfo:Subcategory, menu
   return (
     <div id={props.subcategoryInfo.name} className={styles.subcategoryContainer} style={{backgroundColor: menuStyle.secondaryColor}}>
         <div className={styles.subcategoryDetails} style={{color:fontColor}}>
-            <h3 className={styles.subcategoryTitle}>{props.subcategoryInfo.name}</h3>
-            <p>{props.subcategoryInfo.description}</p>
+            <h3 style={{color:fontColor}} className={styles.subcategoryTitle}>{props.subcategoryInfo.name}</h3>
+            <p style={{color:fontColor}}>{props.subcategoryInfo.description}</p>
         </div>
         <div className={styles.itemsContainer}>
             {items.map((item, index)=>(

@@ -46,8 +46,8 @@ export default function CategoryView(props:{categoryInfo:MenuCategory, menuStyle
   return (
     <div className={styles.categoryContainer} style={{backgroundColor:menuStyle.primaryColor}}>
         <div className={styles.categoryDetails} style={{color:fontColor}}>
-            <h2 className={styles.categoryTitle}>{props.categoryInfo.name}</h2>
-            <p>{props.categoryInfo.description}</p>
+            <h2 style={{color:fontColor}} className={styles.categoryTitle}>{props.categoryInfo.name}</h2>
+            <p style={{color:fontColor}}>{props.categoryInfo.description}</p>
         </div>
         <div className={styles.subcategoriesContainer}>
             {subcategories.map((subcategory, index)=>(

@@ -34,7 +34,7 @@ function CreateRestaurantButton() {
       <a href="user/restaurant-creator" className={styles.createButton}>
       <button className={styles.createButton}>
         <Image className={styles.createIcon} src={AddImage} alt={""}/>
-        <p>Create Menu</p>
+        <h3>Create Menu</h3>
       </button>
       </a>
     </div>
@@ -54,7 +54,6 @@ export default async function UserHome() {
   return (
     <main >
       <UserHeader/>
-      <h1 style={{color:"white"}}>User Dashboard</h1>
       <Suspense fallback={<div>Loading menus...</div>}>
         <RestaurantsList ownerId={user.sub} />
       </Suspense>
