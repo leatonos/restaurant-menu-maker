@@ -13,7 +13,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 10em;
   padding: 10px;
 }
 .mainWrapper{
@@ -23,7 +22,8 @@
 .firstContainer{
   display: flex;
   flex-direction: column;
-  padding: 2em;
+  justify-content: center;
+  padding: 1em;
   height: calc(100vh - 120px);
 }
 .buttonOptions{
@@ -56,6 +56,7 @@
 
 .aboutContainer{
   display: flex;
+  padding: 1em;
 }
 
 .textBox{
@@ -63,6 +64,9 @@
 }
 
 .animationBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   width: 60%;
 }
 

@@ -49,10 +49,13 @@ export default async function Home() {
             </div>
           </section>
           <section>
-            <h2>How does it work?</h2>
+           
             <div className={styles.aboutContainer}>
               <div className={styles.textBox}>
-                <p>Create online and responsive menus for free</p>
+                <h2>How does it work?</h2>
+                <p>Create online and responsive menus for free, 
+                  using our menu editor you can organize your menu items by category and subcategory. </p>
+                <p>Each item may have name, description a price and a photo.</p>
               </div>
               <div className={styles.animationBox}>
                 <PhoneLottieAnimation/>

@@ -1,20 +1,16 @@
 "use client"
 //Lottie Import
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import Lottie from "lottie-react";
+import PhoneAnimation from './Phone_Animationb.json'
 import { useState,useEffect, useRef } from 'react';
 
 export default async function PhoneLottieAnimation() {
 
-   
-  
-
   return (
-        <DotLottieReact
-            src='/lottie-animations/Phone_Animation.json'
-            autoResizeCanvas={true}
-            autoplay
-            loop
-            mode='bounce'
-         />
+      <Lottie 
+        animationData={PhoneAnimation}
+        style={{width:'100%', maxWidth:'400px'}}
+        loop={true}
+        />
   );
 } 
