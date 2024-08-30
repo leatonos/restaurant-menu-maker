@@ -8,8 +8,14 @@ import HomeHeader from "./components/home-page-header";
 
 //Images imports
 import MainLogo from "../../public/logos/Menu Factory - Horizontal.svg"
+import AppImage from "../../public/about-images/app-image-one.svg"
+
+//Lottie Import
+import PhoneLottieAnimation from "../../public/lottie-animations/phone-animation-component";
+
 
 export default async function Home() {
+
 
   const session = await getSession();
   
@@ -20,18 +26,40 @@ export default async function Home() {
   }
 
 
+
   return (
     <main>
       <HomeHeader/>
       <div className={styles.mainContainer}>
-        <section className={styles.firstContainer}>
-          <div className={styles.logoBox}>
-            <Image src={MainLogo} className={styles.mainLogo} alt={""}/>
-          </div>
-          <div className={styles.titleBox}>
-            <h1>Create online and responsive menus for free</h1>
-          </div>
-        </section>
+        <div className={styles.mainWrapper}>
+          <section className={styles.firstContainer}>
+            <div className={styles.logoBox}>
+              <Image src={MainLogo} className={styles.mainLogo} alt={""}/>
+            </div>
+            <div className={styles.titleBox}>
+              <h1>Create online and responsive menus for free</h1>
+            </div>
+            <div className={styles.buttonOptions}>
+              <button className="primary-btn">
+                <a href="/api/auth/login" className="bold-font" >Create account</a>
+              </button>
+              <button className="secondary-btn">
+                <a href="/api/auth/login" className="bold-font" >Learn More</a>
+              </button>
+            </div>
+          </section>
+          <section>
+            <h2>How does it work?</h2>
+            <div className={styles.aboutContainer}>
+              <div className={styles.textBox}>
+                <p>Create online and responsive menus for free</p>
+              </div>
+              <div className={styles.animationBox}>
+                <PhoneLottieAnimation/>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </main>
   );

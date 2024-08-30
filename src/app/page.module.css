@@ -9,20 +9,34 @@
 }
 
 .mainContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10em;
   padding: 10px;
 }
-
+.mainWrapper{
+  max-width: 1600px;
+  width: 100%;
+}
 .firstContainer{
   display: flex;
   flex-direction: column;
   padding: 2em;
-}
-.firstContainer{
   height: calc(100vh - 120px);
 }
+.buttonOptions{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .titleBox{
   width: 100%;
   text-align: center;
+  margin-bottom: 25px;
 }
 .logoBox{
   display: flex;
@@ -35,6 +49,23 @@
   max-width: 650px;
   height: auto;
 }
+
+.aboutImage{
+  width: 100%;
+}
+
+.aboutContainer{
+  display: flex;
+}
+
+.textBox{
+  width: 40%;
+}
+
+.animationBox{
+  width: 60%;
+}
+
 
 .description {
   display: inherit;

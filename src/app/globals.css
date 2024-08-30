@@ -81,6 +81,35 @@ input[type="file"] {
   background-color: rgba(0, 0, 0, 0);
 }
 
+.primary-btn{
+  font-family: Gilroy-Bold;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: var(--primaryColor);
+  color: var(--thirdColor);
+  border: solid;
+  border-color: #fd5f2f;
+  border-radius: 2px;
+  padding: 12px;
+  margin: 0 5px;
+}
+
+.secondary-btn{
+  font-family: Gilroy-Bold;
+  display: inline-block;
+  box-sizing: border-box;
+  background-color: var(--thirdColor);
+  color:var(--primaryColor);
+  border: solid;
+  border-radius: 2px;
+  padding: 12px;
+  margin: 0 5px;
+}
+
+.bold-font{
+  font-family: Gilroy-Bold;
+}
+
 @media (prefers-color-scheme: dark) {
  
 }
