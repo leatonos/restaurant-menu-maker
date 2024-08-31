@@ -71,6 +71,7 @@
 
 .textBox{
   width: 40%;
+  padding: 3em;
 }
 
 .animationBox{
@@ -281,6 +282,36 @@
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
+  }
+  .horizontalContainer{
+    margin-bottom:0px;
+  }
+  .animationBox{
+    width: 100%;
+    max-width: 300px;
+  }
+  .textBox{
+    width: 100%;
+    padding: 0;
+  }
+}
+
+@media (max-width: 700px){
+  .firstContainer{
+    height: calc(100vh - 250px);
+  }
+  .horizontalContainer{
+    flex-direction: column;
+    margin-bottom:0px;
+  }
+  .animationBox{
+    width: 100%;
+    max-width: 300px;
+  }
+  .textBox{
+    width: 100%;
+    padding: 0;
+    margin-bottom: 25px;
   }
 }
 
