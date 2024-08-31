@@ -69,7 +69,7 @@ export default async function Home() {
           <section className={styles.horizontalContainer}>  
               <div className={styles.textBox}>
                 <h3 className={styles.subTitle}>How does it work?</h3>
-                <p>After creating you <span><a href="/api/auth/login" className="bold-font orange-text"> creating your account</a></span> 
+                <p>After creating you <span><a href="/api/auth/login" className="bold-font orange-text"> creating your account </a></span> 
                 you can create your first menu and then start editing it</p>
                 <br></br>
                 <p>Customize the colors and logo of your menu and then start adding products. To add products you must organize them inside categories and subcategories</p>
