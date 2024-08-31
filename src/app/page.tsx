@@ -12,14 +12,18 @@ import AppImage from "../../public/about-images/app-image-one.svg"
 
 //Lottie Import
 import PhoneLottieAnimation from "../../public/lottie-animations/phone-animation-component";
+import DiagramLottieAnimation from "../../public/lottie-animations/diagram-animation-component";
 
 
 export default async function Home() {
 
 
   const session = await getSession();
+  let user = null
   
-  const user = session?.user
+  if(session){
+    user = session.user
+  }
 
   if(user){
    return redirect('/user')
@@ -48,19 +52,35 @@ export default async function Home() {
               </button>
             </div>
           </section>
-          <section>
-           
-            <div className={styles.aboutContainer}>
+          <section className={styles.horizontalContainer}>  
               <div className={styles.textBox}>
-                <h2>How does it work?</h2>
-                <p>Create online and responsive menus for free, 
-                  using our menu editor you can organize your menu items by category and subcategory. </p>
-                <p>Each item may have name, description a price and a photo.</p>
+                <h2 className={styles.subTitle}>What is menu Factory</h2>
+                <p>Menu factory is a easy to use and simple platform where you can create an online menu for your business like bars, and restaurants.
+                  But you are also free to use your imagination and creativity to other use cases.</p>
+                <br></br>
+                <p>Once you created your menu, you can share with your customers using QR codes, tablets and any other screen to showcase your products.</p>
+                <br></br>
+                <p>Feel free to change prices, descriptions, names and photos of your products as many times as you want without need to reprint your menu over and over</p>
               </div>
               <div className={styles.animationBox}>
                 <PhoneLottieAnimation/>
               </div>
-            </div>
+          </section>
+          <section className={styles.horizontalContainer}>  
+              <div className={styles.textBox}>
+                <h3 className={styles.subTitle}>How does it work?</h3>
+                <p>After creating you <span><a href="/api/auth/login" className="bold-font orange-text"> creating your account</a></span> 
+                you can create your first menu and then start editing it</p>
+                <br></br>
+                <p>Customize the colors and logo of your menu and then start adding products. To add products you must organize them inside categories and subcategories</p>
+                <br></br>
+                <p>This hierarchy will help your guests or customers to navigate through your menu, and quickly find the products they are looking for.</p>
+                <br></br>
+                <p>After you are finished save your work and share with everyone!</p>
+              </div>
+              <div className={styles.animationBox}>
+                <DiagramLottieAnimation/>
+              </div>
           </section>
         </div>
       </div>

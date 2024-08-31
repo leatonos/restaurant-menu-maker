@@ -110,6 +110,14 @@ input[type="file"] {
   font-family: Gilroy-Bold;
 }
 
+.orange-text{
+  color:var(--primaryColor)
+}
+
+.white-text{
+  color: var(--thirdColor)
+}
+
 @media (prefers-color-scheme: dark) {
  
 }

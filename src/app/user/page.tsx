@@ -44,12 +44,19 @@ function CreateRestaurantButton() {
 export default async function UserHome() {
 
   const session = await getSession() as Session
-  const user = session.user
-  const userRestaurants = await getRestaurantsFromUser(session.user.sub)
+  let user = null
+
+  if(session){
+    user = session.user
+  }
 
   if(!user){
     redirect('/')
   }
+
+  const userRestaurants = await getRestaurantsFromUser(session.user.sub)
+
+
 
   return (
     <main >

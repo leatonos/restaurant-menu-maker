@@ -1,3 +1,11 @@
+/* Fonts */
+
+.subTitle{
+  font-size: 3em;
+  margin-bottom: .5em;
+}
+
+
 .main {
   display: flex;
   flex-direction: column;
@@ -54,9 +62,11 @@
   width: 100%;
 }
 
-.aboutContainer{
+.horizontalContainer{
   display: flex;
+  align-items: center;
   padding: 1em;
+  margin-bottom: 250px;
 }
 
 .textBox{
