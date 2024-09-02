@@ -42,9 +42,10 @@ export default function RestaurantMenuCreator() {
       });
 
       if (!response.ok) {
-          throw new Error('Failed to create restaurant');
+          throw new Error('Failed to delete account');
       }else{
        console.log('User deleted!')
+       router.push('/api/auth/logout')
       }
   } catch (error) {
       console.error('Error creating restaurant:', error);
