@@ -110,6 +110,15 @@ input[type="file"] {
   font-family: Gilroy-Bold;
 }
 
+.orange-button{
+  padding: 15px;
+  border: none;
+  border-radius: 3px;
+  background-color: #fd5f2f;
+  color: #fff6e7;
+  cursor: pointer;
+}
+
 .orange-text{
   color:var(--primaryColor)
 }

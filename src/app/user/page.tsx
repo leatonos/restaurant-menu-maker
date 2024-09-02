@@ -64,6 +64,9 @@ export default async function UserHome() {
       <Suspense fallback={<div>Loading menus...</div>}>
         <RestaurantsList ownerId={user.sub} />
       </Suspense>
+      <a href="user/delete-account">
+        <button className="orange-button">Delete Account</button>
+      </a>
     </main>
   );
 }

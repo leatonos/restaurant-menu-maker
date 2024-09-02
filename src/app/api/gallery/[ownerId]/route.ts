@@ -5,7 +5,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 // Replace these with your actual connection details
 const uri = process.env.MONGODB_URI as string
 const dbName = "TheOnlineMenu";
-const collectionName = "Gallery";
+const collectionName = "Galleries";
 
 import { NextRequest, NextResponse } from 'next/server'
  

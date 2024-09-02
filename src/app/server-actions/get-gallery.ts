@@ -39,8 +39,6 @@ export async function getGallery(ownerId: string)  {
     
     return result
 
-
-
   } catch (error) {
     console.error(error);
    
