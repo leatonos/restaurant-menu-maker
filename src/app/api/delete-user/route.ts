@@ -31,7 +31,14 @@ interface accessTokenData {
     token_type: string;
 }
 
-async function deleteUserFromAuthZero (clientId:string, clientSecret:string){
+/**
+ * Removes user from Auth0 database
+ * @param clientId 
+ * @param clientSecret 
+ * @returns 
+ */
+
+async function deleteUserFromAuthZero (clientId:string, clientSecret:string, userId:string){
 
   try {
     const tokenRequestBody = {
@@ -52,9 +59,8 @@ async function deleteUserFromAuthZero (clientId:string, clientSecret:string){
        console.log(authTokenRequest.ok)
        console.log(authResponse)
 
-
        if(authResponse){
-           const deleteRequest = await fetch(`https://dev-gf8pee0qy43qs7d8.us.auth0.com/api/v2/users/${clientId}`,
+           const deleteRequest = await fetch(`https://dev-gf8pee0qy43qs7d8.us.auth0.com/api/v2/users/${userId}`,
                {method: 'DELETE',
                headers: {'content-type': 'application/json',
                authorization: `Bearer ${authResponse.access_token}`}
@@ -72,6 +78,11 @@ async function deleteUserFromAuthZero (clientId:string, clientSecret:string){
 
 }
 
+/**
+ * 
+ * @param mongoURI 
+ * @param userId 
+ */
 async function deleteUserFromDatabase(mongoURI:string, userId:string) {
   const mongoClient = await MongoClient.connect(mongoURI);
 
@@ -79,7 +90,6 @@ async function deleteUserFromDatabase(mongoURI:string, userId:string) {
 
     const db = mongoClient.db(dbName);
     const userCol = db.collection(userColletion);
-    const galleryCol = db.collection(galleryColletion);
     
     // Deleting User Record
     console.log('Deleting user record...')
@@ -92,20 +102,59 @@ async function deleteUserFromDatabase(mongoURI:string, userId:string) {
       console.log("No users found");
     }
 
-    //Getting galleryId
-    const galleryFilter = { galleryOwner: userId };
-    const userGallery = await galleryCol.findOneAndDelete(galleryFilter)
+  } catch (error) {
+    console.error(error);
+  } finally {
+    await mongoClient.close();
+  }
 
-    const galleryId = userGallery?._id
+}
 
-    if(galleryId){
-      console.log('Gallery record deleted')
-      return galleryId.toString()
-    }else{
-      console.log('Gallery not found')
-    }
+async function deleteGalleryFromUser(mongoURI: string, userId:string){
 
+  const mongoClient = await MongoClient.connect(mongoURI);
+
+  try {
+
+    const db = mongoClient.db(dbName);
+    const galleryCol = db.collection(galleryColletion);
+
+  //Getting galleryId
+  const galleryFilter = { galleryOwner: userId };
+  const userGallery = await galleryCol.findOneAndDelete(galleryFilter)
+
+  const galleryId = userGallery?._id
+
+  if(galleryId){
+    console.log('Gallery record deleted')
+    return galleryId.toString()
+  }else{
+    console.log('Gallery not found')
+  }
+  }catch(error){
+    console.error('Error deleting folder:', error)
+  }
+}
+
+async function deleteAllRestaurantsFromUser(mongoURI:string, userId:string) {
+
+  const mongoClient = await MongoClient.connect(mongoURI);
+
+  try {
+
+    const db = mongoClient.db(dbName);
+    const restCol = db.collection(restaurantColletion);
     
+    // Deleting User Record
+    console.log('Deleting user record...')
+    const restaurantFilter = { ownerId: userId };
+    const deleteRestaurantResult = await restCol.deleteMany(restaurantFilter)
+
+    if (deleteRestaurantResult.deletedCount > 0) {
+      console.log("Successfully deleted user from mongo database");
+    } else {
+      console.log("No users found");
+    }
 
   } catch (error) {
     console.error(error);
@@ -146,8 +195,6 @@ async function deleteGalleryFiles(galleryId:string){
 
 }
 
-
-
 export async function POST(request: Request)  {
 
     const clientId = process.env.AUTH0_CLIENT_ID as string
@@ -156,15 +203,23 @@ export async function POST(request: Request)  {
     const data:deleteRequestData = await request.json()
     console.log(data.userId)
 
+    // Deleting user from Auth0
+    await deleteUserFromAuthZero(clientId,clientSecret,data.userId)
     
-    const deleteFromAuthZeroResult = await deleteUserFromAuthZero(clientId,clientSecret)
-    const galleryDatabaseRequest = await deleteUserFromDatabase(uri,data.userId)
-    if(galleryDatabaseRequest){
-      const requestDeleteFolder = await deleteGalleryFiles(galleryDatabaseRequest)
-    }
+    // Deleting user's record from MongoDB
+    await deleteUserFromDatabase(uri,data.userId)
 
-      
-        
+    // Deleting user's restaurants from MongoDB
+    await deleteAllRestaurantsFromUser(uri,data.userId)
+    
+    // Deleting user's Gallery record from MongoDB
+    const userGalleryId = await deleteGalleryFromUser(uri, data.userId)
+    
+    //If Gallery record found in MongoDB also delete files from S3 Bucket
+    if(userGalleryId){
+      await deleteGalleryFiles(userGalleryId)
+    }
+    
     return NextResponse.json({ message: `API EXECUTED PROCEED`}, { status: 200 })
      
 }
