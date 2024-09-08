@@ -53,8 +53,8 @@ export default async function Home() {
             </div>
           </section>
           <section className={styles.horizontalContainer}>  
-              <div className={styles.textBox}>
-                <h2 className={styles.subTitle}>What is menu Factory</h2>
+              <div className="white-text-box orange-text">
+                <h2 className='subTitle orange-text'>What is menu Factory</h2>
                 <p>Menu factory is a easy to use and simple platform where you can create an online menu for your business like bars, and restaurants.
                   But you are also free to use your imagination and creativity to other use cases.</p>
                 <br></br>
@@ -67,9 +67,9 @@ export default async function Home() {
               </div>
           </section>
           <section className={styles.horizontalContainer}>  
-              <div className={styles.textBox}>
-                <h3 className={styles.subTitle}>How does it work?</h3>
-                <p>After you <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="bold-font orange-text"> create your account </a></span> 
+              <div className='orange-text-box white-text'>
+                <h3 className='subTitle yellow-text'>How does it work?</h3>
+                <p>After you <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="bold-font"> create your account </a></span> 
                 you can start building your first menu and edit it.</p>
                 <br></br>
                 <p>Customize the colors and logo of your menu and then start adding products. To add products you must organize them inside categories and subcategories</p>

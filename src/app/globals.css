@@ -24,6 +24,8 @@
   src: url(../app/fonts/Gilroy-Regular.ttf);
 }
 
+/* Restaurant View */
+
 html,
 body {
   max-width: 100vw;
@@ -42,7 +44,7 @@ a{
 }
 
 p{
-  font-family: Gilroy-Regular;
+  font-family: Gilroy-Medium;
 }
 
 body {
@@ -110,17 +112,50 @@ input[type="file"] {
   font-family: Gilroy-Bold;
 }
 
+.subTitle{
+  font-size: 3em;
+  font-family: Gilroy-Bold;
+  margin-bottom: .5em;
+}
+
+.white-text-box{
+  background-color: var(--thirdColor);
+  width: 40%;
+  padding: .3em;
+  border-radius: 12px;
+}
+
+.orange-text-box{
+  background-color: var(--primaryColor);
+  width: 40%;
+  padding: 3em;
+  border-radius: 12px;
+}
+
+.yellow-text-box{
+  background-color: var(--secondaryColor);
+  width: 40%;
+  padding: 3em;
+  border-radius: 4px;
+}
+
 .orange-button{
   padding: 15px;
   border: none;
   border-radius: 3px;
-  background-color: #fd5f2f;
-  color: #fff6e7;
+  background-color: var(--primaryColor);
+  color: var(--thirdColor);
   cursor: pointer;
 }
 
 .orange-text{
-  color:var(--primaryColor)
+  color:var(--primaryColor);
+  font-family: Gilroy-Medium;
+  
+}
+
+.yellow-text{
+  color: var(--secondaryColor);
 }
 
 .white-text{

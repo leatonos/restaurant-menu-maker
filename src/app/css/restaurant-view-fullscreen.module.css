@@ -1,3 +1,6 @@
+/* Fonts */
+
+
 /* Menu Header */
 .menuHeader{
     display: flex;
@@ -8,7 +11,15 @@
     left: 0;
     z-index: 1000;
     width: 100%;
-    height: 60px;
+    height: 110px;
+    padding: 10px;
+}
+
+.topHeader{
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
 }
 
 .menuContainer{
@@ -19,12 +30,7 @@
     scroll-behavior: smooth;
 }
 
-.topHeader{
-    display: flex;
-    justify-content: center;
-    height: 60px;
-    width: 100%;
-}
+
 
 .navContainer {
     display: flex;
@@ -76,7 +82,6 @@
 }
 
 /* Subcategories Section */
-
 .subcategoryContainer{
     padding: 10px;
     margin: 20px 0px;
@@ -87,9 +92,6 @@
     margin-bottom: 25px;
 }
 
-.subcategoryTitle{
-
-}
 
 .itemsContainer{
 }
@@ -158,6 +160,13 @@
         display: block;
         width: 25%;
         height: 100vh;
+        padding: 35px 15px;
+    }
+    .topHeader{
+        display: flex;
+        justify-content: center;
+        height: 200px;
+        width: 100%;
     }
     .menuContainer{
         margin-top: 0px;
@@ -166,6 +175,7 @@
     }
     .navContainer {
         display: flex;
+        flex-direction: column;
         padding: 13px 10px;
         width: 100%;
         overflow-x: hidden; 
@@ -180,6 +190,9 @@
     .navItem{
         display: inline-block;
         padding: 10px 0px;
+        font-size: 1.45em;
+        text-align: center;
+        width: 100%;
     }
 
     .itemsContainer{
@@ -210,5 +223,14 @@
         justify-content: center;
         width: 33%;
     }
+
+    /* Titles */
+    .subcategoryTitle{
+        font-size: 1.45em;
+    }
+    .categoryTitle{
+        font-size: 1.75em;
+    }
+    
     
 }

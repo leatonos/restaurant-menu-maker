@@ -1,10 +1,16 @@
 /* Fonts */
-
-.subTitle{
-  font-size: 3em;
-  margin-bottom: .5em;
+@font-face {
+  font-family: Gilroy-Bold;
+  src: url(../app/fonts/Gilroy-Bold.ttf);
 }
-
+@font-face {
+  font-family: Gilroy-Medium;
+  src: url(../app/fonts/Gilroy-Medium.ttf);
+}
+@font-face {
+  font-family: Gilroy-Regular;
+  src: url(../app/fonts/Gilroy-Regular.ttf);
+}
 
 .main {
   display: flex;
@@ -310,7 +316,7 @@
   }
   .textBox{
     width: 100%;
-    padding: 0;
+    padding: 5px;
     margin-bottom: 25px;
   }
 }

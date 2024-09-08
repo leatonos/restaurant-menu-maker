@@ -17,7 +17,7 @@ export default function MenuView(props:{restaurantInfo:RestaurantMenu}) {
     const categories = menuInfo.menuCategories
 
   return (
-    <div className={menuViewStyles.menuView}>
+    <div className={menuViewStyles.menuView} style={{backgroundColor:menuStyle.backgroundColor}}>
           <MenuHeader restaurantInfo={menuInfo} />
           <div className={menuViewStyles.menuContainer} style={{backgroundColor:menuStyle.backgroundColor}}>
             {categories.map((category,index)=>(
