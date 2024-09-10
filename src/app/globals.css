@@ -4,6 +4,8 @@
   margin: 0;
 }
 
+/* Colors */
+
 :root {
   --primaryColor: #fd5f2f;
   --secondaryColor: #ffcc33;
@@ -161,6 +163,24 @@ input[type="file"] {
 .white-text{
   color: var(--thirdColor)
 }
+
+/* Iframe */
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+.iframe-container {
+  width: 390px; /* Mobile width */
+  height: 844px; /* Mobile height */
+  border: 1px solid #ccc; /* Optional: border to mimic a phone frame */
+  overflow: hidden;
+}
+
+
+
 
 @media (prefers-color-scheme: dark) {
  

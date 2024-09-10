@@ -13,6 +13,7 @@ import AppImage from "../../public/about-images/app-image-one.svg"
 //Lottie Import
 import PhoneLottieAnimation from "../../public/lottie-animations/phone-animation-component";
 import DiagramLottieAnimation from "../../public/lottie-animations/diagram-animation-component";
+import PhoneMockup from "./components/phone-mockup";
 
 
 export default async function Home() {
@@ -65,6 +66,9 @@ export default async function Home() {
               <div className={styles.animationBox}>
                 <PhoneLottieAnimation/>
               </div>
+          </section>
+          <section className={styles.horizontalContainer}>  
+            <PhoneMockup menuLink={"http://localhost:3000/restaurant/66d792507c61318722a589e3"}/>
           </section>
           <section className={styles.horizontalContainer}>  
               <div className='orange-text-box white-text'>

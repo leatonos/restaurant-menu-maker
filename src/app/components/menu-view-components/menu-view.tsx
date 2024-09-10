@@ -15,6 +15,29 @@ export default function MenuView(props:{restaurantInfo:RestaurantMenu}) {
     const menuInfo = props.restaurantInfo
     const menuStyle = menuInfo.menuStyle
     const categories = menuInfo.menuCategories
+  /*
+    useEffect(() => {
+      const anchors = document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
+      
+      anchors.forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = anchor.getAttribute('href')?.substring(1);
+          const targetElement = document.getElementById(targetId || '');
+    
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    
+      return () => {
+        anchors.forEach(anchor => {
+          anchor.removeEventListener('click', () => {});
+        });
+      };
+    }, []);
+    */
 
   return (
     <div className={menuViewStyles.menuView} style={{backgroundColor:menuStyle.backgroundColor}}>

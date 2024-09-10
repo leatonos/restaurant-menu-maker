@@ -33,7 +33,6 @@ export default function MenuNavBar(props:{categories:MenuCategory[],navBarStyle:
     setPageFolder(folderName);
   }, [pageFolder]);
 
-
   
   categories.map((category)=>{
     category.subcategories.map((subcategory)=>{
