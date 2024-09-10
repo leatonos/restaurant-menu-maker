@@ -12,7 +12,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
   return (
     <html lang="en">
       
-          <body>
+          <body style={{overflowY:'hidden'}}>
               {children}
             </body>
     </html>

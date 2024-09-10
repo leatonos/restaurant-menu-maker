@@ -68,7 +68,7 @@ export default async function Home() {
               </div>
           </section>
           <section className={styles.horizontalContainer}>  
-            <PhoneMockup menuLink="https://www.menufactory.org/restaurant/66d792507c61318722a589e3"/>
+            <PhoneMockup menuLink="https://restaurant-menu-maker.vercel.app/restaurant/66d792507c61318722a589e3"/>
           </section>
           <section className={styles.horizontalContainer}>  
               <div className='orange-text-box white-text'>
