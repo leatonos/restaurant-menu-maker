@@ -37,7 +37,7 @@ export default async function Home() {
       <HomeHeader/>
       <div className={styles.mainContainer}>
         <div className={styles.mainWrapper}>
-          <section className={styles.firstContainer}>
+          <section className={styles.verticalContainer}>
             <div className={styles.logoBox}>
               <Image src={MainLogo} className={styles.mainLogo} alt={""}/>
             </div>
@@ -67,8 +67,17 @@ export default async function Home() {
                 <PhoneLottieAnimation/>
               </div>
           </section>
-          <section className={styles.horizontalContainer}>  
-            <PhoneMockup menuLink="https://restaurant-menu-maker.vercel.app/restaurant/66d792507c61318722a589e3"/>
+          <section className={styles.horizontalContainer}>
+            <div>
+                <h2 className='subTitle orange-text'>How does it look like</h2>
+                <p>Here you can see how a menu factory menu look like, feel free to 
+                <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="orange-text bold-font"> create your account </a></span>
+                and start testing how your menu will look like
+                </p>
+            </div>
+            <div className={styles.animationBox}>
+              <PhoneMockup menuId="66d792507c61318722a589e3"/>
+            </div>
           </section>
           <section className={styles.horizontalContainer}>  
               <div className='orange-text-box white-text'>

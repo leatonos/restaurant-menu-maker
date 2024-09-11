@@ -1,57 +1,80 @@
-.phone {
-    position: relative;
-    width: 390px; /* Mobile width */
-    height: 780px; /* Mobile height */
-    border-radius: 36px;
-    background: rgba(20, 20, 20, 1);
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  }
+.phone{
+  display: none;
+}
+.restaurantCard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .iframeContainer {
-    width: 100%;
-    height: 100%;
-    background: white;
-    border-radius: 30px;
-    overflow-y: hidden;
-  }
+.restaurantCardImg{
+  max-width: 250px;
+}
 
-  /* Phone buttons */
-  .phone::before, .phone::after {
-    content: '';
-    position: absolute;
-    background: #333;
-    border-radius: 5px;
-  }
+  @media only screen and (min-width: 900px) {
 
-  .phone::before {
-    width: 60px;
-    height: 5px;
-    top: 7px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+    .restaurantCard{
+      display: none;
+    }
 
+    .phone {
+      display: block;
+      position: relative;
+      width: 380px; /* Mobile width */
+      height: 720px; /* Mobile height */
+      border-radius: 36px;
+      background: rgba(20, 20, 20, 1);
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+  
+    .iframeContainer {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 30px;
+      overflow-y: hidden;
+    }
+  
+    /* Phone buttons */
+    .phone::before, .phone::after {
+      content: '';
+      position: absolute;
+      background: #333;
+      border-radius: 5px;
+    }
+  
+    .phone::before {
+      width: 60px;
+      height: 5px;
+      top: 7px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+  
+  
+    /* Speaker and camera */
+    .speaker {
+      position: absolute;
+      width: 100px;
+      height: 5px;
+      background: #333;
+      border-radius: 10px;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+    .camera {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #333;
+      border-radius: 50%;
+      top: 15px;
+      left: 25px;
+    }
+  
 
-
-  /* Speaker and camera */
-  .speaker {
-    position: absolute;
-    width: 100px;
-    height: 5px;
-    background: #333;
-    border-radius: 10px;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .camera {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: #333;
-    border-radius: 50%;
-    top: 15px;
-    left: 25px;
   }

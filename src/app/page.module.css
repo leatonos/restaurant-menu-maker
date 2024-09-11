@@ -33,7 +33,7 @@
   max-width: 1600px;
   width: 100%;
 }
-.firstContainer{
+.verticalContainer{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -307,7 +307,7 @@
 }
 
 @media (max-width: 700px){
-  .firstContainer{
+  .verticalContainer{
     height: calc(100vh - 250px);
   }
   .horizontalContainer{
