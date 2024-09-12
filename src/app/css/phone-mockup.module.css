@@ -20,11 +20,11 @@
     .phone {
       display: block;
       position: relative;
-      width: 380px; /* Mobile width */
+      width: 350px; /* Mobile width */
       height: 720px; /* Mobile height */
       border-radius: 36px;
       background: rgba(20, 20, 20, 1);
-      padding: 20px;
+      padding: 10px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
   
@@ -37,21 +37,12 @@
     }
   
     /* Phone buttons */
-    .phone::before, .phone::after {
+    .phone::before {
       content: '';
       position: absolute;
       background: #333;
       border-radius: 5px;
     }
-  
-    .phone::before {
-      width: 60px;
-      height: 5px;
-      top: 7px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  
   
   
     /* Speaker and camera */

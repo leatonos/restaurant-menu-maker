@@ -14,6 +14,7 @@ import AppImage from "../../public/about-images/app-image-one.svg"
 import PhoneLottieAnimation from "../../public/lottie-animations/phone-animation-component";
 import DiagramLottieAnimation from "../../public/lottie-animations/diagram-animation-component";
 import PhoneMockup from "./components/phone-mockup";
+import Footer from "./components/footer";
 
 
 export default async function Home() {
@@ -54,7 +55,7 @@ export default async function Home() {
             </div>
           </section>
           <section className={styles.horizontalContainer}>  
-              <div className="white-text-box orange-text">
+              <div className="white-text-box">
                 <h2 className='subTitle orange-text'>What is menu Factory</h2>
                 <p>Menu factory is a easy to use and simple platform where you can create an online menu for your business like bars, and restaurants.
                   But you are also free to use your imagination and creativity to other use cases.</p>
@@ -68,21 +69,9 @@ export default async function Home() {
               </div>
           </section>
           <section className={styles.horizontalContainer}>
-            <div>
-                <h2 className='subTitle orange-text'>How does it look like</h2>
-                <p>Here you can see how a menu factory menu look like, feel free to 
-                <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="orange-text bold-font"> create your account </a></span>
-                and start testing how your menu will look like
-                </p>
-            </div>
-            <div className={styles.animationBox}>
-              <PhoneMockup menuId="66d792507c61318722a589e3"/>
-            </div>
-          </section>
-          <section className={styles.horizontalContainer}>  
-              <div className='orange-text-box white-text'>
-                <h3 className='subTitle yellow-text'>How does it work?</h3>
-                <p>After you <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="bold-font"> create your account </a></span> 
+          <div className='white-text-box'>
+                <h3 className='subTitle orange-text'>How does it work?</h3>
+                <p>After you <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="bold-font orange-text"> create your account </a></span> 
                 you can start building your first menu and edit it.</p>
                 <br></br>
                 <p>Customize the colors and logo of your menu and then start adding products. To add products you must organize them inside categories and subcategories</p>
@@ -94,9 +83,23 @@ export default async function Home() {
               <div className={styles.animationBox}>
                 <DiagramLottieAnimation/>
               </div>
+             
+          </section>
+          <section className={styles.horizontalContainer}>
+            <div>
+                <h2 className='subTitle orange-text'>How does it look like</h2>
+                <p>Here you can see how a menu factory menu look like, feel free to 
+                <span><a href="/api/auth/login?prompt=login&screen_hint=signup" className="orange-text bold-font"> create your account </a></span>
+                and start testing how your menu will look like
+                </p>
+            </div>
+            <div className={styles.animationBox}>
+              <PhoneMockup menuId="66d792507c61318722a589e3"/>
+            </div>
           </section>
         </div>
       </div>
+      <Footer/>
     </main>
   );
 }
