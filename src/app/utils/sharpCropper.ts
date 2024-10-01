@@ -9,26 +9,32 @@ import { Resolution } from '../types/types';
  * @param image 
  * @param CroppingDetails 
  * @param originalResolution 
+ * @param artificialResolution 
  * @param finalWidth 
  * @param finalHeight 
  * 
  * @returns 
  */
-export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, originalResolution: Resolution, finalWidth: number, finalHeight: number) {
+export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, originalResolution: Resolution, artificialResolution:Resolution ,finalWidth: number, finalHeight: number) {
     try {
         console.log('Original Resolution');
         console.log(originalResolution);
+        console.log('Artificial Res:');
+        console.log(artificialResolution);
         console.log('Cropping:');
         console.log(CroppingDetails);
 
-        const left = Math.round(CroppingDetails.x);
-        const top = Math.round(CroppingDetails.y);
-        const croppingWidth = Math.round(CroppingDetails.width);
-        const croppingHeight = Math.round(CroppingDetails.height);
+        const YRatio = originalResolution.height/artificialResolution.height
+        const XRatio = originalResolution.width/artificialResolution.width
+
+        const left = Math.round(CroppingDetails.x * XRatio);
+        const top = Math.round(CroppingDetails.y * YRatio);
+        const croppingWidth = Math.round(CroppingDetails.width * XRatio);
+        const croppingHeight = Math.round(CroppingDetails.height * YRatio);
 
         console.log('Cropping Image...');
         const croppedImage = await sharp(image)
-            .resize({ width: originalResolution.width, height: originalResolution.height })
+            //.resize({ width: originalResolution.width, height: originalResolution.height })
             .extract({
                 left: left,
                 top: top,
@@ -37,16 +43,6 @@ export async function sharpImageCrop(image: ArrayBuffer, CroppingDetails: Crop, 
             })
             .toBuffer();
 
-        /*
-        console.log('Resizing and Optimizing Image...');
-        const optimizedImage = await sharp(croppedImage)
-            .resize({ width: finalWidth, height: finalHeight })
-            .webp({ quality: 100 }) // You can adjust the quality as needed
-            .toBuffer();
-
-        const imageSize = Buffer.byteLength(optimizedImage);
-        console.log(`Optimized Image Size: ${imageSize} bytes`);
-        */
         return croppedImage;
     } catch (error) {
         if (error instanceof Error) {

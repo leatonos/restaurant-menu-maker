@@ -1,12 +1,6 @@
 "use client"
 import React, { useState, useRef } from 'react'
-import ReactCrop, {
-  centerCrop,
-  makeAspectCrop,
-  Crop,
-  PixelCrop,
-  convertToPixelCrop,
-} from 'react-image-crop'
+import ReactCrop, {centerCrop, makeAspectCrop, Crop, PixelCrop} from 'react-image-crop'
 import { useDebounceEffect } from './useDebounceEffect'
 import { canvasPreview } from './canvasPreview'
 import { Resolution } from '@/app/types/types'
@@ -24,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setCropperStatus, addGalleryFile } from '@/app/redux/gallerySlice'
 import { GalleryFile } from '@/app/types/types'
 import ItemView from '../menu-view-components/item'
+import getImageDimensions from '@/app/utils/imageDimensions'
 
 
 
@@ -57,14 +52,13 @@ export default function ImageCropper(props:MyProps) {
   
   const previewCanvasRef = useRef<HTMLCanvasElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
-  const hiddenAnchorRef = useRef<HTMLAnchorElement>(null)
-  const blobUrlRef = useRef('')
   const [crop, setCrop] = useState<Crop>()
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
   const [scale, setScale] = useState(1)
   const [rotate, setRotate] = useState(0)
   const [aspect, setAspect] = useState<number | undefined>(250 / 200)
   const [originalResolution, setOriginalRes] = useState<Resolution>({width:0,height:0})
+  const [artificialResolution, setArtificialRes] = useState<Resolution>({width:0,height:0})
   const [saveBtnDisabled, setSaveBtnState] = useState<boolean>(false)
   const [saveBtnText, setSaveBtnText] = useState<string>('Save Image')
   const [status, setLogStatus] = useState<string>('')
@@ -72,15 +66,19 @@ export default function ImageCropper(props:MyProps) {
 
   const dispatch = useDispatch()
 
-  function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
+  async function onImageLoad (e: React.SyntheticEvent<HTMLImageElement>) {
     if (aspect) {
       const { width, height } = e.currentTarget
       setCrop(centerAspectCrop(width, height, aspect))
-      setOriginalRes({
+      setArtificialRes({
         width:width,
         height:height
       })
     }
+
+    const result = await getImageDimensions(props.imgFile)
+    setOriginalRes(result)
+
   }
 
   useDebounceEffect(
@@ -148,10 +146,13 @@ export default function ImageCropper(props:MyProps) {
   
    const formData = new FormData();
    setLogStatus(`Sending: ${JSON.stringify(props.imgFile)}`)
+   console.log(artificialResolution)
+   console.log(originalResolution)
    formData.append('file', fileImage, props.imageName);
    formData.append("ownerId", props.ownerId);
    formData.append("galleryId", props.galleryId as string);
    formData.append('imageCrop', JSON.stringify(completedCrop))
+   formData.append('artificialResolution', JSON.stringify(artificialResolution))
    formData.append('originalResolution', JSON.stringify(originalResolution))
  
    const response = await fetch('/api/aws-upload-sharp-cropper', {
@@ -198,6 +199,10 @@ export default function ImageCropper(props:MyProps) {
 
   };
 
+  
+    
+
+
   return (
     <div className={styles.cropperContainer} style={{background:'white'}}>
        <header className={styles.galleryHeader}>
@@ -210,6 +215,9 @@ export default function ImageCropper(props:MyProps) {
                 </div>
       </header>
       <div className={styles.cropControls}>
+        <p>Old Resolution: W:{originalResolution.width}px H:{originalResolution.height}px</p>
+        <p>New Resolution: W:{artificialResolution.width}px H:{artificialResolution.height}px</p>
+        <p>Convert Ration: W:{originalResolution.width / artificialResolution.width}px H:{originalResolution.height / artificialResolution.height}px</p>
         <div>
           <label htmlFor="scale-input">Zoom </label>
           <input
@@ -221,20 +229,6 @@ export default function ImageCropper(props:MyProps) {
             value={scale}
             disabled={!props.imgSrc}
             onChange={(e) => setScale(Number(e.target.value))}
-          />
-        </div>
-        <div>
-          <label htmlFor="rotate-input">Rotate: </label>
-          <input
-            id="rotate-input"
-            type="range"
-            min='-180'
-            max='180'
-            value={rotate}
-            disabled={!props.imgSrc}
-            onChange={(e) =>
-              setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
-            }
           />
         </div>
         <div>
@@ -250,8 +244,8 @@ export default function ImageCropper(props:MyProps) {
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
                     aspect={aspect}
-                    minWidth={250}
-                    minHeight={200}
+                    minWidth={25}
+                    minHeight={20}
                     // circularCrop
                   >
                     <img
@@ -259,29 +253,28 @@ export default function ImageCropper(props:MyProps) {
                       className={styles.originalImage}
                       alt="Crop me"
                       src={props.imgSrc}
-                      style={{transform: `scale(${scale}) rotate(${rotate}deg)`}}
                       onLoad={onImageLoad}
                     />
                   </ReactCrop>
           )}
         </div>
        
-              {/* This represents the cropped image preview */}
-              <div className={styles.previewContainer}>
-                {!!completedCrop && (
-                    <>
-                      <p></p>
-                      <canvas
-                        ref={previewCanvasRef}
-                        style={{
-                          objectFit: 'cover',
-                          width: /*completedCrop.width*/'250px',
-                          height: /*completedCrop.height*/"200px",
-                        }}
-                      />
-                    </>
-                )}
-              </div>
+        {/* This represents the cropped image preview */}
+        <div className={styles.previewContainer}>
+          {!!completedCrop && (
+              <>
+                <p></p>
+                <canvas
+                  ref={previewCanvasRef}
+                  style={{
+                    objectFit: 'cover',
+                    width: /*completedCrop.width*/'250px',
+                    height: /*completedCrop.height*/"200px",
+                  }}
+                />
+              </>
+          )}
+        </div>
       </div>
       
         <div className={styles.buttonWrapper}>

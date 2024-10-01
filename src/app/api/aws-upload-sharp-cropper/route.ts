@@ -74,9 +74,15 @@ export async function POST(request: NextRequest) {
     const galleryId = formData.get("galleryId") as string;
     const imageCropString = formData.get('imageCrop') as string
     const originalResolutionString = formData.get('originalResolution') as string
+    const artificialResolutionString = formData.get('artificialResolution') as string
 
     const imageCrop:Crop = JSON.parse(imageCropString)
     const originalResolution:Resolution = JSON.parse(originalResolutionString)
+    const artificialResolution:Resolution = JSON.parse(artificialResolutionString)
+
+    console.log("What we received:")
+    console.log(originalResolution)
+    console.log(artificialResolution)
 
     let uploadCount = 0;
     let galleryFiles: GalleryFile[] = [];
@@ -90,7 +96,7 @@ export async function POST(request: NextRequest) {
 
           console.log('Processing Image...')
           const arrayBuffer = await file.arrayBuffer();
-          const Body = await sharpImageCrop(arrayBuffer,imageCrop,originalResolution,250,200)
+          const Body = await sharpImageCrop(arrayBuffer, imageCrop, originalResolution, artificialResolution, 250, 200)
           const Key = `${galleryId}/${newFileId}-${file.name}`;
 
           console.log('Uploading to AWS...')

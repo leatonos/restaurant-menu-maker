@@ -158,10 +158,10 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    left: 20vw;
-    top: 20vh;
-    width: 60vw;
-    height: 60vh;
+    left: 10vw;
+    top: 10vh;
+    width: 80vw;
+    height: 80vh;
     z-index: 999;
 }
 
@@ -174,21 +174,20 @@
     flex-direction: row;
     padding: 15px;
     width: 100%;
-    min-height: 300px;
+    max-height: calc(80vh - 200px);
 }
 
 .cropper{
     display: flex;
     justify-content: center;
     width: 50%;
-    padding: 15px;
+    padding: 5px;
     max-height: 100%;
 }
 
 .originalImage{
-    width:100%;
-    height:auto;
-    max-height: calc(60vh - 250px) !important;
+    width: auto;
+    max-height: calc(80vh - 450px) !important;
     object-fit:contain;
 }
 
