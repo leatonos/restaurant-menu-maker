@@ -80,10 +80,6 @@ export async function POST(request: NextRequest) {
     const originalResolution:Resolution = JSON.parse(originalResolutionString)
     const artificialResolution:Resolution = JSON.parse(artificialResolutionString)
 
-    console.log("What we received:")
-    console.log(originalResolution)
-    console.log(artificialResolution)
-
     let uploadCount = 0;
     let galleryFiles: GalleryFile[] = [];
 
