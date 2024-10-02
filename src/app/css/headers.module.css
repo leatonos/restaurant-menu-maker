@@ -1,3 +1,19 @@
+/* Fonts */
+@font-face {
+  font-family: Gilroy-Bold;
+  src: url(../../app/fonts/Gilroy-Bold.ttf);
+}
+@font-face {
+  font-family: Gilroy-Medium;
+  src: url(../../app/fonts/Gilroy-Medium.ttf);
+}
+@font-face {
+  font-family: Gilroy-Regular;
+  src: url(../../app/fonts/Gilroy-Regular.ttf);
+}
+
+
+
 .userHeader {
     background-color: var(--primaryColor);
     color: #fff;
@@ -114,6 +130,9 @@
 
   .navLinks li {
       margin: 1rem 0;
+      font-family: Gilroy-Bold;
+      font-size: 1.4em;
+      color: var(--primaryColor);
   }
 
   .hamburger {
