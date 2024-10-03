@@ -29,10 +29,11 @@ export default function HomeHeader() {
         <nav className={styles.mobileNavbar}>
             <div className={styles.logo}>My Website</div>
                 <ul className={`${styles.navLinks} ${isOpen ? styles.active : ''}`}>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a className={styles.mobileItem} href="#">Home</a></li>
+                    <li><a className={styles.mobileItem} href="#">About</a></li>
+                    <li><a className={styles.mobileItem} href="#">Services</a></li>
+                    <li><a className={styles.mobileItem} href="#">Contact</a></li>
+                    <li style={{marginTop:'2em'}}><a className={styles.mobileItemLogin} href="/api/auth/login">Login / Create account</a></li>
                 </ul>
             <div className={styles.hamburger} onClick={toggleMenu}>
                 <span className={styles.bar}></span>
