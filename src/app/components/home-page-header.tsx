@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import styles from '../css/headers.module.css'
 import Image from 'next/image';
+import Logo from '../../../public/logos/Menu Factory - Horizontal-white.svg'
 
 export default function HomeHeader() {
 
@@ -27,7 +28,9 @@ export default function HomeHeader() {
             </div>
        
         <nav className={styles.mobileNavbar}>
-            <div className={styles.logo}>My Website</div>
+            <div className={styles.logo}>
+                <Image src={Logo} alt={'Menufactory white logo'} width={135} height={45}></Image>
+            </div>
                 <ul className={`${styles.navLinks} ${isOpen ? styles.active : ''}`}>
                     <li><a className={styles.mobileItem} href="#">Home</a></li>
                     <li><a className={styles.mobileItem} href="#">About</a></li>
