@@ -296,6 +296,7 @@
     .categoriesContainer{
         background-color: var(--thirdColor);
         height: calc(100vh - 90px);
+        margin-bottom: 60px;
         width:100%;
         overflow-y: auto;
     }
@@ -354,7 +355,7 @@
     
     .saveButtonMobile{
         position: -webkit-sticky; /* For Safari */
-        position: sticky;
+        position: fixed;
         display: flex;
         width: 100%;
         align-items: center;
@@ -367,6 +368,7 @@
         text-decoration: none;
         cursor: pointer;
         bottom: 0;
+        left: 0;
         z-index: 100;
     }
 
