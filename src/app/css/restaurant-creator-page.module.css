@@ -42,9 +42,8 @@
     padding: 5px;
     margin: 5px;
     background-color: var(--thirdColor);
-    border-style: solid;
-    border-width: 2px;
     border-radius: 4px;
+    box-shadow: 4px 5px 15px 3px rgba(0, 0, 0, 0.15); /* Stronger shadow */
 }
 
 .editingContainer{
@@ -59,9 +58,8 @@
     padding: 5px;
     margin: 5px;
     background-color: var(--thirdColor);
-    border-style: solid;
-    border-width: 2px;
     border-radius: 4px;
+    box-shadow: 4px 5px 15px 3px rgba(0, 0, 0, 0.15); /* Stronger shadow */
 }
 
 .itemEditorContainer{
@@ -71,18 +69,22 @@
     color: black;
     width: calc(80% - 10px);
     padding: 5px;
-    margin: 5px;
+    margin: 10px 5px;
     background-color: var(--thirdColor);
+    /*
     border-style: solid;
     border-width: 2px;
     border-radius: 4px;
+    */
+    box-shadow: 4px 5px 15px 3px rgba(0, 0, 0, 0.15); /* Stronger shadow */
 }
 
 .itemEditingArea{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 10px
+    padding: 0px 10px;
+    padding-bottom: 17px;
 }
 
 .optionsContainer{
@@ -308,10 +310,6 @@
         width: calc(100% - 10px);
         padding: 5px;
         margin: 5px;
-        background-color: white;
-        border-style: solid;
-        border-width: 2px;
-        border-radius: 4px;
     }
     
     .itemEditorContainer{
@@ -319,20 +317,23 @@
         flex-direction: column;
         flex-wrap: wrap;
         color: black;
-        width: calc(100% - 15px);
-        padding: 5px;
-        margin: 5px;
-        background-color: white;
-        border-style: solid;
-        border-width: 2px;
-        border-radius: 4px;
+        width: calc(100%);
+        padding: 0px;
+        margin: 5px 0px;
     }
     
     .itemEditingArea{
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0px 10px
+        padding: 0px;
+    }
+
+    .itemDetailsEditor{
+        padding: 5px;
+    }
+    .itemImageEditor{
+        padding: 5px;
     }
     .optionsContainer{
         display: flex;
