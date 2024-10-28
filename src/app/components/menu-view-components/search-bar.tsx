@@ -47,8 +47,8 @@ export default function SearchBar(props:{restaurantInfo:RestaurantMenu}) {
         { search != '' &&
         <div className="search-suggestions-container">
             <ul className="suggestion-list">
-               {searchResult.map(item=>(
-                <a href={`#${item.name}`} onClick={()=>setSearch('')}>
+               {searchResult.map((item,index)=>(
+                <a key={`${item.name + index}`} href={`#${item.name}`} onClick={()=>setSearch('')}>
                   <li className="suggestion-item" key={item.name}>
                       <div className="suggestion-item-description">
                           <h4>{item.name}</h4>
