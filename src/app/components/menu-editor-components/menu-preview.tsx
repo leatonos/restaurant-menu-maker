@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setInitialData } from '@/app/redux/menuCreatorSlice'
 import CategoryView from "../menu-view-components/category";
 import MenuHeader from "../menu-view-components/menu-header";
+import SearchIcon from "../menu-view-components/search-icon";
 
 
 export default function MenuPreview(props:{initialData:RestaurantMenu}) {
@@ -26,7 +27,7 @@ export default function MenuPreview(props:{initialData:RestaurantMenu}) {
         <h2>Preview</h2>
         <main className={styles.menuPreview}>
           <MenuHeader restaurantInfo={menuInfo} />
-          <div className={menuViewStyles.menuContainer} style={{backgroundColor:menuStyle.backgroundColor}}>
+            <div className={menuViewStyles.menuContainer} style={{backgroundColor:menuStyle.backgroundColor}}>
             {categories.map((category,index)=>(
               <CategoryView key={index} categoryInfo={category} menuStyle={menuInfo.menuStyle}/>
             ))}

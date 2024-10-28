@@ -15,6 +15,7 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
   const [styles, setStyles] = useState<any>(FullscreenStyle);
 
   useEffect(() => {
+
     // Get the pathname from window.location
     const pathname = window.location.pathname;
     
@@ -62,7 +63,7 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
 
   
   return (
-    <div className={styles.itemContainer} style={{color:fontColor}}>
+    <div className={styles.itemContainer} style={{color:fontColor}} id={props.itemInfo.name}>
         <div className={styles.itemDetails}>
           <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
           <p>{props.itemInfo.description}</p>

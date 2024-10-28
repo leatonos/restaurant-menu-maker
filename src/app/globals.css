@@ -184,7 +184,76 @@ iframe {
   overflow: hidden;
 }
 
+/* Search Bar */
 
+.search-bar-container{
+  position: fixed;
+  top:0;
+  right:20px;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 600px;
+  justify-content: right;
+  padding:10px;
+}
+
+.search-bar{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 0;
+  width: 100%;
+}
+.search-bar-input{
+  border: none;
+  width:90%;
+  font-size: 1.25em;
+  padding: 10px;
+  border-radius: 3px 0px 0px 3px;
+}
+.search-bar-input:focus{
+  outline: none;
+  box-shadow: none;
+  border-color: initial; /* or specify a color if needed */
+}
+.search-button{
+  border: none;
+  width: 10%;
+  padding: 12px;
+  border-radius: 0px 3px 3px 0px;
+}
+
+.search-suggestions-container{
+  display: flex;
+  width: 100%;
+  max-width: 450px;
+  min-height: 45px;
+  background-color: white;
+  z-index: 999;
+  padding: 5px;
+}
+
+.suggestion-list{
+  list-style-type: none;
+  width: 100%;
+}
+.suggestion-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+}
+.suggestion-item-description{
+
+}
+.suggestion-item-img-container{
+  width: 85px;
+}
+.suggestion-item-img{
+  width: 100%;
+}
 @media only screen and (max-width: 700px) {
   .white-text-box{
     width: 100%;
@@ -192,6 +261,21 @@ iframe {
   .orange-text-box{
     width: 100%;
   }
+  
+  /* Search Bar */
+
+.search-bar-container{
+  position: fixed;
+  top:150px;
+  right:0px;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding:10px;
+}
+
+
 }
 
 @media (prefers-color-scheme: dark) {
