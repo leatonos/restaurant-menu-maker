@@ -12,8 +12,8 @@
 }
 
 .menuContainer{
-    margin-top: 45px;
-    height: calc(100% - 120px);
+    margin-top: 0px;
+    height: calc(100% - 170px);
     padding: 0px 10px;
     overflow-y: auto;
     scroll-behavior: smooth;

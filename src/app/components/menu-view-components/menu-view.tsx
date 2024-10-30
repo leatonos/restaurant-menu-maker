@@ -21,7 +21,7 @@ export default function MenuView(props:{restaurantInfo:RestaurantMenu}) {
   return (
     <div className={menuViewStyles.menuView} style={{backgroundColor:menuStyle.backgroundColor}}>
           <MenuHeader restaurantInfo={menuInfo} />
-          <SearchBar restaurantInfo={menuInfo}/>
+          <SearchBar restaurantInfo={menuInfo} version={"Fullscreen"}/>
           <div className={menuViewStyles.menuContainer} style={{backgroundColor:menuStyle.backgroundColor}}>
             {categories.map((category: MenuCategory,index: React.Key | null | undefined)=>(
               <CategoryView key={index} categoryInfo={category} menuStyle={menuStyle}/>
