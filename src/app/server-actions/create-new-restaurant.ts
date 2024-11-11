@@ -13,7 +13,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function createRestaurant(restaurantName:string, ownerId:string, restaurantAddress:string)  {
 
   const defaultMenuStyle:MenuStyle= {
-    restaurantLogo: 'https://placehold.co/100',
+    restaurantLogo: 'https://placehold.co/100x100?text=Restaurant\nLogo',
     backgroundColor: '#ffffff',
     menuColor: '#4A1A1A',
     subMenuColor: '#4A1A1A',

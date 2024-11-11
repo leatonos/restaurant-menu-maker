@@ -110,7 +110,7 @@ export default function ItemEditor(props:itemProps) {
             </div>
           </div>
           <div onClick={()=>dispatch(setGalleryChangeReference(itemRef))} className={styles.itemImageEditor}>
-            <img src={itemImage} alt="Image of your menu item" width={100} onError={() => setItemImage('https://placehold.co/100')}/>  
+            <img src={itemImage} alt="Image of your menu item" width={100} onError={() => setItemImage('https://placehold.co/600x400?text=Click+to\nadd+image')}/>  
           </div>
         </div> 
     </div>

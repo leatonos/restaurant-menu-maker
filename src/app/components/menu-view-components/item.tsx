@@ -53,7 +53,7 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
 
   const ProductImage = (imageProp:{imageURL:string}) =>{
 
-    if(imageProp.imageURL === 'https://placehold.co/100'){
+    if(imageProp.imageURL === 'https://placehold.co/100x100?text=Select+Image'){
       return <></>
     }
     else{

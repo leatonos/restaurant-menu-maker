@@ -215,10 +215,13 @@ export default function ImageCropper(props:MyProps) {
                 </div>
       </header>
       <div className={styles.cropControls}>
-        <p>Old Resolution: W:{originalResolution.width}px H:{originalResolution.height}px</p>
+        {
+/**
+ * 
+ *  <p>Old Resolution: W:{originalResolution.width}px H:{originalResolution.height}px</p>
         <p>New Resolution: W:{artificialResolution.width}px H:{artificialResolution.height}px</p>
         <p>Convert Ration: W:{originalResolution.width / artificialResolution.width}px H:{originalResolution.height / artificialResolution.height}px</p>
-        <div>
+          <div>
           <label htmlFor="scale-input">Zoom </label>
           <input
             id="scale-input"
@@ -231,6 +234,12 @@ export default function ImageCropper(props:MyProps) {
             onChange={(e) => setScale(Number(e.target.value))}
           />
         </div>
+ * 
+ */
+
+        }
+       
+      
         <div>
         </div>
       </div>

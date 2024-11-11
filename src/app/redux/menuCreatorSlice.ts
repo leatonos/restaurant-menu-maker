@@ -139,7 +139,7 @@ export const menuCreatorSlice = createSlice({
         name: '',
         available: true,
         description: '',
-        photoURL: 'https://placehold.co/100',
+        photoURL: 'https://placehold.co/100x100?text=Select+Image',
         price: 0
       }
 
