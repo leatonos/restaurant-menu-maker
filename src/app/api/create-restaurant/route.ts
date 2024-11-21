@@ -21,7 +21,7 @@ export async function POST(request: Request)  {
       primaryColor: '#ffffff',
       secondaryColor: '#ffffff',
       fontColor: '#000000',
-      fontMenuColor: '#fff'
+      fontMenuColor: '#ffffff'
     }
 
     const client = await MongoClient.connect(uri);

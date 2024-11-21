@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import menuCreatorSlice from './menuCreatorSlice'
 import gallerySlice from './gallerySlice'
+import dragNdropSlice from './dragNdropSlice'
 
 export const store = configureStore({
   reducer: {
     restaurantCreator: menuCreatorSlice,
     gallery:gallerySlice,
+    dragNdrop:dragNdropSlice
   },
 })
 

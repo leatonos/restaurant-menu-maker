@@ -14,7 +14,7 @@
 
 .userHeader {
     background-color: var(--primaryColor);
-    color: #fff;
+    color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,7 +52,7 @@
   
   .menuLink {
     text-decoration: none;
-    color: #fff;
+    color: #ffffff;
   }
   
   .profile {

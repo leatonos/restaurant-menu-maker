@@ -21,16 +21,25 @@ import AddImage from '../../../../public/add.svg'
 import SaveIcon from '../../../../public/save.svg'
 import RightArrowImage from '../../../../public/arrow-right.svg'
 import PreviewImage from '../../../../public/preview.svg'
+import { dragNdropSlice } from "@/app/redux/dragNdropSlice";
 
 export default function MenuEditor(props:{initialData:RestaurantMenu}) {
 
     const restaurantMenuData = useSelector((state: RootState) => state.restaurantCreator)
     const galleryState = useSelector((state: RootState)=> state.restaurantCreator.galleryState)
+    const grabNDropDataMouse = useSelector((state: RootState)=>state.dragNdrop.mouse)
+    const itemPositions =  useSelector((state: RootState)=>state.dragNdrop.itemPositions)
+    const subcatPositions =  useSelector((state: RootState)=>state.dragNdrop.subCategoriesPositions)
+    //Delete this variables later
+    const subcategoryCurrentPos = useSelector((state:RootState)=>state.dragNdrop.currentPositionSubcatArrPosition)
+    const subcategoryItemPos = useSelector((state:RootState)=>state.dragNdrop.currentPositionItemArrPosition)
+
     const dispatch = useDispatch()
     const menuCategories = restaurantMenuData.restaurantMenu.menuCategories
     
     const [savingStatus,setSavingState] = useState<string>('Save Changes')
     const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
+   
 
     //Gets the saved data from the database and stores it into the Redux store
     useEffect(()=>{
@@ -103,7 +112,9 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
               <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
                 {savingStatus}
             </button>
+          
           </div>
+          <h3>MouseY: {grabNDropDataMouse.Y}</h3>
         </div>
         <div className={styles.sideTab}>
             <Image className={`${styles.leftArrowIcon} ${isMenuVisible ? styles.hide : styles.show}`}
@@ -118,9 +129,10 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
             Create new Category
           </button>
         </div>
-        {menuCategories.map((category, index)=>(
-          <CategoryEditor key={index} category={category} index={index}/>
-          ))}
+        {menuCategories.map((category, index)=>{
+          return <CategoryEditor key={index} category={category} index={index}/>
+        }
+        )}
         <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButtonMobile}>
           <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
             {savingStatus}

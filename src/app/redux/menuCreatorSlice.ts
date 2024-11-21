@@ -36,6 +36,11 @@ export interface ItemChange{
   change:string | boolean | number
 }
 
+export interface MovingItemReference{
+  origin:ItemReference
+  destination:ItemReference
+}
+
 const initialState: MenuState = {
   restaurantMenu:{
     _id: undefined,
@@ -232,7 +237,25 @@ export const menuCreatorSlice = createSlice({
       const item = subcategory.items[itemRef.itemIndex]
 
       item.photoURL = action.payload.change as string
-    }
+    },
+    // Moving Menu Elements
+    moveItem:(state,action:PayloadAction<MovingItemReference>)=>{
+      const origin = action.payload.origin
+      const destiny = action.payload.destination
+      
+      const itemArrOrigin = state.restaurantMenu.menuCategories[origin.categoryIndex].subcategories[origin.subcategoryIndex].items
+      let [transferredItem] = itemArrOrigin.splice(origin.itemIndex, 1);
+
+      const itemArrDestiny = state.restaurantMenu.menuCategories[destiny.categoryIndex].subcategories[destiny.subcategoryIndex].items
+      itemArrDestiny.splice(destiny.itemIndex, 0, transferredItem);
+
+    },
+    moveSubCategory:(state,action:PayloadAction<any>)=>{
+
+    },
+    moveCategory:(state,action:PayloadAction<any>)=>{
+
+    },
   }
 })
 
@@ -243,6 +266,7 @@ export const { setInitialData,
    deleteItem,createNewItem,setItemName,setItemDescription,setItemAvailalibity,setItemPhoto,setItemPrice,
    setMenuStyle,
    setRestaurantName,setRestaurantAddress,
-   setGalleryChangeReference,setLogoImage,setItemImage } = menuCreatorSlice.actions
+   setGalleryChangeReference,setLogoImage,setItemImage,
+   moveItem } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer

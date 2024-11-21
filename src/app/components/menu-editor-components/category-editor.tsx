@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "@/app/css/restaurant-creator-page.module.css"
 import { redirect } from  'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
@@ -16,7 +16,7 @@ import { MenuCategory, Subcategory } from "@/app/types/types";
 import AddImage from '../../../../public/add.svg'
 import TrashImage from '../../../../public/trash.svg'
 import closeImage from '../../../../public/close.svg'
-import moveImage from '../../../../public/expand-arrows.png'
+import moveImage from '../../../../public/drag-icon.svg'
 import minIcon from '../../../../public/minimize.svg'
 import maxIcon from '../../../../public/maximize.svg'
 
@@ -28,6 +28,10 @@ interface editorProps{
 export default function CategoryEditor(props: editorProps) {
 
     const [showStatus, setShowing] = useState(true)
+    
+    useEffect(()=>{
+
+    },[])
     
     const dispatch = useDispatch()
     
