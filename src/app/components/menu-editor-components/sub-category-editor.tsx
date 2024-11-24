@@ -129,8 +129,6 @@ export default function SubcategoryEditor(props:editorProps) {
     setSubcatPos(subcategoryIndex)
     return subcategoryIndex
   }
-
-
   
   const getMousePosition = (e:MouseEvent) =>{
     setXpos(e.clientX)
