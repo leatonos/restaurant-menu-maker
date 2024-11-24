@@ -212,8 +212,9 @@ export default function SubcategoryEditor(props:editorProps) {
   }
 
   const changeAvailability = (newStatus: boolean)=>{
+
     const subCatChange:SubcategoryChange = {
-      subcategoryReference: thisSubcategoryRef,
+      subcategoryReference: thisSubcategoryPositionRef,
       change: newStatus
     }
 
