@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from 'react'
 // Redux Imports
 import type { RootState } from '@/app/redux/store'
 import { useSelector, useDispatch } from 'react-redux'
-import { SubcategoryReference, deleteSubcategory,setSubcategoryName,setSubcategoryDescription, createNewItem, SubcategoryChange, setSubcategoryAvailalibity } from '@/app/redux/menuCreatorSlice'
+import { SubcategoryReference, deleteSubcategory,setSubcategoryName,setSubcategoryDescription, createNewItem, SubcategoryChange, setSubcategoryAvailalibity, moveSubCategory } from '@/app/redux/menuCreatorSlice'
 import { setdraggingSubcategoryState } from "@/app/redux/dragNdropSlice";
 import ItemEditor from "./item-editor";
 import { Subcategory } from "@/app/types/types";
@@ -56,16 +56,22 @@ export default function SubcategoryEditor(props:editorProps) {
     }
     : {};
   const DragginBtnStyles:React.CSSProperties = isDragging ? {cursor:'grabbing'}: {cursor:'grab'};
-  const GhostStyles:React.CSSProperties = isDragging && Ypos !=0 ? {display:"block",opacity:0.3}:{display:'none'};
+  const GhostStyles:React.CSSProperties = isDragging && Ypos !=0 ? {
+    display:"block",
+    opacity:0.3,
+    width:rectBounds?.width,
+    height:rectBounds?.height
+  }:{display:'none'};
   
   const dispatch = useDispatch()
   
   // Makes this component aware if any other component is beign dragged
   // There is no use for this yet
-  const isDragginAnItem =  useSelector((state: RootState) => state.dragNdrop.draggingItem)
+  const isDragginAnCategory =  useSelector((state: RootState) => state.dragNdrop.draggingCategory)
   useEffect(()=>{
-   
-  },[isDragginAnItem])
+    if(isDragginAnCategory){
+    }
+  },[isDragginAnCategory])
 
 
   //Everytime you drag this component, it turns on the event listener for the mouse movements, so the component is able to follow the mouse as the user drags it.
@@ -96,13 +102,28 @@ export default function SubcategoryEditor(props:editorProps) {
   }
 
   const getCurrentSubcategoryDraggingPosition = (mouseYposition:number) =>{
-
-    let subcategoryIndex = props.index
-    if(allSubcatPositions){
+    let subcategoryIndex = 0
+    let i = 0
+    const currentCatIndex = props.categoryIndex
+    if(allSubcatPositions && allCategoriesPositions){
       for(let subPosition of allSubcatPositions){
-        if(mouseYposition >= subPosition.subcategoryTopPosition && mouseYposition <= subPosition.subcategoryBottomPosition){
+        const middleLine = (subPosition.subcategoryTopPosition + subPosition.subcategoryBottomPosition)/2
+        // If the mouse is below the middle of this subcategory,
+        // assume the user is dragging into the next subcategory
+        if(mouseYposition >= middleLine){
           subcategoryIndex = subPosition.subcategoryArrayPosition
         }
+        // If user is dragging this item around itself, nothing should change
+        if(rectBounds && mouseYposition <= rectBounds.bottom && mouseYposition >= rectBounds.top){
+          subcategoryIndex = props.index
+        }
+        // If dragging the item crosses into a new category,
+        // reset the subcategory position to the first subcategory in the new category
+        if(mouseYposition > allCategoriesPositions[currentCatIndex].categoryBottomPosition &&
+          allSubcatPositions[i].subcategoryArrayPosition == 0 && mouseYposition < middleLine){
+          subcategoryIndex = 0
+        }
+        i++
       }
     }
     setSubcatPos(subcategoryIndex)
@@ -120,19 +141,19 @@ export default function SubcategoryEditor(props:editorProps) {
     getCurrentCategoryDraggingPosition(e.clientY)
   }
 
-  const startDraging = () =>{
-    setShowing(false)
-    //const arrayOfSubcategoryElements = Array.from(document.getElementsByClassName(styles.subcategoryEditorContainer)) as HTMLElement[];
-    //const arrayOfCategoryElements = Array.from(document.getElementsByClassName(styles.categoryEditorContainer)) as HTMLElement[];
+  const startDraging = async() =>{
 
     if(subCategoryContainerRef.current){
       setRect(subCategoryContainerRef.current.getBoundingClientRect())
     }
     
+    const arrayOfSubcategoryElements = Array.from(document.getElementsByClassName(styles.subcategoryEditorContainer)) as HTMLElement[];
+    const arrayOfCategoryElements = Array.from(document.getElementsByClassName(styles.categoryEditorContainer)) as HTMLElement[];
+
     setDragStatus(true)
     dispatch(setdraggingSubcategoryState(true))
-    //setAllSubcatPositions(getAllSubcategoryPositions(arrayOfSubcategoryElements))
-    //setAllCategoriesPositions(getAllCategoryPositions(arrayOfCategoryElements))
+    setAllSubcatPositions(getAllSubcategoryPositions(arrayOfSubcategoryElements))
+    setAllCategoriesPositions(getAllCategoryPositions(arrayOfCategoryElements))
   }
   // 
   const stopDraging = ()=>{
@@ -142,15 +163,11 @@ export default function SubcategoryEditor(props:editorProps) {
       subcategoryIndex: subcatPos
     }
    
-    /**
-     * 
-      dispatch(moveSubcategory({
-        origin: thisSubcategoryPositionRef,
-        destination: sucategoryDestinyRef
-      }))
-     * 
-     */
-    
+    dispatch(moveSubCategory({
+      origin: thisSubcategoryPositionRef,
+      destination: subcategoryDestinyRef
+    }))
+  
     dispatch(setdraggingSubcategoryState(false))
   }
 
@@ -186,7 +203,7 @@ export default function SubcategoryEditor(props:editorProps) {
   
   const changeSubcategoryDesc = (newDescription: string) =>{
     const subCatChange:SubcategoryChange = {
-      subcategoryReference: thisSubcategoryRef,
+      subcategoryReference: thisSubcategoryPositionRef,
       change: newDescription
     }
 
@@ -236,13 +253,13 @@ export default function SubcategoryEditor(props:editorProps) {
         <div className={styles.editingContainer}>
         <form className={styles.editingDetails}>
           <div>
-              <label>Subcategory name:</label>
-              <input type="text" defaultValue={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
+              <label htmlFor="subcategory-name">Subcategory name:</label>
+              <input id="subcategory-name" type="text" defaultValue={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
           </div>
           
           <div>
-              <label>Subcategory Description:</label>
-              <input type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>
+              <label htmlFor="subcategory-description">Subcategory Description:</label>
+              <input id="subcategory-description" type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>
           </div>
           <div>
               <label htmlFor="available">Subcategory availability:</label>
@@ -252,7 +269,7 @@ export default function SubcategoryEditor(props:editorProps) {
                 checked={props.subcategory.available}
                 onChange={(event)=>changeAvailability(event.target.checked)}
               />
-        </div>
+          </div>
         </form>
         {!showStatus && (
           <div className={styles.shortInfo}>
@@ -280,59 +297,6 @@ export default function SubcategoryEditor(props:editorProps) {
       )}
     </div>
     <div className={styles.subcategoryEditorContainerGhost} style={GhostStyles}>
-      <div>
-      <header className={styles.optionsContainer}>
-        <div className={styles.leftSide}>
-        <button className={styles.smallBtn}>
-            <Image className={styles.smallIconMove} src={moveImage} onMouseDown={startDraging} onMouseUp={stopDraging} alt={"Move subcategory"}/>
-          </button>
-        </div>
-        <div className={styles.rightSide}>
-          {!showStatus && (
-                <button onClick={()=>setShowing(true)} className={styles.smallBtn}>
-                <Image className={styles.smallIcon} src={maxIcon} alt={"Maximize"}/>
-              </button>
-              )}
-            {showStatus && (
-              <button onClick={()=>setShowing(false)} className={styles.smallBtn}>
-              <Image className={styles.smallIcon} src={minIcon} alt={"Minimize"}/>
-            </button>
-            )}
-          <button onClick={deleteSubcat} className={styles.smallBtn}>
-            <Image className={styles.smallIcon} src={closeImage} alt={"Delete Subategory"}/>
-          </button>
-        </div>
-      </header>
-      <div className={styles.categoryEditor}>
-        <div className={styles.editingContainer}>
-        <form className={styles.editingDetails}>
-          <div>
-              <label>Subcategory name:</label>
-              <input type="text" defaultValue={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
-          </div>
-          
-          <div>
-              <label>Subcategory Description:</label>
-              <input type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>
-          </div>
-          <div>
-              <label htmlFor="available">Subcategory availability:</label>
-              <input
-                id="available"
-                type="checkbox"
-                checked={props.subcategory.available}
-                onChange={(event)=>changeAvailability(event.target.checked)}
-              />
-        </div>
-        </form>
-        {!showStatus && (
-          <div className={styles.shortInfo}>
-            <p>Items: {props.subcategory.items.length}</p>
-          </div>
-          )}
-        </div>
-      </div>
-      </div>
     </div>
     </>
   );

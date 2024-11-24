@@ -47,6 +47,19 @@
     box-shadow: 4px 5px 15px 3px rgba(0, 0, 0, 0.15); /* Stronger shadow */
 }
 
+.categoryEditorContainerGhost{
+    display: none;
+    flex-direction: column;
+    color: black;
+    width: calc(100% - 10px);
+    min-width: 360px;
+    padding: 5px;
+    margin: 5px;
+    background-color: var(--thirdColor);
+    border-radius: 4px;
+    box-shadow: 4px 5px 15px 3px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+}
+
 .editingContainer{
     display: flex;
 }

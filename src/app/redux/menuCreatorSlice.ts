@@ -40,6 +40,14 @@ export interface MovingItemReference{
   origin:ItemReference
   destination:ItemReference
 }
+export interface MovingSubcategoryReference{
+  origin:SubcategoryReference
+  destination:SubcategoryReference
+}
+export interface MovingCategoryReference{
+  origin:number
+  destination:number
+}
 
 const initialState: MenuState = {
   restaurantMenu:{
@@ -249,12 +257,32 @@ export const menuCreatorSlice = createSlice({
       const itemArrDestiny = state.restaurantMenu.menuCategories[destiny.categoryIndex].subcategories[destiny.subcategoryIndex].items
       itemArrDestiny.splice(destiny.itemIndex, 0, transferredItem);
 
-    },
-    moveSubCategory:(state,action:PayloadAction<any>)=>{
 
     },
-    moveCategory:(state,action:PayloadAction<any>)=>{
+    //Moving subcategories
+    moveSubCategory:(state,action:PayloadAction<MovingSubcategoryReference>)=>{
+      const origin = action.payload.origin
+      const destiny = action.payload.destination
 
+      const subcategoryArrOrigin = state.restaurantMenu.menuCategories[origin.categoryIndex].subcategories
+      let [transferredSubcategory] = subcategoryArrOrigin.splice(origin.subcategoryIndex,1)
+
+      const subcategoryArrDestiny = state.restaurantMenu.menuCategories[destiny.categoryIndex].subcategories
+      subcategoryArrDestiny.splice(destiny.subcategoryIndex,0,transferredSubcategory)
+
+
+      console.log(subcategoryArrDestiny)
+
+    },
+    moveCategory:(state,action:PayloadAction<MovingCategoryReference>)=>{
+      const origin = action.payload.origin
+      const destiny = action.payload.destination
+
+      const categoryArr = state.restaurantMenu.menuCategories
+      let [transferredCategory] = categoryArr.splice(origin,1)
+
+      categoryArr.splice(destiny,0,transferredCategory)
+      
     },
   }
 })
@@ -267,6 +295,6 @@ export const { setInitialData,
    setMenuStyle,
    setRestaurantName,setRestaurantAddress,
    setGalleryChangeReference,setLogoImage,setItemImage,
-   moveItem } = menuCreatorSlice.actions
+   moveItem,moveSubCategory,moveCategory } = menuCreatorSlice.actions
 
 export default menuCreatorSlice.reducer

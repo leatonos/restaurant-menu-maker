@@ -112,9 +112,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
               <Image className={styles.createIcon} src={SaveIcon} alt={"Save changes button"} />
                 {savingStatus}
             </button>
-          
           </div>
-          <h3>MouseY: {grabNDropDataMouse.Y}</h3>
         </div>
         <div className={styles.sideTab}>
             <Image className={`${styles.leftArrowIcon} ${isMenuVisible ? styles.hide : styles.show}`}

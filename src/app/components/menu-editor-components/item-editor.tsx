@@ -77,7 +77,7 @@ export default function ItemEditor(props:itemProps) {
      }
     : {};
   
-  const GhostStyles:React.CSSProperties = isDragging && Ypos !=0 ? {display:"block",opacity:0.3}:{display:'none'};
+  const GhostStyles:React.CSSProperties = isDragging && Ypos !=0 ? {display:"block",opacity:0.3,width:rectBounds?.width,height:rectBounds?.height}:{display:'none'};
   const DragginBtnStyles:React.CSSProperties = isDragging ? {cursor:'grabbing'}: {cursor:'grab'};
   
   const getCurrentSubcategoryDraggingPosition = (mouseYposition:number) =>{
@@ -194,7 +194,6 @@ export default function ItemEditor(props:itemProps) {
       }))
     }
     dispatch(setDraggingItemState(false))
-    dispatch(setItemsPositions([]))
   }
 
 
@@ -278,45 +277,7 @@ export default function ItemEditor(props:itemProps) {
     </div>
     
     <div className={styles.itemEditorContainerGhost} style={GhostStyles}>
-        <div className={styles.optionsContainer}>
-          <div className={styles.leftSide}>
-          <button className={styles.smallBtn}>
-              <Image className={styles.smallIconMove} style={DragginBtnStyles} height={30} src={moveImage} alt={"Move Item"}/>
-            </button>
-          </div>
-          <div className={styles.rightSide}>
-            <button onClick={removeItem} className={styles.smallBtn}>
-              <Image className={styles.smallIcon} src={closeImage} alt={"Delete Item"}/>
-            </button>
-          </div>
-        </div>
-        <div className={styles.itemEditingArea}>
-          <div className={styles.itemDetailsEditor}>
-            <div>
-                <label>Item name:</label>
-                <input type="text" value={props.item.name}/>
-            </div>
-            <div>
-                <label>Item Description:</label>
-                <input type="text" value={props.item.description}/>
-            </div>
-            <div>
-                <label>Item price:</label>
-                <input type="number" min={0} value={props.item.price}/>
-            </div>
-            <div>
-                <label htmlFor="available">Item availability:</label>
-                <input
-                  id="available"
-                  type="checkbox"
-                  checked={props.item.available}
-                />
-            </div>
-          </div>
-          <div className={styles.itemImageEditor}>
-            <img src={itemImage} alt="Image of your menu item" width={100} onError={() => setItemImage('https://placehold.co/600x400?text=Click+to\nadd+image')}/>  
-          </div>
-        </div> 
+      
     </div>
     </>
   );

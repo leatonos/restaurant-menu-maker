@@ -84,6 +84,7 @@ export const dragNdropSlice = createSlice({
     addItemPosition:(state,action:PayloadAction<ItemPos>)=>{
         state.itemPositions.push(action.payload)
     },
+    //Positions
     setMousePosition:(state,action:PayloadAction<MousePosition>)=>{
         state.mouse.X = action.payload.X
         state.mouse.Y = action.payload.Y
@@ -103,7 +104,7 @@ export const dragNdropSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { setCategoriesPositions, setSubcategoriesPositions, setItemsPositions,
     addItemPosition,addSubcategoryPosition,
-    setDraggingItemState,setdraggingSubcategoryState,
+    setDraggingItemState,setdraggingSubcategoryState,setdraggingCategoryState,
     setMousePosition,
     setCurrentCatArrayPos,setCurrentSubcatArrayPos,setCurrentItemArrayPos  } = dragNdropSlice.actions
 
