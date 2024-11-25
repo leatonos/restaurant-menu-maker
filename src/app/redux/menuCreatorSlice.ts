@@ -3,6 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from '../types/types'
 import { access, stat } from 'fs'
 
+
+function generateRandomFourDigitNumber() {
+  return Math.floor(1000 + Math.random() * 9000);
+}
+
 export interface MenuState {
   restaurantMenu:RestaurantMenu
   galleryState:{
@@ -89,6 +94,7 @@ export const menuCreatorSlice = createSlice({
     //Categories
     createNewCategory: (state) => {
       const newEmptyCategory:MenuCategory = {
+        id:generateRandomFourDigitNumber(),
         name: '',
         available: true,
         description: '',
@@ -111,6 +117,7 @@ export const menuCreatorSlice = createSlice({
     //Subcategories
     createNewSubcategory:(state,action: PayloadAction<number>)=>{
       const newSubcategory:Subcategory = {
+        id:generateRandomFourDigitNumber(),
         name: '',
         available: true,
         description: '',
@@ -149,6 +156,7 @@ export const menuCreatorSlice = createSlice({
     createNewItem:(state,action: PayloadAction<SubcategoryReference>)=>{
 
       const newItem:Item = {
+        id:generateRandomFourDigitNumber(),
         name: '',
         available: true,
         description: '',

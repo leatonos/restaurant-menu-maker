@@ -16,6 +16,7 @@ export type RestaurantMenu ={
 }
 
 export type MenuCategory = {
+    id:number,
     name: string,
     available: boolean,
     description: string,
@@ -23,6 +24,7 @@ export type MenuCategory = {
 }
 
 export type Subcategory ={
+    id:number,
     name:string,
     available:boolean,
     description: string,
@@ -30,6 +32,7 @@ export type Subcategory ={
 }
 
 export type Item = {
+    id:number,
     name: string,
     available: boolean,
     description: string,

@@ -224,7 +224,7 @@ export default function CategoryEditor(props: editorProps) {
           <div>
           <div className={styles.subCategoriesContainer}>
             {props.category.subcategories.map((subcategory,index)=>(
-              <SubcategoryEditor key={index} subcategory={subcategory} categoryIndex={props.index} index={index}/>
+              <SubcategoryEditor key={subcategory.id} categoryIndex={props.index} index={index} subcategory={subcategory}/>
             ))}
           </div>
           <div className={styles.createNewBox}>

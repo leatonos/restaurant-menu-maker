@@ -276,14 +276,13 @@ export default function SubcategoryEditor(props:editorProps) {
           </div>
           )}
         </div>
-       
       </div>
       </div>
       {showStatus && (
         <>
           <div className={styles.itemsContainer}>
             {props.subcategory.items.map((item, index)=>(
-              <ItemEditor key={index} categoryIndex={props.categoryIndex} subcategoryIndex={props.index} index={index} item={item} />
+              <ItemEditor key={item.id} categoryIndex={props.categoryIndex} subcategoryIndex={props.index} index={index} item={item} />
             ))}
           </div>
           <div className={styles.createNewBox}>
