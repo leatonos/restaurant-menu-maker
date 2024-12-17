@@ -45,7 +45,7 @@ export default function MenuNavBar(props:{categories:MenuCategory[],navBarStyle:
         <ul className={styles.catList} style={{color:fontColor}}>
             {allSubcategories.map((subcategory, index)=>(
                 <li key={index} className={styles.navItem}>
-                    <a href={`#${subcategory.name}`}>
+                    <a href={`#${subcategory.name}`} style={{color:fontColor}}>
                         {subcategory.name}
                     </a>
                 </li>

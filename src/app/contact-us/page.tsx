@@ -22,11 +22,8 @@ export default async function Home() {
       <div className={styles.mainContainer}>
         <div className={styles.mainWrapper}>
           <section className={styles.verticalContainer}>
-            <div className={styles.logoBox}>
-              <Image src={MainLogo} className={styles.mainLogo} alt={""}/>
-            </div>
             <div className={styles.titleBox}>
-              <h1>Create online and responsive menus for free</h1>
+              <h1>I am so glad you want to talk</h1>
             </div>
             <div className={styles.buttonOptions}>
               <button className="primary-btn">
@@ -39,7 +36,7 @@ export default async function Home() {
           </section>
           <section className={styles.horizontalContainer}>  
               <div className="white-text-box">
-                <h2 className='subTitle orange-text'>What is menu Factory</h2>
+                <h2 className='subTitle orange-text'>I am </h2>
                 <p>Menu factory is a easy to use and simple platform where you can create an online menu for your business like bars, and restaurants.
                   But you are also free to use your imagination and creativity to other use cases.</p>
                 <br></br>

@@ -128,7 +128,7 @@ export default function MenuEditor(props:{initialData:RestaurantMenu}) {
           </button>
         </div>
         {menuCategories.map((category, index)=>{
-          return <CategoryEditor key={category.id} category={category} index={index}/>
+          return <CategoryEditor key={category.id} category={category} index={index} />
         }
         )}
         <button onClick={()=>saveChanges(restaurantMenuData.restaurantMenu)} className={styles.saveButtonMobile}>

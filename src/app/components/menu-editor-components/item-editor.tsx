@@ -12,8 +12,9 @@ import { addItemPosition, CategoryPos, MousePosition, setCurrentItemArrayPos, se
 import { Item } from "@/app/types/types";
 
 //Image imports
-import moveImage from '../../../../public/drag-icon.svg'
-import closeImage from '../../../../public/close.svg'
+import moveImage from '../../../../public/drag-icon.svg';
+import closeImage from '../../../../public/close.svg';
+import deleteImage from "../../../../public/trash.svg";
 import { Style } from "util";
 
 //type imports
@@ -230,6 +231,14 @@ export default function ItemEditor(props:itemProps) {
     }
     dispatch(setItemAvailalibity(itemChange))
   }
+  const removeImage = () =>{
+
+    const itemChange:ItemChange ={
+      itemReference: itemRef,
+      change: 'https://placehold.co/100x100?text=Select+Image'
+    }
+    dispatch(setItemPhoto(itemChange))
+  }
 
   return (
     <>
@@ -249,15 +258,16 @@ export default function ItemEditor(props:itemProps) {
         <div className={styles.itemEditingArea}>
           <div className={styles.itemDetailsEditor}>
             <div>
-                <label>Item name:</label>
+                <label>Item name:</label><br/>
                 <input type="text" onChange={(event)=>changeName(event.target.value)} value={props.item.name}/>
             </div>
             <div>
-                <label>Item Description:</label>
-                <input type="text" onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
+                <label htmlFor={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`}>Item Description:</label><br/>
+                <textarea rows={4} cols={50} id={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`} 
+                onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
             </div>
             <div>
-                <label>Item price:</label>
+                <label>Item price:</label><br/>
                 <input type="number" min={0} onChange={(event)=>changePrice(parseFloat(event.target.value))} value={props.item.price}/>
             </div>
             <div>
@@ -270,8 +280,9 @@ export default function ItemEditor(props:itemProps) {
                 />
             </div>
           </div>
-          <div onClick={()=>dispatch(setGalleryChangeReference(itemRef))} className={styles.itemImageEditor}>
-            <img src={itemImage} alt="Image of your menu item" width={100} onError={() => setItemImage('https://placehold.co/600x400?text=Click+to\nadd+image')}/>  
+          <div className={styles.itemImageEditor}>
+              <img src={itemImage} alt="Image of your menu item" width={100} onClick={()=>dispatch(setGalleryChangeReference(itemRef))} onError={() => setItemImage('https://placehold.co/600x400?text=Click+to\nadd+image')}/>
+              {itemImage != 'https://placehold.co/100x100?text=Select+Image' && <Image className={styles.itemImageEditorDeleteIcon} src={closeImage} onClick={removeImage} alt={"Remove Image"}/>}
           </div>
         </div> 
     </div>

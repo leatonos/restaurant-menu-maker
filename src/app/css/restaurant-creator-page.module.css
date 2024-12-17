@@ -243,6 +243,23 @@
 }
 
 
+.itemImageEditor{
+    display: inline-block;
+    position: relative;
+}
+.itemImageEditorDeleteIcon{
+    display: block;
+    padding: 2px;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    right: 3px;
+    background-color: var(--thirdColor);
+}
+
+
 /* Gallery container */
 .galleryBackgroundContainer{
     position: fixed;
@@ -392,9 +409,7 @@
     .itemDetailsEditor{
         padding: 5px;
     }
-    .itemImageEditor{
-        padding: 5px;
-    }
+   
     .optionsContainer{
         display: flex;
         width: calc(100% - 10px);
