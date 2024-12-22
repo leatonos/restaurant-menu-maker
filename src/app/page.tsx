@@ -47,7 +47,7 @@ export default async function Home() {
             </div>
             <div className={styles.buttonOptions}>
               <button className="primary-btn">
-                <a href="/api/auth/login" className="bold-font" >Create account</a>
+                <a href="/api/auth/login" className="bold-font white-text">Create account</a>
               </button>
               <button className="secondary-btn">
                 <a href="/api/auth/login" className="bold-font" >Learn More</a>
