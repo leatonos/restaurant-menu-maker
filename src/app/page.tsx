@@ -50,7 +50,7 @@ export default async function Home() {
                 <a href="/api/auth/login" className="bold-font white-text">Create account</a>
               </button>
               <button className="secondary-btn">
-                <a href="/api/auth/login" className="bold-font" >Learn More</a>
+                <a href="/api/auth/login" className="bold-font">Learn More</a>
               </button>
             </div>
           </section>

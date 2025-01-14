@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import PhoneAnimation from './Phone_Animationb.json'
 import { useState,useEffect, useRef } from 'react';
 
-export default async function PhoneLottieAnimation() {
+export default function PhoneLottieAnimation() {
 
   return (
       <Lottie 

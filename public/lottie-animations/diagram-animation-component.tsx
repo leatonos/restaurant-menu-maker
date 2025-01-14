@@ -4,7 +4,7 @@ import Lottie from "lottie-react";
 import DiagramAnimation from './Diagram_Hierarchy.json'
 import { useState,useEffect, useRef } from 'react';
 
-export default async function DiagramLottieAnimation() {
+export default function DiagramLottieAnimation() {
 
   return (
       <Lottie 
