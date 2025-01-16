@@ -21,6 +21,9 @@ import { Style } from "util";
 import { ItemPos } from "@/app/redux/dragNdropSlice";
 import { getAllCategoryPositions, getAllItemPositions, getAllSubcategoryPositions } from "@/app/utils/getPositions";
 
+//Tiptap
+import Tiptap from "./tip-tap";
+
 interface itemProps {
   categoryIndex:number
   subcategoryIndex:number
@@ -263,8 +266,14 @@ export default function ItemEditor(props:itemProps) {
             </div>
             <div>
                 <label htmlFor={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`}>Item Description:</label><br/>
-                <textarea rows={4} cols={30} id={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`} 
-                onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
+                {
+                  /*   
+                  <textarea rows={4} cols={30} id={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`} 
+                  onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
+                  
+                  */
+                }
+                <Tiptap htmlId={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`} descriptionContent={props.item.description} itemRef={itemRef} />
             </div>
             <div>
                 <label>Item price:</label><br/>

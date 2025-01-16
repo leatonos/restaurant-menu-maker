@@ -3,6 +3,7 @@ import Image from "next/image";
 import PreviewStyle from "@/app/css/restaurant-view.module.css"
 import FullscreenStyle from '@/app/css/restaurant-view-fullscreen.module.css'
 import React, { useEffect, useState } from 'react'
+import parse from 'html-react-parser';
 import { Item, MenuCategory, MenuStyle, RestaurantMenu, Subcategory } from "@/app/types/types";
 
 // Redux Imports
@@ -49,6 +50,8 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
     }
   }
 
+  const HTMLparser = new DOMParser()
+  const HTMLDescription = HTMLparser.parseFromString(props.itemInfo.description,"text/html")
 
 
   const ProductImage = (imageProp:{imageURL:string}) =>{
@@ -61,12 +64,16 @@ export default function ItemView(props:{itemInfo:Item, menuStyle:MenuStyle}) {
     }
   }
 
+  const HtmlStringRenderer = ( props:{htmlString:string}) => {
+    return <>{parse(props.htmlString)}</>;
+  };
+
   
   return (
     <div className={styles.itemContainer} style={{color:fontColor}} id={props.itemInfo.name}>
         <div className={styles.itemDetails}>
           <h4 className={styles.itemTitle}>{props.itemInfo.name}</h4>
-          <p>{props.itemInfo.description}</p>
+          <HtmlStringRenderer htmlString={props.itemInfo.description} />
           <p>{formatPrice(props.itemInfo.price)}</p>
         </div>
         <div className={styles.itemPhotoContainer}>
