@@ -6,11 +6,28 @@ import { EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import Image from 'next/image'
+
+
+//Icons Imports
+import BoldIcon from '../../../../public/text-icons/bold.svg'
+import ItalicIcon from '../../../../public/text-icons/italic.svg'
+import ClearFormattingIcon from '../../../../public/text-icons/clear-text-formatting.svg'
+import UndoIcon from '../../../../public/text-icons/undo.svg'
+import RedoIcon from '../../../../public/text-icons/redo.svg'
 
 interface descriptionItemEditorProps {
   itemRef:ItemReference
   descriptionContent:string,
-  htmlId:string
+  htmlId:string,
+}
+
+
+const textEditorBtnStyle:React.CSSProperties = {
+  background:'none',
+  border:'0',
+  padding:'2px',
+  cursor:'pointer'
 }
 
 const MenuBar = () => {
@@ -24,6 +41,7 @@ const MenuBar = () => {
     <div className="control-group">
       <div className="button-group">
         <button
+          style={textEditorBtnStyle}
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={
             !editor.can()
@@ -34,9 +52,10 @@ const MenuBar = () => {
           }
           className={editor.isActive('bold') ? 'is-active' : ''}
         >
-          <b>Bold</b>
+          <Image src={BoldIcon} alt={'Bold'} width={15} height={15} className="text-editor-icon"/>
         </button>
         <button
+          style={textEditorBtnStyle}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={
             !editor.can()
@@ -47,7 +66,7 @@ const MenuBar = () => {
           }
           className={editor.isActive('italic') ? 'is-active' : ''}
         >
-          Italic
+          <Image src={ItalicIcon} alt={'Italic'} width={15} height={15} className="text-editor-icon"/>
         </button>
         {/*
         
@@ -71,10 +90,13 @@ const MenuBar = () => {
         
         */}
       
-        <button onClick={() => editor.chain().focus().clearNodes().run()}>
-          Clear formating
-        </button>
+        
         {/*
+
+          <button onClick={() => editor.chain().focus().clearNodes().run()}>
+          <Image src={ClearFormattingIcon} alt={'Clear Formatting'} width={15} height={15}/>
+        </button>
+
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
@@ -97,6 +119,7 @@ const MenuBar = () => {
         </button>
         */}
         <button
+          style={textEditorBtnStyle}
           onClick={() => editor.chain().focus().undo().run()}
           disabled={
             !editor.can()
@@ -106,9 +129,10 @@ const MenuBar = () => {
               .run()
           }
         >
-          Undo
+          <Image src={UndoIcon} alt={'Undo'} width={15} height={15} className="text-editor-icon"/>
         </button>
         <button
+          style={textEditorBtnStyle}
           onClick={() => editor.chain().focus().redo().run()}
           disabled={
             !editor.can()
@@ -118,7 +142,7 @@ const MenuBar = () => {
               .run()
           }
         >
-          Redo
+          <Image src={RedoIcon} alt={"Redo"} width={15} height={15} className="text-editor-icon"/>
         </button>
       </div>
     </div>
