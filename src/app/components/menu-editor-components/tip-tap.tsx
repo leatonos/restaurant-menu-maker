@@ -112,12 +112,6 @@ const MenuBar = () => {
           Ordered list
         </button>
         */}
-
-         {/*
-        <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-          Hard break
-        </button>
-        */}
         <button
           style={textEditorBtnStyle}
           onClick={() => editor.chain().focus().undo().run()}
