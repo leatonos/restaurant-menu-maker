@@ -68,50 +68,6 @@ const MenuBar = () => {
         >
           <Image src={ItalicIcon} alt={'Italic'} width={15} height={15} className="text-editor-icon"/>
         </button>
-        {/*
-        
-          <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={
-            !editor.can()
-              .chain()
-              .focus()
-              .toggleStrike()
-              .run()
-          }
-          className={editor.isActive('strike') ? 'is-active' : ''}
-        >
-          Strike
-        </button>
-        
-        
-        
-        
-        
-        */}
-      
-        
-        {/*
-
-          <button onClick={() => editor.chain().focus().clearNodes().run()}>
-          <Image src={ClearFormattingIcon} alt={'Clear Formatting'} width={15} height={15}/>
-        </button>
-
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'is-active' : ''}
-        >
-          Bullet list
-        </button>
-        */}
-        {/*
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive('orderedList') ? 'is-active' : ''}
-        >
-          Ordered list
-        </button>
-        */}
         <button
           style={textEditorBtnStyle}
           onClick={() => editor.chain().focus().undo().run()}
@@ -161,8 +117,6 @@ const extensions = [
 export default function DescriptionEditor (props:descriptionItemEditorProps){
 
   const dispatch = useDispatch()
-  
-
   const changeDescription = (newDescription:string)=>{
     const itemChange:ItemChange ={
       itemReference: props.itemRef,

@@ -92,13 +92,14 @@ export default function UserGallery( props: MyProps ){
         updateGallery(props.ownerId)
     },[props.ownerId])
 
-
     //Redux Actions
     const dispatch = useDispatch()
     const galleryState = useSelector((state: RootState)=> state.restaurantCreator.galleryState)
     const cropper = useSelector((state: RootState)=> state.gallery.showCropper
 )
     
+    // This function is called when the user selects an image from the gallery
+    // It will set the selectedFiles state to the clicked image
     const chooseImage = () =>{
         
         if(galleryState.changeReference === "Logo" && selectedFiles){
@@ -117,6 +118,7 @@ export default function UserGallery( props: MyProps ){
 
     }
 
+    // This function is called when the user selects an image to upload and open the cropper
     const openCropper = (files: FileWithPath[]) =>{
         setNewImageSrc(URL.createObjectURL(files[0]))
         setNewImageName(files[0].name)
@@ -124,6 +126,7 @@ export default function UserGallery( props: MyProps ){
         dispatch(setCropperStatus(true))
     }
 
+    // This component renders each item in the gallery
     function GalleryItem(props:GalleryItemProps){
         return(
             <div onClick={()=>setSelectedFiles([props.item])} className={styles.galleryItem}>
@@ -131,6 +134,13 @@ export default function UserGallery( props: MyProps ){
             </div>
         )
     }
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/bmp",
+    ];
 
     if(!gallery){
         return(
@@ -172,8 +182,9 @@ export default function UserGallery( props: MyProps ){
                             <div className={styles.galleryUploadArea}>
                                 <Dropzone 
                                     onDrop={(files) => openCropper(files)}
-                                    accept={IMAGE_MIME_TYPE}
+                                    accept={allowedTypes}
                                     multiple={false}
+                                    maxSize={5 * 1024 ** 2} // 5 MB
                                     >
                                     <button className={styles.uploadBtn}>Upload</button>
                                 </Dropzone>

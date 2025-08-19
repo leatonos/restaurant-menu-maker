@@ -4,6 +4,8 @@ import ReactCrop, {centerCrop, makeAspectCrop, Crop, PixelCrop} from 'react-imag
 import { useDebounceEffect } from './useDebounceEffect'
 import { canvasPreview } from './canvasPreview'
 import { Resolution } from '@/app/types/types'
+import imageCompression from "browser-image-compression";
+
 
 //Images and icons
 import Image from 'next/image'
@@ -103,73 +105,70 @@ export default function ImageCropper(props:MyProps) {
     [completedCrop, scale, rotate],
   )
 
-  const captureImage = (canvas: HTMLCanvasElement): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject(new Error('Canvas is empty'));
-        }
-      }, 'image/webp', 0.7);
-    });
-  };
+  const compressedFile = async (file: File) => {
+     const options = {
+        maxSizeMB: .2, // target compressed size
+        maxWidthOrHeight: 300, // resize to standard
+        useWebWorker: true,
+      };
 
-  const uploadImage = async (imageBlob:Blob) => {
+      const newFile = await imageCompression(file, options);
+      console.log("Compressed file size:", file.size / 1024, "KB");
 
-     // Convert Blob to File
-    const imageFile = new File([imageBlob], props.imageName, { type: imageBlob.type });
-    console.log(imageFile)
-   
-    const formData = new FormData();
-    formData.append('file', imageBlob, props.imageName);
-    formData.append("ownerId", props.ownerId);
-    formData.append("galleryId", props.galleryId as string);
+      return newFile;
+  }
+
+
+  const uploadOriginalImage = async (fileImage:File) => {
   
-    const response = await fetch('/api/aws-upload', {
+    setLogStatus(`Sending: ${JSON.stringify(props.imgFile)}`)
+
+    // Check if the file size exceeds 1MB then compress files
+    if(fileImage.size > 1 * 1024 ** 2) {
+      setLogStatus('This image quite big... compressing file...')
+      setSaveBtnText('Compressing Image...')
+      
+     const newFileImage = await compressedFile(fileImage)
+
+     fileImage = newFileImage;
+
+    console.log(`Compressed file size: ${newFileImage.size / 1024} KB`)
+
+    }
+    
+    const formData = new FormData();
+    
+    console.log(`File to upload: ${fileImage.name} Size: ${fileImage.size / 1024} KB`)
+    formData.append('file', fileImage, props.imageName);
+    
+    formData.append("owner_id", props.ownerId);
+    formData.append("gallery_id", props.galleryId as string);
+    
+    const cropInfo = crop as Crop
+
+    formData.append("left_pct", ((Math.floor(cropInfo.x))).toString());
+    formData.append("top_pct", ((cropInfo.y)).toString());
+    formData.append("right_pct", (((cropInfo.x) + (cropInfo.width))).toString());
+    formData.append("bottom_pct", (((cropInfo.y) + (cropInfo.height))).toString());
+
+    setSaveBtnText('Uploading Image...')
+  
+    const response = await fetch('https://qv6blssxqprcervltkvk334vsu0zehpb.lambda-url.us-east-2.on.aws/crop', {
       method: 'POST',
       body: formData,
     });
   
     if (!response.ok) {
+      setLogStatus(`${JSON.stringify(response)}`)
+      setSaveBtnText('Failed to upload image')
       throw new Error('Failed to upload image');
+    }else {
+      setLogStatus('Image uploaded successfully')
+      setSaveBtnText('Image uploaded!')
     }
 
     const result = await response.json()
-
-    console.log(result)
-  
     return result
-  };
-
-  const uploadOriginalImage = async (fileImage:File) => {
-  
-   const formData = new FormData();
-   setLogStatus(`Sending: ${JSON.stringify(props.imgFile)}`)
-   console.log(artificialResolution)
-   console.log(originalResolution)
-   formData.append('file', fileImage, props.imageName);
-   formData.append("ownerId", props.ownerId);
-   formData.append("galleryId", props.galleryId as string);
-   formData.append('imageCrop', JSON.stringify(completedCrop))
-   formData.append('artificialResolution', JSON.stringify(artificialResolution))
-   formData.append('originalResolution', JSON.stringify(originalResolution))
- 
-   const response = await fetch('/api/aws-upload-sharp-cropper', {
-     method: 'POST',
-     body: formData,
-   });
- 
-   if (!response.ok) {
-    setLogStatus(`${JSON.stringify(response)}`)
-     throw new Error('Failed to upload image');
-   }
-
-   const result = await response.json()
-
-   console.log(result)
- 
-   return result
  };
 
   const handleUpload = async () => {
@@ -183,14 +182,11 @@ export default function ImageCropper(props:MyProps) {
       const canvas = previewCanvasRef.current as HTMLCanvasElement;
       setSaveBtnState(true);
       setSaveBtnText("Uploading Image...")
-      //const imageBlob = await captureImage(canvas);
       setLogStatus('Attepmting sending image...')
-      //const result:resultType = await uploadImage(imageBlob);
-      const result:resultType = await uploadOriginalImage(props.imgFile);
-      setLogStatus(JSON.stringify(result))
-      console.log('Image uploaded successfully:', result);
+      const rawData = await uploadOriginalImage(props.imgFile);
+      const result = JSON.parse(rawData.body)
+      console.log(result)
       setSaveBtnState(false);
-      setSaveBtnText("Image uploaded!")
       dispatch(addGalleryFile(result.images[0]))
       dispatch(setCropperStatus(false))
     } catch (error) {
@@ -215,12 +211,8 @@ export default function ImageCropper(props:MyProps) {
                 </div>
       </header>
       <div className={styles.cropControls}>
-        {
-/**
- * 
- *  <p>Old Resolution: W:{originalResolution.width}px H:{originalResolution.height}px</p>
-        <p>New Resolution: W:{artificialResolution.width}px H:{artificialResolution.height}px</p>
-        <p>Convert Ration: W:{originalResolution.width / artificialResolution.width}px H:{originalResolution.height / artificialResolution.height}px</p>
+        <p>TOP:{crop?.y} Bottom:{((crop?.y ?? 0) + (crop?.height ?? 0))}</p>
+        <p>RIGHT:{((crop?.x ?? 0) + (crop?.width ?? 0))} Left:{(crop?.x ?? 0)}</p>
           <div>
           <label htmlFor="scale-input">Zoom </label>
           <input
@@ -234,12 +226,6 @@ export default function ImageCropper(props:MyProps) {
             onChange={(e) => setScale(Number(e.target.value))}
           />
         </div>
- * 
- */
-
-        }
-       
-      
         <div>
         </div>
       </div>
@@ -250,20 +236,20 @@ export default function ImageCropper(props:MyProps) {
           {!!props.imgSrc && (
                   <ReactCrop
                     crop={crop}
-                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                    onChange={(_, pixelCrop) => setCrop(pixelCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
                     aspect={aspect}
                     minWidth={25}
                     minHeight={20}
                     // circularCrop
                   >
-                    <img
-                      ref={imgRef}
-                      className={styles.originalImage}
-                      alt="Crop me"
-                      src={props.imgSrc}
-                      onLoad={onImageLoad}
-                    />
+                  <img
+                    ref={imgRef}
+                    className={styles.originalImage}
+                    alt="Crop me"
+                    src={props.imgSrc}
+                    onLoad={onImageLoad}
+                  />
                   </ReactCrop>
           )}
         </div>
@@ -277,8 +263,8 @@ export default function ImageCropper(props:MyProps) {
                   ref={previewCanvasRef}
                   style={{
                     objectFit: 'cover',
-                    width: /*completedCrop.width*/'250px',
-                    height: /*completedCrop.height*/"200px",
+                    width: completedCrop.width,
+                    height: completedCrop.height,
                   }}
                 />
               </>
