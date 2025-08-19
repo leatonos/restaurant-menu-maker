@@ -6,7 +6,6 @@ import { canvasPreview } from './canvasPreview'
 import { Resolution } from '@/app/types/types'
 import imageCompression from "browser-image-compression";
 
-
 //Images and icons
 import Image from 'next/image'
 import closeImage from '../../../../public/close.svg'
@@ -21,8 +20,6 @@ import { setCropperStatus, addGalleryFile } from '@/app/redux/gallerySlice'
 import { GalleryFile } from '@/app/types/types'
 import ItemView from '../menu-view-components/item'
 import getImageDimensions from '@/app/utils/imageDimensions'
-
-
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -195,10 +192,6 @@ export default function ImageCropper(props:MyProps) {
 
   };
 
-  
-    
-
-
   return (
     <div className={styles.cropperContainer} style={{background:'white'}}>
        <header className={styles.galleryHeader}>
@@ -210,27 +203,7 @@ export default function ImageCropper(props:MyProps) {
                   </div>
                 </div>
       </header>
-      <div className={styles.cropControls}>
-        <p>TOP:{crop?.y} Bottom:{((crop?.y ?? 0) + (crop?.height ?? 0))}</p>
-        <p>RIGHT:{((crop?.x ?? 0) + (crop?.width ?? 0))} Left:{(crop?.x ?? 0)}</p>
-          <div>
-          <label htmlFor="scale-input">Zoom </label>
-          <input
-            id="scale-input"
-            type="range"
-            min='0.1'
-            max='5'
-            step="0.1"
-            value={scale}
-            disabled={!props.imgSrc}
-            onChange={(e) => setScale(Number(e.target.value))}
-          />
-        </div>
-        <div>
-        </div>
-      </div>
       <div className={styles.cropperImages}>
-       
         {/* This represents the image cropper after you select an image */}
         <div className={styles.cropper}>
           {!!props.imgSrc && (
@@ -253,7 +226,6 @@ export default function ImageCropper(props:MyProps) {
                   </ReactCrop>
           )}
         </div>
-       
         {/* This represents the cropped image preview */}
         <div className={styles.previewContainer}>
           {!!completedCrop && (
@@ -271,7 +243,6 @@ export default function ImageCropper(props:MyProps) {
           )}
         </div>
       </div>
-      
         <div className={styles.buttonWrapper}>
           <button className={styles.saveBtn} disabled={saveBtnDisabled} onClick={handleUpload}>{saveBtnText}</button>
           <button className={styles.cancelBtn} onClick={()=> dispatch(setCropperStatus(false))}>Cancel</button>
