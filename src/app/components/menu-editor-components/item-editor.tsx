@@ -84,20 +84,7 @@ export default function ItemEditor(props:itemProps) {
   const GhostStyles:React.CSSProperties = isDragging && Ypos !=0 ? {display:"block",opacity:0.3,width:rectBounds?.width,height:rectBounds?.height}:{display:'none'};
   const DragginBtnStyles:React.CSSProperties = isDragging ? {cursor:'grabbing'}: {cursor:'grab'};
   
-  const getCurrentSubcategoryDraggingPosition = (mouseYposition:number) =>{
 
-    let subcategoryIndex = props.subcategoryIndex
-    if(allSubcatPositions){
-      for(let subPosition of allSubcatPositions){
-        if(mouseYposition >= subPosition.subcategoryTopPosition && mouseYposition <= subPosition.subcategoryBottomPosition){
-          subcategoryIndex = subPosition.subcategoryArrayPosition
-        }
-      }
-    }
-
-    setSubcatPos(subcategoryIndex)
-    return subcategoryIndex
-  }
 
   const getCurrentCategoryDraggingPosition = (mouseYposition:number) =>{
 
@@ -114,38 +101,58 @@ export default function ItemEditor(props:itemProps) {
     return categoryIndex
   }
 
+  const getCurrentSubcategoryDraggingPosition = (mouseYposition:number) =>{
+
+    let subcategoryIndex = props.subcategoryIndex
+    if(allSubcatPositions){
+      for(let subPosition of allSubcatPositions){
+        if(mouseYposition >= subPosition.subcategoryTopPosition && mouseYposition <= subPosition.subcategoryBottomPosition){
+          subcategoryIndex = subPosition.subcategoryArrayPosition
+        }
+      }
+    }
+
+    setSubcatPos(subcategoryIndex)
+    return subcategoryIndex
+  }
+
   /**
    * Applies position rules for dragging items
    * @param mouseYposition 
    * @returns result position of a dragged item
    */
   
-  const getCurrentItemDraggingPosition = (mouseYposition:number)=>{
-    let itemIndex = 0
-    let i = 0
-    const currentSubcatIndex = props.subcategoryIndex
-      if(allItemsPositions && allSubcatPositions){
-        for( const itemPos of allItemsPositions){
-          const itemMiddleLine = (itemPos.itemBottomPosition + itemPos.itemTopPosition)/2
-          // If user drags item after the middle of another item this item will come next
-          if(mouseYposition >= itemMiddleLine ){
-            itemIndex = itemPos.itemArrayPosition + 1
-          }
-          //If user is dragging this item around itself, nothing should change
-          if(rectBounds && mouseYposition <= rectBounds.bottom && mouseYposition >= rectBounds.top){
-            itemIndex = props.index
-          }
-          //If dragging passes to new subcategory makes sure reset the item position counter
-          if(mouseYposition > allSubcatPositions[currentSubcatIndex].subcategoryBottomPosition &&
-            allItemsPositions[i].itemArrayPosition == 0 && mouseYposition < itemMiddleLine){
-            itemIndex = 0
-          }
-          i++
-        }
+  const getCurrentItemDraggingPosition = (mouseYposition: number) => {
+    if (!allItemsPositions || !allSubcatPositions) return props.index;
+
+    const currentSubcatIndex = props.subcategoryIndex;
+
+    // 🟢 Case 1: Dragging around itself → keep position
+    if (rectBounds && mouseYposition <= rectBounds.bottom && mouseYposition >= rectBounds.top) {
+      setItemPos(props.index);
+      return props.index;
+    }
+
+    // 🟢 Case 2: Check all items to find the drop position
+    for (let i = 0; i < allItemsPositions.length; i++) {
+      const itemPos = allItemsPositions[i];
+      const itemMiddleLine = (itemPos.itemBottomPosition + itemPos.itemTopPosition) / 2;
+      // If mouse is above this item's midpoint → insert BEFORE it
+      if (mouseYposition < itemMiddleLine) {
+        setItemPos(itemPos.itemArrayPosition);
+        return itemPos.itemArrayPosition;
       }
-    setItemPos(itemIndex)
-    return itemIndex
-  }
+      // If mouse is below this item's midpoint → insert AFTER it
+      if(mouseYposition > itemMiddleLine){
+        setItemPos(itemPos.itemArrayPosition + 1);
+      }
+    }
+
+    // 🟢 Case 3: If mouse is below all items → insert at the end
+    const lastItem = allItemsPositions[allItemsPositions.length - 1];
+    setItemPos(lastItem.itemArrayPosition + 1);
+    return lastItem.itemArrayPosition + 1;
+};
 
   // This triggers everytime you move your mouse while dragging this element
   const getMousePosition = (e:MouseEvent) =>{
@@ -168,27 +175,34 @@ export default function ItemEditor(props:itemProps) {
   //Drag and Drop
   const startDraging = () =>{ 
 
+    //Gets all the HTML elements of the items, subcategories and categories
     const arrayOfItemElements = Array.from(document.getElementsByClassName(styles.itemEditorContainer)) as HTMLElement[];
-    console.log(arrayOfItemElements)
     const arrayOfSubcategoryElements = Array.from(document.getElementsByClassName(styles.subcategoryEditorContainer)) as HTMLElement[];
     const arrayOfCategoryElements = Array.from(document.getElementsByClassName(styles.categoryEditorContainer)) as HTMLElement[];
 
     if(ItemContainerRef.current){
       setRect(ItemContainerRef.current.getBoundingClientRect())
     }
-    setDragStatus(true)
-    dispatch(setDraggingItemState(true))
+    
+    //Generates lists of the bounds of all the items, subcategories and categories
+    //Then seve on state
     setAllItemsPositions(getAllItemPositions(arrayOfItemElements))
     setAllSubcatPositions(getAllSubcategoryPositions(arrayOfSubcategoryElements))
     setAllCategoriesPositions(getAllCategoryPositions(arrayOfCategoryElements))
+
+    setDragStatus(true)
+    dispatch(setDraggingItemState(true))
+    
   }
-  const stopDraging = ()=>{
+  const stopDraging = () =>{
     setDragStatus(false)
     const itemDestinyRef:ItemReference ={
       itemIndex: itemPos,
       subcategoryIndex: subcatPos,
       categoryIndex: catPos
     }
+    console.log("Final Item Ref:")
+    console.log(itemDestinyRef)
     if(categories[itemDestinyRef.categoryIndex].subcategories.length < 1){
       console.log('Error Cannot move an item to an empty category')
     }else{
@@ -266,13 +280,6 @@ export default function ItemEditor(props:itemProps) {
             </div>
             <div>
                 <label htmlFor={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`}>Item Description:</label><br/>
-                {
-                  /*   
-                  <textarea rows={4} cols={30} id={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`} 
-                  onChange={(event)=>changeDescription(event.target.value)} value={props.item.description}/>
-                  
-                  */
-                }
                 <Tiptap htmlId={`itemDescription${props.categoryIndex}${props.subcategoryIndex}${props.index}`} descriptionContent={props.item.description} itemRef={itemRef} />
             </div>
             <div>
