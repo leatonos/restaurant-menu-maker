@@ -34,7 +34,11 @@ interface itemProps {
 }
 
 const startGap: ItemGap = {
-  
+  topBound: 0,
+  bottomBound: 0,
+  itemIndex: 0,
+  subcategoryIndex: 0,
+  categoryIndex: 0
 }
 
 export default function ItemEditor(props:itemProps) {
