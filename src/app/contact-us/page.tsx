@@ -14,7 +14,7 @@ import DiagramLottieAnimation from "../../../public/lottie-animations/diagram-an
 import Footer from "../components/footer";
 
 
-export default async function Home() {
+export default async function ContactUs() {
 
   return (
     <main>

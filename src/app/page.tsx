@@ -31,8 +31,6 @@ export default async function Home() {
    return redirect('/user')
   }
 
-
-
   return (
     <main>
       <HomeHeader/>
