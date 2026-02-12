@@ -43,7 +43,7 @@ export default function ContactUs() {
           <section className={styles.verticalContainer}>
             <div className={styles.titleBox}>
               <h1>Contact Us</h1>
-              <p>Have questions? We'd love to hear from you.</p>
+              <p>Have questions? We would love to hear from you.</p>
             </div>
             
             <form onSubmit={handleSubmit} style={{ maxWidth: '600px', width: '100%', margin: '2rem auto' }}>
