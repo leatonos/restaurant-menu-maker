@@ -265,7 +265,6 @@ export const menuCreatorSlice = createSlice({
       const itemArrDestiny = state.restaurantMenu.menuCategories[destiny.categoryIndex].subcategories[destiny.subcategoryIndex].items
       itemArrDestiny.splice(destiny.itemIndex, 0, transferredItem);
 
-
     },
     //Moving subcategories
     moveSubCategory:(state,action:PayloadAction<MovingSubcategoryReference>)=>{

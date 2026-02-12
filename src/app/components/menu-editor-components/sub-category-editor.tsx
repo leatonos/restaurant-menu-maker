@@ -255,7 +255,6 @@ export default function SubcategoryEditor(props:editorProps) {
               <label htmlFor="subcategory-name">Subcategory name:</label>
               <input id="subcategory-name" type="text" defaultValue={props.subcategory.name} onChange={(event)=>changeSubcategoryName(event.target.value)}></input>
           </div>
-          
           <div>
               <label htmlFor="subcategory-description">Subcategory Description:</label>
               <input id="subcategory-description" type="text" value={props.subcategory.description} onChange={(event)=>changeSubcategoryDesc(event.target.value)}></input>

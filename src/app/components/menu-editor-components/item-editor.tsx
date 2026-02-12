@@ -14,15 +14,17 @@ import { Item } from "@/app/types/types";
 //Image imports
 import moveImage from '../../../../public/drag-icon.svg';
 import closeImage from '../../../../public/close.svg';
+import minimizeImage from "../../../../public/minimize.svg";
 import deleteImage from "../../../../public/trash.svg";
 import { Style } from "util";
 
 //type imports
 import { ItemPos } from "@/app/redux/dragNdropSlice";
-import { getAllCategoryPositions, getAllItemPositions, getAllSubcategoryPositions } from "@/app/utils/getPositions";
+import { getAllCategoryPositions, getAllItemGaps, getAllItemPositions, getAllSubcategoryPositions, ItemGap } from "@/app/utils/getPositions";
 
 //Tiptap
 import Tiptap from "./tip-tap";
+import { get } from "http";
 
 interface itemProps {
   categoryIndex:number
@@ -31,13 +33,20 @@ interface itemProps {
   item:Item
 }
 
+const startGap: ItemGap = {
+  
+}
+
 export default function ItemEditor(props:itemProps) {
 
   const [itemImage,setItemImage] = useState<string>(props.item.photoURL)
   const [isDragging,setDragStatus] = useState<boolean>(false)
+  const [isMinimized,setIsMinimized] = useState<boolean>(true)
   const [allItemsPositions, setAllItemsPositions] = useState<ItemPos[]>()
   const [allSubcatPositions, setAllSubcatPositions] = useState<SubcategoryPos[]>()
   const [allCategoriesPositions, setAllCategoriesPositions] = useState<CategoryPos[]>()
+  const [allItemGapsPositions, setAllItemGapsPositions] = useState<ItemGap[]>([])
+  const [currentGapPosition,setCurrentGapPosition] = useState<ItemGap>({topBound: 0,bottomBound: 0,itemIndex: 0,subcategoryIndex: 0,categoryIndex: 0})
   const [Xpos,setXpos] = useState<number>(0)
   const [Ypos,setYpos] = useState<number>(0)
   const [itemPos,setItemPos] = useState<number>(0)
@@ -46,8 +55,11 @@ export default function ItemEditor(props:itemProps) {
   const [rectBounds, setRect] = useState<DOMRect>()
 
   const ItemContainerRef = useRef<HTMLDivElement | null>(null)
+  const TopGapContainerRef = useRef<HTMLDivElement | null>(null)
+  const BotGapContainerRef = useRef<HTMLDivElement | null>(null)
 
   const categories = useSelector((state: RootState) => state.restaurantCreator.restaurantMenu.menuCategories)
+  const isDraggingItem = useSelector((state: RootState) => state.dragNdrop.draggingItem)
 
   //References to the positions of all the other itens, categories and subcategories
 
@@ -59,7 +71,7 @@ export default function ItemEditor(props:itemProps) {
   },[props.item.photoURL])
 
 
-   //Activates everytime you drag this item
+  //Turns on and off the event listener for mouse move
    useEffect(()=>{
     if(isDragging){
       document.addEventListener('mousemove', getMousePosition)
@@ -76,16 +88,21 @@ export default function ItemEditor(props:itemProps) {
      position: 'fixed',
      width:`${rectBounds? rectBounds.width : 350}px`,
      zIndex:999,
-     top:Ypos-25,
+     top:Ypos-15,
      left:Xpos-20,
      }
     : {};
+
+  const gapHoverCondition = Ypos >= currentGapPosition.bottomBound && Ypos <= currentGapPosition.topBound
+
+  // Conditional style for the gap element if hovering that gap while dragging an item
+  const conditionalGapStyle:React.CSSProperties = gapHoverCondition ?
+  {background:'#fd5f2f', opacity:0.5, borderRadius:5} : 
+  {};
   
   const GhostStyles:React.CSSProperties = isDragging && Ypos !=0 ? {display:"block",opacity:0.3,width:rectBounds?.width,height:rectBounds?.height}:{display:'none'};
   const DragginBtnStyles:React.CSSProperties = isDragging ? {cursor:'grabbing'}: {cursor:'grab'};
   
-
-
   const getCurrentCategoryDraggingPosition = (mouseYposition:number) =>{
 
     let categoryIndex = props.categoryIndex
@@ -123,9 +140,8 @@ export default function ItemEditor(props:itemProps) {
    */
   
   const getCurrentItemDraggingPosition = (mouseYposition: number) => {
-    if (!allItemsPositions || !allSubcatPositions) return props.index;
 
-    const currentSubcatIndex = props.subcategoryIndex;
+    const oldGap:ItemGap = {topBound:0,bottomBound:0,itemIndex:props.index,subcategoryIndex:0,categoryIndex:0}
 
     // 🟢 Case 1: Dragging around itself → keep position
     if (rectBounds && mouseYposition <= rectBounds.bottom && mouseYposition >= rectBounds.top) {
@@ -133,25 +149,17 @@ export default function ItemEditor(props:itemProps) {
       return props.index;
     }
 
-    // 🟢 Case 2: Check all items to find the drop position
-    for (let i = 0; i < allItemsPositions.length; i++) {
-      const itemPos = allItemsPositions[i];
-      const itemMiddleLine = (itemPos.itemBottomPosition + itemPos.itemTopPosition) / 2;
-      // If mouse is above this item's midpoint → insert BEFORE it
-      if (mouseYposition < itemMiddleLine) {
-        setItemPos(itemPos.itemArrayPosition);
-        return itemPos.itemArrayPosition;
-      }
-      // If mouse is below this item's midpoint → insert AFTER it
-      if(mouseYposition > itemMiddleLine){
-        setItemPos(itemPos.itemArrayPosition + 1);
-      }
-    }
+    // 🟢 Case 2: Check all gaps to find the drop position
+    for (let i = 0; i < allItemGapsPositions.length; i++) {
 
-    // 🟢 Case 3: If mouse is below all items → insert at the end
-    const lastItem = allItemsPositions[allItemsPositions.length - 1];
-    setItemPos(lastItem.itemArrayPosition + 1);
-    return lastItem.itemArrayPosition + 1;
+      if(mouseYposition <= allItemGapsPositions[i].bottomBound && mouseYposition >= allItemGapsPositions[i].topBound){
+        setCurrentGapPosition(allItemGapsPositions[i])
+        return allItemGapsPositions[i]
+      }else{
+        setCurrentGapPosition(oldGap)
+      }
+      
+    }
 };
 
   // This triggers everytime you move your mouse while dragging this element
@@ -164,7 +172,6 @@ export default function ItemEditor(props:itemProps) {
     getCurrentSubcategoryDraggingPosition(e.clientY)
     getCurrentCategoryDraggingPosition(e.clientY)
   }
-
   
   const itemRef:ItemReference ={
     itemIndex: props.index,
@@ -179,6 +186,7 @@ export default function ItemEditor(props:itemProps) {
     const arrayOfItemElements = Array.from(document.getElementsByClassName(styles.itemEditorContainer)) as HTMLElement[];
     const arrayOfSubcategoryElements = Array.from(document.getElementsByClassName(styles.subcategoryEditorContainer)) as HTMLElement[];
     const arrayOfCategoryElements = Array.from(document.getElementsByClassName(styles.categoryEditorContainer)) as HTMLElement[];
+    
 
     if(ItemContainerRef.current){
       setRect(ItemContainerRef.current.getBoundingClientRect())
@@ -192,12 +200,19 @@ export default function ItemEditor(props:itemProps) {
 
     setDragStatus(true)
     dispatch(setDraggingItemState(true))
+
+    const arrayOfItemGapElements = Array.from(document.getElementsByClassName(styles.itemGap)) as HTMLElement[];
+    const gapInfo = getAllItemGaps(arrayOfItemGapElements)
+    console.log('Item Gaps:')
+    console.log(gapInfo) 
     
+    setAllItemGapsPositions(gapInfo)
+
   }
   const stopDraging = () =>{
     setDragStatus(false)
     const itemDestinyRef:ItemReference ={
-      itemIndex: itemPos,
+      itemIndex: currentGapPosition ? currentGapPosition.itemIndex : props.index,
       subcategoryIndex: subcatPos,
       categoryIndex: catPos
     }
@@ -218,6 +233,9 @@ export default function ItemEditor(props:itemProps) {
   //Editor Interactions
   const removeItem=()=>{
     dispatch(deleteItem(itemRef))
+  }
+  const minimizeItem = () =>{
+    setIsMinimized(!isMinimized)
   }
   const changeName = (newName:string)=>{
     const itemChange:ItemChange ={
@@ -257,21 +275,54 @@ export default function ItemEditor(props:itemProps) {
     dispatch(setItemPhoto(itemChange))
   }
 
+  const topGapCondition = props.index == 0
+  const gapIndex = ()=>{
+    if(props.index == 0){
+      return 0
+    }else{
+      return props.index - 1
+    }
+  }
+
   return (
     <>
+      { // Only the first item on a subcategory has a gap on top
+       topGapCondition && (
+        <div className={styles.itemGap} style={conditionalGapStyle}
+        data-index={0} 
+        data-subcategory-index={props.subcategoryIndex} 
+        data-category-index={props.categoryIndex}
+        >
+          <p>TOP ITEM INDEX: {props.index}</p>
+        </div>
+      )}
+      <div className={styles.itemGap} 
+      data-index={props.index} 
+      data-subcategory-index={props.subcategoryIndex} 
+      data-category-index={props.categoryIndex}
+      >
+      </div>
     <div ref={ItemContainerRef} className={styles.itemEditorContainer} style={DraggingStyles}>
-        <div className={styles.optionsContainer}>
-          <div className={styles.leftSide}>
-          <button className={styles.smallBtn}>
-              <Image className={styles.smallIconMove} style={DragginBtnStyles} onMouseDown={startDraging} onMouseUp={stopDraging} height={30} src={moveImage} alt={"Move Item"}/>
+      <div className={styles.optionsContainer}>
+          <div className={styles.leftSide}>  
+            <button className={styles.smallBtn}>
+                <Image className={styles.smallIconMove} style={DragginBtnStyles} onMouseDown={startDraging} onMouseUp={stopDraging} height={30} src={moveImage} alt={"Move Item"}/>
             </button>
           </div>
+          <div className={styles.middleSide}>
+            <h4>{props.item.name}</h4> 
+          </div>
+
           <div className={styles.rightSide}>
+            <button onClick={minimizeItem} className={styles.smallBtn}>
+              <Image className={styles.smallIcon} src={minimizeImage} alt={"Minimize Item"}/>
+            </button>
             <button onClick={removeItem} className={styles.smallBtn}>
               <Image className={styles.smallIcon} src={closeImage} alt={"Delete Item"}/>
             </button>
           </div>
         </div>
+      { !isMinimized && (
         <div className={styles.itemEditingArea}>
           <div className={styles.itemDetailsEditor}>
             <div>
@@ -301,11 +352,31 @@ export default function ItemEditor(props:itemProps) {
               {itemImage != 'https://placehold.co/100x100?text=Select+Image' && <Image className={styles.itemImageEditorDeleteIcon} src={closeImage} onClick={removeImage} alt={"Remove Image"}/>}
           </div>
         </div> 
+      )}
     </div>
     
     <div className={styles.itemEditorContainerGhost} style={GhostStyles}>
-      
+     {/*
+        <h4>Debug Info:</h4>
+        <p>MouseY: {Ypos}</p>
+        <h5>Current Gap:</h5>
+        <p>Top: {currentGapPosition?.topBound}</p>
+        <p>Bottom: {currentGapPosition?.bottomBound}</p>
+        <p>Item Index: {currentGapPosition?.itemIndex}</p>
+        <p>Subcategory Index: {currentGapPosition?.subcategoryIndex}</p>
+        <p>Category Index: {currentGapPosition?.categoryIndex}</p>
+     */}
+     
     </div>
+    
+       <div className={styles.itemGap} style={conditionalGapStyle}
+          data-index={props.index} 
+          data-subcategory-index={props.subcategoryIndex} 
+          data-category-index={props.categoryIndex}
+        >
+           <p>ITEM INDEX: {props.index}</p>
+        </div>
+   
     </>
   );
 }

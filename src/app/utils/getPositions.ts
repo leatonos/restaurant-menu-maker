@@ -5,6 +5,31 @@ import styles from "@/app/css/restaurant-creator-page.module.css"
  * @param arrayOfElements 
  * @returns 
  */
+
+
+export type ItemGap = {
+  topBound: number;
+  bottomBound: number;
+  itemIndex: number;
+  subcategoryIndex: number;
+  categoryIndex: number;
+};
+
+export const getAllItemGaps = (arrayOfElements: HTMLElement[]) => {
+  return arrayOfElements.map((el) => {
+    const rect = el.getBoundingClientRect();
+
+    return {
+      topBound: rect.top,
+      bottomBound: rect.bottom,
+      itemIndex: Number(el.dataset.index),
+      subcategoryIndex: Number(el.dataset.subcategoryIndex),
+      categoryIndex: Number(el.dataset.categoryIndex),
+    };
+  });
+};
+
+
 export const getAllItemPositions = (arrayOfElements:HTMLElement[]) => {
     
     let lastCategory: HTMLElement | null = null;

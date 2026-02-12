@@ -98,7 +98,7 @@
     width: calc(80% - 10px);
     min-width: 320px;
     padding: 5px;
-    margin: 10px 5px;
+    margin: 0px 5px;
     background-color: var(--thirdColor);
     /*
     border-style: solid;
@@ -116,7 +116,7 @@
     width: calc(80% - 10px);
     min-width: 320px;
     padding: 5px;
-    margin: 10px 5px;
+    margin: 0px 5px;
     background-color: var(--thirdColor);
     /*
     border-style: solid;
@@ -132,6 +132,15 @@
     justify-content: space-between;
     padding: 0px 10px;
     padding-bottom: 17px;
+}
+
+.itemGap{
+    display: block;
+    height: 25px;
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    animation: gapGrow 1s cubic-bezier(0.4, 0, 0.2, 1) 1;
 }
 
 .optionsContainer{
@@ -204,7 +213,6 @@
     text-decoration: none;
     cursor: pointer;
 }
-
 .saveButton, .previewButton{
     display: flex;
     align-items: center;
@@ -217,16 +225,13 @@
     text-decoration: none;
     cursor: pointer;
 }
-
 .saveButtonMobile{
     display: none;
 }
-
 .createIcon{
     width: 20px;
     margin-right: 20px;
 }
-
 .previewContainer{
     display: flex;
     flex-direction: column;
@@ -236,13 +241,10 @@
     word-wrap: break-word;
     background-color: var(--thirdColor);
 }
-
 .menuPreview{
     height: calc(100vh - 180px);
     padding: 0px;
 }
-
-
 .itemImageEditor{
     display: inline-block;
     position: relative;
@@ -257,6 +259,17 @@
     top: 5px;
     right: 3px;
     background-color: var(--thirdColor);
+}
+
+
+/* Animations */
+@keyframes gapGrow {
+  from {
+    height: 0px;
+  }
+  to {
+    height: 5px;
+  }
 }
 
 
