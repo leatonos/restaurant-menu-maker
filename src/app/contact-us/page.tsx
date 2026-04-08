@@ -51,73 +51,28 @@ export default function ContactUs() {
                 <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem' }}>
                   Name
                 </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
+                <input className="factory_input" type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
                   style={{ 
-                    width: '100%', 
-                    padding: '0.75rem', 
-                    borderRadius: '4px',
-                    border: '1px solid #ccc'
+                   
                   }}
                 />
               </div>
 
               <div style={{ marginBottom: '1.5rem' }}>
-                <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem' }}>
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  style={{ 
-                    width: '100%', 
-                    padding: '0.75rem', 
-                    borderRadius: '4px',
-                    border: '1px solid #ccc'
-                  }}
-                />
+                <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem' }}> Email </label>
+                <input className="factory_input" type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
               </div>
 
               <div style={{ marginBottom: '1.5rem' }}>
-                <label htmlFor="subject" style={{ display: 'block', marginBottom: '0.5rem' }}>
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  style={{ 
-                    width: '100%', 
-                    padding: '0.75rem', 
-                    borderRadius: '4px',
-                    border: '1px solid #ccc'
-                  }}
-                />
+                <label htmlFor="subject" style={{ display: 'block', marginBottom: '0.5rem' }}>Subject</label>
+                <input className="factory_input" type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} required />
               </div>
 
               <div style={{ marginBottom: '1.5rem' }}>
                 <label htmlFor="message" style={{ display: 'block', marginBottom: '0.5rem' }}>
                   Message
                 </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={6}
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6}
                   style={{ 
                     width: '100%', 
                     padding: '0.75rem', 

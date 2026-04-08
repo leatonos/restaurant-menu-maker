@@ -297,14 +297,10 @@ export default function ItemEditor(props:itemProps) {
         data-subcategory-index={props.subcategoryIndex} 
         data-category-index={props.categoryIndex}
         >
-          <p>TOP ITEM INDEX: {props.index}</p>
+       
         </div>
       )}
-      <div className={styles.itemGap} 
-      data-index={props.index} 
-      data-subcategory-index={props.subcategoryIndex} 
-      data-category-index={props.categoryIndex}
-      >
+      <div className={styles.itemGap} data-index={props.index} data-subcategory-index={props.subcategoryIndex} data-category-index={props.categoryIndex}>
       </div>
     <div ref={ItemContainerRef} className={styles.itemEditorContainer} style={DraggingStyles}>
       <div className={styles.optionsContainer}>
@@ -373,14 +369,30 @@ export default function ItemEditor(props:itemProps) {
      
     </div>
     
-       <div className={styles.itemGap} style={conditionalGapStyle}
-          data-index={props.index} 
-          data-subcategory-index={props.subcategoryIndex} 
-          data-category-index={props.categoryIndex}
-        >
-           <p>ITEM INDEX: {props.index}</p>
-        </div>
+    <div className={styles.itemGap} style={conditionalGapStyle}
+      data-index={props.index} 
+      data-subcategory-index={props.subcategoryIndex} 
+      data-category-index={props.categoryIndex}
+    >
+        <p>ITEM INDEX: {props.index}</p>
+    </div>
    
     </>
   );
 }
+
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ *    <p>TOP ITEM INDEX: {props.index}</p>
+ * 
+ * 
+ * 
+ * 
+ */

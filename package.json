@@ -18,12 +18,13 @@
     "@tiptap/pm": "^2.11.2",
     "@tiptap/react": "^2.11.2",
     "@tiptap/starter-kit": "^2.11.2",
-    "aws-sdk": "^2.1659.0",
+    "aws-sdk": "^1.18.0",
     "browser-image-compression": "^2.0.2",
     "html-react-parser": "^5.2.2",
     "lottie-react": "^2.4.0",
     "mongodb": "^6.4.0",
-    "next": "^14.2.23",
+    "next": "^16.1.6",
+    "nodemailer": "^8.0.1",
     "react": "^18",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -40,7 +41,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.1.2",
+    "eslint-config-next": "^16.1.6",
     "typescript": "^5"
   }
 }
