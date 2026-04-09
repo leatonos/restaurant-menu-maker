@@ -368,14 +368,19 @@ export default function ItemEditor(props:itemProps) {
      */}
      
     </div>
-    
-    <div className={styles.itemGap} style={conditionalGapStyle}
+    {
+      /**
+       * 
+      <div className={styles.itemGap} style={conditionalGapStyle}
       data-index={props.index} 
       data-subcategory-index={props.subcategoryIndex} 
       data-category-index={props.categoryIndex}
     >
         <p>ITEM INDEX: {props.index}</p>
     </div>
+       */
+    }
+   
    
     </>
   );
